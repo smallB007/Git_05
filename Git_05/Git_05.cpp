@@ -194,7 +194,7 @@ void CGit_05App::On_Add_Repo()
 		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
 		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
 	
-	CFileDialog dlgFile(TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
+	CFolderPickerDialog dlgFile;// (TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
 
 	if (IDOK == dlgFile.DoModal())
 	{
