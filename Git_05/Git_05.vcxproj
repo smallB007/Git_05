@@ -75,8 +75,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\git_lib\libgit2-0.24.0\libgit2-0.24.0\include;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\git_lib\libgit2-0.24.0\build\Debug;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -99,6 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>git2.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -230,6 +231,8 @@
     <None Include="Git_05.reg" />
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2" />
     <None Include="res\Git_05.rc2" />
+    <None Include="res\ribbon1.mfcribbon-ms" />
+    <None Include="res\ribbon2.mfcribbon-ms" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Git_05.rc" />
@@ -248,8 +251,15 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml" />
+    <Xml Include="res\BCGSoft_ribbon\TODO.xml" />
+    <Xml Include="res\ribbon.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="Git_05.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

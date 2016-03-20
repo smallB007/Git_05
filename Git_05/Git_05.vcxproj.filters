@@ -92,6 +92,12 @@
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="res\ribbon1.mfcribbon-ms">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ribbon2.mfcribbon-ms">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Git_05.rc">
@@ -132,5 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml" />
+    <Xml Include="res\BCGSoft_ribbon\TODO.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="res\ribbon.xml" />
   </ItemGroup>
 </Project>

@@ -28,6 +28,7 @@ public:
 	virtual int ExitInstance();
 // Implementation
 	afx_msg void OnAppAbout();
+	afx_msg void On_Add_Repo();
 	DECLARE_MESSAGE_MAP()
 };
 

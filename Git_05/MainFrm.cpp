@@ -29,6 +29,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_REGISTERED_MESSAGE(BCGM_ON_RIBBON_CUSTOMIZE, OnRibbonCustomize)
 	ON_COMMAND(ID_TOOLS_OPTIONS, OnToolsOptions)
 	ON_REGISTERED_MESSAGE(BCGM_ON_BEFORE_RIBBON_BACKSTAGE_VIEW, OnBeforeShowRibbonBackstageView)
+	ON_COMMAND(IDC_PROGRESS1055, OnProgressBar)
+	ON_COMMAND(IDC_PALETTE_BTN_THEME, OnPaletteTheme)
+	ON_COMMAND(ID_SOME_OFFICE_THEME, OnPaletteTheme)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -60,12 +63,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
+	const int visible = 1;
 	// TODO: add your status bar panes here:
 	m_wndStatusBar.AddElement (new CBCGPRibbonStatusBarPane (
 		ID_STATUSBAR_PANE1, _T("Pane 1"), TRUE), _T("Pane 1"));
-	m_wndStatusBar.AddExtendedElement (new CBCGPRibbonStatusBarPane (
-		ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE), _T("Pane 2"));
+	CBCGPRibbonStatusBarPane* pane = new CBCGPRibbonStatusBarPane(ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE);
+	
+	m_wndStatusBar.AddExtendedElement (pane, _T("Pane 2"));
+	
 
 	// Load control bar icons:
 	CBCGPToolBarImages imagesWorkspace;
@@ -167,7 +172,7 @@ BOOL CMainFrame::CreateRibbonBar ()
 	{
 		return FALSE;
 	}
-
+	//m_wndRibbonBar.LoadFromVSRibbon(IDR_RIBBON1);
 	if (!m_wndRibbonBar.LoadFromXML (_T("IDR_BCGP_RIBBON_XML")))
 	{
 		return FALSE;
@@ -326,5 +331,15 @@ LRESULT CMainFrame::OnBeforeShowRibbonBackstageView(WPARAM, LPARAM)
 {
 	theApp.CreateScreenshot(m_bmpAppPreview);
 	return 0;
+}
+
+void CMainFrame::OnProgressBar()
+{
+
+}
+
+void CMainFrame::OnPaletteTheme()
+{
+
 }
 

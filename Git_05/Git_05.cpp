@@ -22,6 +22,7 @@ BEGIN_MESSAGE_MAP(CGit_05App, CBCGPWinApp)
 	ON_COMMAND(ID_FILE_OPEN, CBCGPWinApp::OnFileOpen)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CBCGPWinApp::OnFilePrintSetup)
+	ON_COMMAND(IDC_ADD_REPO_BUTTON, On_Add_Repo)
 END_MESSAGE_MAP()
 
 
@@ -128,6 +129,7 @@ BOOL CGit_05App::InitInstance()
 	//  In an SDI app, this should occur after ProcessShellCommand
 	// Enable drag/drop open
 	m_pMainWnd->DragAcceptFiles();
+
 	return TRUE;
 }
 
@@ -184,4 +186,18 @@ void CGit_05App::OnAppAbout()
 
 void CGit_05App::PreLoadState()
 {
+}
+
+void CGit_05App::On_Add_Repo()
+{
+	LPCTSTR pszFilter =
+		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
+		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
+	
+	CFileDialog dlgFile(TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
+
+	if (IDOK == dlgFile.DoModal())
+	{
+		OpenDocumentFile(dlgFile.GetPathName());
+	}
 }

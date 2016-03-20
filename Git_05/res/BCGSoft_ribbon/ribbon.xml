@@ -2,6 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
+		<VERSION_STAMP>1</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -11,11 +12,8 @@
 		</IMAGE>
 		<BUTTON_MAIN>
 			<ELEMENT_NAME>Button_Main</ELEMENT_NAME>
-			<TOOLTIP>File</TOOLTIP>
+			<TOOLTIP>Backstage</TOOLTIP>
 			<KEYS>f</KEYS>
-			<IMAGE>
-				<NAME>IDR_BCGP_IMAGE_MAIN</NAME>
-			</IMAGE>
 		</BUTTON_MAIN>
 		<CATEGORY_BACKSTAGE>
 			<ELEMENT_NAME>Category_Backstage</ELEMENT_NAME>
@@ -99,6 +97,9 @@
 				</ELEMENT>
 			</ELEMENTS>
 		</CATEGORY_BACKSTAGE>
+		<COMMAND_SEARCH>
+			<ENABLE>TRUE</ENABLE>
+		</COMMAND_SEARCH>
 		<QAT_ELEMENTS>
 			<ELEMENT_NAME>QAT</ELEMENT_NAME>
 			<ITEMS>
@@ -142,17 +143,52 @@
 			<ELEMENTS>
 				<ELEMENT>
 					<ELEMENT_NAME>Button</ELEMENT_NAME>
-					<TEXT>Style</TEXT>
+					<TEXT>Theme</TEXT>
 					<KEYS>s</KEYS>
 					<DEFAULT_COMMAND>FALSE</DEFAULT_COMMAND>
 					<ELEMENTS>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
 							<ID>
+								<NAME>ID_VIEW_APPLOOK_SCENIC</NAME>
+								<VALUE>32840</VALUE>
+							</ID>
+							<TEXT>Windows &amp;7/8</TEXT>
+						</ELEMENT>
+						<ELEMENT>
+							<ELEMENT_NAME>Separator</ELEMENT_NAME>
+							<HORIZ>TRUE</HORIZ>
+						</ELEMENT>
+						<ELEMENT>
+							<ELEMENT_NAME>Button</ELEMENT_NAME>
+							<ID>
 								<NAME>ID_VIEW_APPLOOK_2007</NAME>
 								<VALUE>32831</VALUE>
 							</ID>
-							<TEXT>Office 2007 &amp;Blue Theme</TEXT>
+							<TEXT>Office 2007 &amp;Blue</TEXT>
+						</ELEMENT>
+						<ELEMENT>
+							<ELEMENT_NAME>Button_Palette</ELEMENT_NAME>
+							<ID>
+								<NAME>IDC_PALETTE_BTN_THEME</NAME>
+								<VALUE>1058</VALUE>
+							</ID>
+							<TEXT>Palette Button</TEXT>
+							<DEFAULT_COMMAND>FALSE</DEFAULT_COMMAND>
+							<ELEMENTS>
+								<ELEMENT>
+									<ELEMENT_NAME>Label</ELEMENT_NAME>
+									<ID>
+										<NAME>ID_SOME_OFFICE_THEME</NAME>
+										<VALUE>32865</VALUE>
+									</ID>
+									<TEXT>Some Office Them</TEXT>
+								</ELEMENT>
+								<ELEMENT>
+									<ELEMENT_NAME>Label</ELEMENT_NAME>
+									<TEXT>And Another Office Theme</TEXT>
+								</ELEMENT>
+							</ELEMENTS>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -160,7 +196,7 @@
 								<NAME>ID_VIEW_APPLOOK_2007_1</NAME>
 								<VALUE>32832</VALUE>
 							</ID>
-							<TEXT>Office 2007 B&amp;lack Theme</TEXT>
+							<TEXT>Office 2007 B&amp;lack</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -168,7 +204,7 @@
 								<NAME>ID_VIEW_APPLOOK_2007_2</NAME>
 								<VALUE>32833</VALUE>
 							</ID>
-							<TEXT>Office 2007 &amp;Silver Theme</TEXT>
+							<TEXT>Office 2007 &amp;Silver</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -176,7 +212,7 @@
 								<NAME>ID_VIEW_APPLOOK_2007_3</NAME>
 								<VALUE>32834</VALUE>
 							</ID>
-							<TEXT>Office 2007 &amp;Aqua Theme</TEXT>
+							<TEXT>Office 2007 &amp;Aqua</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Separator</ELEMENT_NAME>
@@ -188,7 +224,7 @@
 								<NAME>ID_VIEW_APPLOOK_2010_1</NAME>
 								<VALUE>32837</VALUE>
 							</ID>
-							<TEXT>Office 2010 Bl&amp;ue Theme</TEXT>
+							<TEXT>Office 2010 Bl&amp;ue</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -196,7 +232,7 @@
 								<NAME>ID_VIEW_APPLOOK_2010_2</NAME>
 								<VALUE>32838</VALUE>
 							</ID>
-							<TEXT>Office 2010 Blac&amp;k Theme</TEXT>
+							<TEXT>Office 2010 Blac&amp;k</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -204,19 +240,7 @@
 								<NAME>ID_VIEW_APPLOOK_2010_3</NAME>
 								<VALUE>32839</VALUE>
 							</ID>
-							<TEXT>Office 2010 Sil&amp;ver Theme</TEXT>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Separator</ELEMENT_NAME>
-							<HORIZ>TRUE</HORIZ>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Button</ELEMENT_NAME>
-							<ID>
-								<NAME>ID_VIEW_APPLOOK_SCENIC</NAME>
-								<VALUE>32840</VALUE>
-							</ID>
-							<TEXT>Windows &amp;7/8 Theme</TEXT>
+							<TEXT>Office 2010 Sil&amp;ver</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Separator</ELEMENT_NAME>
@@ -228,7 +252,7 @@
 								<NAME>ID_VIEW_APPLOOK_2013_1</NAME>
 								<VALUE>32844</VALUE>
 							</ID>
-							<TEXT>Office 2013 &amp;White Theme</TEXT>
+							<TEXT>Office 2013 &amp;White</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -236,7 +260,7 @@
 								<NAME>ID_VIEW_APPLOOK_2013_2</NAME>
 								<VALUE>32845</VALUE>
 							</ID>
-							<TEXT>Office 2013 &amp;Light Gray Theme</TEXT>
+							<TEXT>Office 2013 &amp;Light Gray</TEXT>
 						</ELEMENT>
 						<ELEMENT>
 							<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -244,35 +268,7 @@
 								<NAME>ID_VIEW_APPLOOK_2013_3</NAME>
 								<VALUE>32846</VALUE>
 							</ID>
-							<TEXT>Office 2013 Dark &amp;Gray Theme</TEXT>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Separator</ELEMENT_NAME>
-							<HORIZ>TRUE</HORIZ>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Button</ELEMENT_NAME>
-							<ID>
-								<NAME>ID_VIEW_APPLOOK_2016_1</NAME>
-								<VALUE>32847</VALUE>
-							</ID>
-							<TEXT>Office 2016 &amp;Colorful Theme</TEXT>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Button</ELEMENT_NAME>
-							<ID>
-								<NAME>ID_VIEW_APPLOOK_2016_2</NAME>
-								<VALUE>32848</VALUE>
-							</ID>
-							<TEXT>Office 2016 &amp;Dark Gray Theme</TEXT>
-						</ELEMENT>
-						<ELEMENT>
-							<ELEMENT_NAME>Button</ELEMENT_NAME>
-							<ID>
-								<NAME>ID_VIEW_APPLOOK_2016_3</NAME>
-								<VALUE>32849</VALUE>
-							</ID>
-							<TEXT>Office 201&amp;6 White Theme</TEXT>
+							<TEXT>Office 2013 Dark &amp;Gray</TEXT>
 						</ELEMENT>
 					</ELEMENTS>
 				</ELEMENT>
@@ -290,8 +286,7 @@
 		<CATEGORIES>
 			<CATEGORY>
 				<ELEMENT_NAME>Category</ELEMENT_NAME>
-				<NAME>Home</NAME>
-				<KEYS>H</KEYS>
+				<NAME>Repositories</NAME>
 				<IMAGE_SMALL>
 					<NAME>IDR_BCGP_IMAGE_CATEGORY_SMALL_0</NAME>
 				</IMAGE_SMALL>
@@ -301,161 +296,42 @@
 				<PANELS>
 					<PANEL>
 						<ELEMENT_NAME>Panel</ELEMENT_NAME>
-						<NAME>Clipboard</NAME>
-						<KEYS>zc</KEYS>
-						<INDEX>1</INDEX>
+						<NAME>Step 1</NAME>
+						<JUSTIFY_COLUMNS>TRUE</JUSTIFY_COLUMNS>
+						<CENTER_COLUMN_VERT>TRUE</CENTER_COLUMN_VERT>
 						<ELEMENTS>
 							<ELEMENT>
 								<ELEMENT_NAME>Button</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_EDIT_PASTE</NAME>
-									<VALUE>57637</VALUE>
+									<NAME>IDC_ADD_REPO_BUTTON</NAME>
+									<VALUE>1063</VALUE>
 								</ID>
-								<TEXT>Paste</TEXT>
-								<KEYS>v</KEYS>
-								<INDEX_SMALL>0</INDEX_SMALL>
+								<TEXT>Add</TEXT>
 								<INDEX_LARGE>0</INDEX_LARGE>
-								<ELEMENTS>
-									<ELEMENT>
-										<ELEMENT_NAME>Button</ELEMENT_NAME>
-										<ID>
-											<NAME>ID_EDIT_PASTE</NAME>
-											<VALUE>57637</VALUE>
-										</ID>
-										<TEXT>&amp;Paste</TEXT>
-									</ELEMENT>
-									<ELEMENT>
-										<ELEMENT_NAME>Button</ELEMENT_NAME>
-										<ID>
-											<NAME>ID_EDIT_PASTE_SPECIAL</NAME>
-											<VALUE>57639</VALUE>
-										</ID>
-										<TEXT>Paste &amp;Special...</TEXT>
-									</ELEMENT>
-								</ELEMENTS>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_EDIT_CUT</NAME>
-									<VALUE>57635</VALUE>
+									<NAME>IDC_CREATE_REPO_BUTTON</NAME>
+									<VALUE>1064</VALUE>
 								</ID>
-								<TEXT>Cut</TEXT>
-								<KEYS>x</KEYS>
-								<INDEX_SMALL>1</INDEX_SMALL>
+								<TEXT>Create</TEXT>
+								<INDEX_LARGE>1</INDEX_LARGE>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_EDIT_COPY</NAME>
-									<VALUE>57634</VALUE>
+									<NAME>IDC_CLONE_REPO_BUTTON</NAME>
+									<VALUE>1065</VALUE>
 								</ID>
-								<TEXT>Copy</TEXT>
-								<KEYS>c</KEYS>
-								<INDEX_SMALL>2</INDEX_SMALL>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_CLEAR</NAME>
-									<VALUE>57632</VALUE>
-								</ID>
-								<TEXT>Erase</TEXT>
-								<KEYS>r</KEYS>
-								<INDEX_SMALL>3</INDEX_SMALL>
+								<TEXT>Clone</TEXT>
+								<INDEX_LARGE>2</INDEX_LARGE>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 					<PANEL>
 						<ELEMENT_NAME>Panel</ELEMENT_NAME>
-						<NAME>Windowuś</NAME>
-						<KEYS>zw</KEYS>
-						<INDEX>2</INDEX>
-						<ELEMENTS>
-							<ELEMENT>
-								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_VIEW_WORKSPACE</NAME>
-									<VALUE>32791</VALUE>
-								</ID>
-								<TEXT>View 1</TEXT>
-								<KEYS>1</KEYS>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_VIEW_WORKSPACE2</NAME>
-									<VALUE>32792</VALUE>
-								</ID>
-								<TEXT>View 2</TEXT>
-								<KEYS>2</KEYS>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_VIEW_OUTPUT</NAME>
-									<VALUE>32803</VALUE>
-								</ID>
-								<TEXT>Output</TEXT>
-								<KEYS>o</KEYS>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_VIEW_PROPERTIES</NAME>
-									<VALUE>32850</VALUE>
-								</ID>
-								<TEXT>Property Grid</TEXT>
-								<KEYS>g</KEYS>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_VIEW_STATUS_BAR</NAME>
-									<VALUE>59393</VALUE>
-								</ID>
-								<TEXT>Status Bar</TEXT>
-								<KEYS>s</KEYS>
-							</ELEMENT>
-						</ELEMENTS>
-					</PANEL>
-					<PANEL>
-						<ELEMENT_NAME>Panel</ELEMENT_NAME>
-						<NAME>Editing</NAME>
-						<KEYS>e</KEYS>
-						<INDEX>4</INDEX>
-						<ELEMENTS>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_SELECT_ALL</NAME>
-									<VALUE>57642</VALUE>
-								</ID>
-								<TEXT>Select All</TEXT>
-								<KEYS>a</KEYS>
-								<INDEX_SMALL>5</INDEX_SMALL>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_FIND</NAME>
-									<VALUE>57636</VALUE>
-								</ID>
-								<TEXT>Find</TEXT>
-								<KEYS>fd</KEYS>
-								<INDEX_SMALL>6</INDEX_SMALL>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_REPLACE</NAME>
-									<VALUE>57641</VALUE>
-								</ID>
-								<TEXT>Replace</TEXT>
-								<KEYS>r</KEYS>
-								<INDEX_SMALL>7</INDEX_SMALL>
-							</ELEMENT>
-						</ELEMENTS>
+						<NAME>Panel</NAME>
 					</PANEL>
 				</PANELS>
 				<ELEMENTS>
@@ -469,6 +345,10 @@
 						<INDEX_SMALL>4</INDEX_SMALL>
 					</ELEMENT>
 				</ELEMENTS>
+			</CATEGORY>
+			<CATEGORY>
+				<ELEMENT_NAME>Category</ELEMENT_NAME>
+				<NAME>Other</NAME>
 			</CATEGORY>
 		</CATEGORIES>
 	</RIBBON_BAR>

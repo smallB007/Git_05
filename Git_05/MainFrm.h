@@ -58,6 +58,9 @@ protected:
 	afx_msg void OnViewPropGrid();
 	afx_msg void OnUpdateViewPropGrid(CCmdUI* pCmdUI);
 	afx_msg LRESULT OnBeforeShowRibbonBackstageView(WPARAM wp, LPARAM lp);
+	afx_msg void OnProgressBar();
+	afx_msg void OnPaletteTheme();
+	
 	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateRibbonBar ();
