@@ -30,6 +30,7 @@ public:
 	afx_msg void OnAppAbout();
 	afx_msg void On_Add_Repo();
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnCreateRepoButton();
 };
 
 extern CGit_05App theApp;

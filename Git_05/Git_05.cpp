@@ -23,6 +23,7 @@ BEGIN_MESSAGE_MAP(CGit_05App, CBCGPWinApp)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CBCGPWinApp::OnFilePrintSetup)
 	ON_COMMAND(IDC_ADD_REPO_BUTTON, On_Add_Repo)
+	ON_COMMAND(IDC_CREATE_REPO_BUTTON, OnCreateRepoButton)
 END_MESSAGE_MAP()
 
 
@@ -190,6 +191,7 @@ void CGit_05App::PreLoadState()
 
 void CGit_05App::On_Add_Repo()
 {
+	throw - 1;
 	LPCTSTR pszFilter =
 		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
 		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
@@ -198,6 +200,27 @@ void CGit_05App::On_Add_Repo()
 
 	if (IDOK == dlgFile.DoModal())
 	{
+		OpenDocumentFile(dlgFile.GetPathName());
+	}
+}
+
+void CGit_05App::OnCreateRepoButton()
+{
+	//equivalent of git init
+	/*
+	Executing git init creates a .git subdirectory in the project root, which contains all of the necessary metadata for the repo. 
+	Aside from the .git directory, an existing project remains unaltered (unlike SVN, Git doesn't require a .git folder in every subdirectory).
+	*/
+	// TODO: Add your command handler code here
+	LPCTSTR pszFilter =
+		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
+		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
+
+	CFolderPickerDialog dlgFile;// (TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
+
+	if (IDOK == dlgFile.DoModal())
+	{
+		auto file_name = dlgFile.GetPathName();
 		OpenDocumentFile(dlgFile.GetPathName());
 	}
 }
