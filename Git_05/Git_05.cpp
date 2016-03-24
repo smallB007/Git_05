@@ -130,6 +130,8 @@ BOOL CGit_05App::InitInstance()
 	//  In an SDI app, this should occur after ProcessShellCommand
 	// Enable drag/drop open
 	m_pMainWnd->DragAcceptFiles();
+	
+	git_libgit2_init();
 
 	return TRUE;
 }
@@ -138,6 +140,7 @@ BOOL CGit_05App::InitInstance()
 
 int CGit_05App::ExitInstance() 
 {
+	git_libgit2_shutdown();
 	return CBCGPWinApp::ExitInstance();
 }
 
@@ -211,16 +214,17 @@ void CGit_05App::OnCreateRepoButton()
 	Executing git init creates a .git subdirectory in the project root, which contains all of the necessary metadata for the repo. 
 	Aside from the .git directory, an existing project remains unaltered (unlike SVN, Git doesn't require a .git folder in every subdirectory).
 	*/
-	// TODO: Add your command handler code here
-	LPCTSTR pszFilter =
-		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
-		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
 
-	CFolderPickerDialog dlgFile;// (TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
+	CFolderPickerDialog dlgFile;
 
 	if (IDOK == dlgFile.DoModal())
 	{
-		auto file_name = dlgFile.GetPathName();
-		OpenDocumentFile(dlgFile.GetPathName());
+		git_repository *out = nullptr;
+		auto folder_name = dlgFile.GetPathName();
+		CT2CA pszCharacterString(folder_name);
+		if (0 != git_repository_init(&out, pszCharacterString, 0))
+		{//couldn't init say something ;)
+
+		}
 	}
 }
