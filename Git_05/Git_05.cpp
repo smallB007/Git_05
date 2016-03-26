@@ -73,9 +73,9 @@ BOOL CGit_05App::InitInstance()
 	// in your application.
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
-	m_AppOptions.m_strScenicRibbonLabel = _T("Settings");
-	CBCGPWinApp::InitInstance();
 
+	CBCGPWinApp::InitInstance();
+	m_AppOptions.m_strScenicRibbonLabel = _T("Settings");
 	// Initialize OLE libraries
 	if (!AfxOleInit())
 	{
@@ -222,6 +222,7 @@ void CGit_05App::OnCreateRepoButton()
 
 	if (IDOK == dlgFile.DoModal())
 	{
+		git_repository* out = nullptr;
 		auto folder_name = dlgFile.GetPathName();
 		CT2CA pszCharacterString(folder_name);
 
