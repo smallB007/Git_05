@@ -44,6 +44,7 @@
 #define IDC_CLONE_REPO_BUTTON           1065
 #define IDC_CONTEXT1066                 1066
 #define IDC_CONTEXT1067                 1067
+#define IDC_CONFIG_BUTTON               1069
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_WORKSPACE               32791
 #define ID_VIEW_WORKSPACE2              32792
@@ -89,7 +90,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        168
 #define _APS_NEXT_COMMAND_VALUE         32866
-#define _APS_NEXT_CONTROL_VALUE         1068
+#define _APS_NEXT_CONTROL_VALUE         1070
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

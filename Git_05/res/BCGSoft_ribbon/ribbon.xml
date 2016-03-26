@@ -332,6 +332,17 @@
 					<PANEL>
 						<ELEMENT_NAME>Panel</ELEMENT_NAME>
 						<NAME>Panel</NAME>
+						<ELEMENTS>
+							<ELEMENT>
+								<ELEMENT_NAME>Button</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_CONFIG_BUTTON</NAME>
+									<VALUE>1069</VALUE>
+								</ID>
+								<TEXT>Config</TEXT>
+								<INDEX_LARGE>0</INDEX_LARGE>
+							</ELEMENT>
+						</ELEMENTS>
 					</PANEL>
 				</PANELS>
 				<ELEMENTS>

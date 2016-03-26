@@ -29,6 +29,7 @@ END_MESSAGE_MAP()
 
 // CGit_05App construction
 
+
 CGit_05App::CGit_05App()
 {
 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2007_BLUE, ID_VIEW_APPLOOK_2007);
@@ -72,7 +73,7 @@ BOOL CGit_05App::InitInstance()
 	// in your application.
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
-
+	m_AppOptions.m_strScenicRibbonLabel = _T("Settings");
 	CBCGPWinApp::InitInstance();
 
 	// Initialize OLE libraries
@@ -140,7 +141,9 @@ BOOL CGit_05App::InitInstance()
 
 int CGit_05App::ExitInstance() 
 {
+
 	git_libgit2_shutdown();
+	delete_repos_();
 	return CBCGPWinApp::ExitInstance();
 }
 
@@ -219,12 +222,26 @@ void CGit_05App::OnCreateRepoButton()
 
 	if (IDOK == dlgFile.DoModal())
 	{
-		git_repository *out = nullptr;
 		auto folder_name = dlgFile.GetPathName();
 		CT2CA pszCharacterString(folder_name);
-		if (0 != git_repository_init(&out, pszCharacterString, 0))
-		{//couldn't init say something ;)
 
+		if (git_repository_init(&out, pszCharacterString, 0) != git_error_code::GIT_OK)
+		{//couldn't init, say something ;)
+			throw "Not implemented yet";
+			const git_error *e = giterr_last();
 		}
+		else
+		{
+			repos_.push_back(out);
+		}
+	}
+}
+
+void CGit_05App::delete_repos_()
+{
+	for (auto repo : repos_)
+	{
+		git_repository_free(repo);
+		delete repo;
 	}
 }

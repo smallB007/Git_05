@@ -7,7 +7,8 @@
 #endif
 
 #include "resource.h"       // main symbols
-
+#include <vector>
+using std::vector;
 
 // CGit_05App:
 // See Git_05.cpp for the implementation of this class
@@ -15,6 +16,9 @@
 
 class CGit_05App : public CBCGPWinApp
 {
+private:
+	vector<git_repository*> repos_;
+	void delete_repos_();
 public:
 	CGit_05App();
 
