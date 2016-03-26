@@ -5,12 +5,14 @@
 #include "Git_05.h"
 #include "MainFrm.h"
 #include "BackStagePageInfo.h"
+#include "EmailValidator.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+//Statics
 
 /////////////////////////////////////////////////////////////////////////////
 // CBackStagePageInfo dialog
@@ -19,11 +21,14 @@ IMPLEMENT_DYNCREATE(CBackStagePageInfo, CBCGPDialog)
 
 BEGIN_MESSAGE_MAP(CBackStagePageInfo, CBCGPDialog)
 	//ON_WM_PAINT()
+	ON_WM_SIZE()
+	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_PREVIEW, OnPreview)
 	ON_MESSAGE(WM_PRINTCLIENT, OnPrintClient)
 	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CBackStagePageInfo::OnDrawDirect2D)
-	ON_WM_SIZE()
 	ON_EN_CHANGE(IDC_USERNAME_EDIT, &CBackStagePageInfo::OnEnChangeUsernameEdit)
+	ON_EN_CHANGE(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnChangeUseremailEdit)
+	ON_EN_KILLFOCUS(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnKillfocusUseremailEdit)
 END_MESSAGE_MAP()
 
 CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
@@ -31,7 +36,7 @@ CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
 {
 	EnableLayout();
 	EnableD2DSupport();
-	/**/
+	/*those memory allocation need to be freed?*/
 	m_pBlackBrush = new CD2DSolidColorBrush(GetRenderTarget(), D2D1::ColorF(D2D1::ColorF::Black));
 
 	m_pTextFormat = new CD2DTextFormat(GetRenderTarget(), _T("Verdana"), 50);
@@ -46,8 +51,9 @@ CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
 	gradientStops[1].position = 1.f;
 
 	m_pLinearGradientBrush = new CD2DLinearGradientBrush(GetRenderTarget(),
-		gradientStops, ARRAYSIZE(gradientStops),
-		D2D1::LinearGradientBrushProperties(D2D1::Point2F(0, 0), D2D1::Point2F(0, 0)));
+															gradientStops, 
+															ARRAYSIZE(gradientStops),
+															D2D1::LinearGradientBrushProperties(D2D1::Point2F(0, 0), D2D1::Point2F(0, 0)));
 	/**/
 }
 
@@ -128,7 +134,6 @@ afx_msg LRESULT CBackStagePageInfo::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 	
 	CRect rect;
  	GetClientRect(rect);
- 	//ScreenToClient(rect);
  	pRenderTarget->FillRectangle(rect, m_pLinearGradientBrush);
 	
 	GetDlgItem(IDC_PATH_LABEL)->GetWindowRect(rect);
@@ -142,27 +147,13 @@ afx_msg LRESULT CBackStagePageInfo::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 	GetDlgItem(IDC_USEREMAIL_STATIC)->GetWindowRect(rect);
 	ScreenToClient(rect);
 	pRenderTarget->DrawText(_T("Email:"), rect, m_pBlackBrush);
-	
-// 	CRect rect;
-// 
-// 	GetDlgItem(IDC_PATH_LABEL)->GetWindowRect(rect);
-// 
-// 	ScreenToClient(rect);
-// 	pRenderTarget->FillRectangle(rect, m_pLinearGradientBrush);
+	if (!isEmailAdressValid_)
+	{
+		GetDlgItem(IDC_USEREMAIL_ERROR_STATIC)->GetWindowRect(rect);
+		ScreenToClient(rect);
+		pRenderTarget->DrawText(_T("Email Adress Invalid"), rect, m_pBlackBrush);
+	}
 
-// 	CRect rectPath;
-// 	GetDlgItem(IDC_PATH_LABEL)->GetWindowRect(rectPath);
-// 	ScreenToClient(rectPath);
-// 	pRenderTarget->DrawText(_T("ACCOUNTS"), rectPath, m_pBlackBrush);
-// 	
-// 	CRect rectInfo;
-// 
-// 	GetDlgItem(IDC_INFO_LABEL)->GetWindowRect(rectInfo);
-// 	ScreenToClient(rectInfo);
-// 	pRenderTarget->DrawText(_T("Info"), rectPath, m_pBlackBrush);
-
-
-	
 	return TRUE;
 }
 
@@ -289,4 +280,62 @@ void CBackStagePageInfo::OnEnChangeUsernameEdit()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+
+void CBackStagePageInfo::OnEnChangeUseremailEdit()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CBCGPDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+// 	CString windowText;
+// 	user_email_edit_.GetWindowText(windowText);
+// 	if (windowText.GetLength() > 0)
+//	{
+		timer_ID_ = SetTimer(1, 1000, nullptr);//this will call OnTimer every .5 sec
+// 	}
+// 	else
+// 	{
+// 		isEmailAdressValid_ = true;
+// 		CRect rect;
+// 		GetDlgItem(IDC_USEREMAIL_ERROR_STATIC)->GetWindowRect(rect);
+// 		InvalidateRect(rect);
+// 	}
+}
+
+void CBackStagePageInfo::validate_email_(CEdit* ceditCtrl)
+{
+	CString windowText;
+	ceditCtrl->GetWindowText(windowText);
+	
+	try
+	{
+		EmailValidator email_validator(windowText);
+		isEmailAdressValid_ = true;
+	}
+	catch (const wrong_email_address_format& e)
+	{
+		MessageBeep(0x00000030L);
+		isEmailAdressValid_ = false;
+	}
+	//Make sure that the region gets repainted
+	CRect rect;
+	GetDlgItem(IDC_USEREMAIL_ERROR_STATIC)->GetWindowRect(rect);
+	InvalidateRect(rect);
+}
+
+void CBackStagePageInfo::OnTimer(UINT nIDEvent)
+{
+	validate_email_(&user_email_edit_);
+	KillTimer(timer_ID_);
+}
+
+
+void CBackStagePageInfo::OnEnKillfocusUseremailEdit()
+{
+	// TODO: Add your control notification handler code here
+	KillTimer(timer_ID_);
 }

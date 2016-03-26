@@ -51,6 +51,9 @@
     <ClInclude Include="BackStagePageInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EmailValidator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Git_05.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BackStagePageInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EmailValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
