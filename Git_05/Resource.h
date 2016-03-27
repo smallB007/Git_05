@@ -31,7 +31,9 @@
 #define IDC_BUTTON1                     1044
 #define IDC_ACCOUNT_BUTTON              1044
 #define IDC_BUTTON2                     1045
+#define IDC_SAVECONFIG_BUTTON           1045
 #define IDC_BUTTON3                     1046
+#define IDC_LOGIN_BUTTON                1046
 #define IDC_WINDOWUS_LAUNCH_BUTTON      1054
 #define IDC_PROGRESS1055                1055
 #define IDC_SLIDER1056                  1056
@@ -53,6 +55,8 @@
 #define IDC_USEREMAIL_STATIC            1078
 #define IDC_USEREMAIL_STATIC2           1079
 #define IDC_USEREMAIL_ERROR_STATIC      1079
+#define IDC_USERNAMELOGIN_EDIT          1081
+#define IDC_USEREMAILLOGIN_EDIT         1082
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_WORKSPACE               32791
 #define ID_VIEW_WORKSPACE2              32792
@@ -98,7 +102,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        170
 #define _APS_NEXT_COMMAND_VALUE         32866
-#define _APS_NEXT_CONTROL_VALUE         1079
+#define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

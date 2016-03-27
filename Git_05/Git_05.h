@@ -16,6 +16,7 @@ using std::vector;
 
 class CGit_05App : public CBCGPWinApp
 {
+	friend class CBackStagePageInfo;
 private:
 	vector<git_repository*> repos_;
 	void delete_repos_();

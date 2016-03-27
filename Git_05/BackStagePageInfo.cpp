@@ -6,6 +6,7 @@
 #include "MainFrm.h"
 #include "BackStagePageInfo.h"
 #include "EmailValidator.hpp"
+#include "CStringUtilities.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,6 +30,8 @@ BEGIN_MESSAGE_MAP(CBackStagePageInfo, CBCGPDialog)
 	ON_EN_CHANGE(IDC_USERNAME_EDIT, &CBackStagePageInfo::OnEnChangeUsernameEdit)
 	ON_EN_CHANGE(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnChangeUseremailEdit)
 	ON_EN_KILLFOCUS(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnKillfocusUseremailEdit)
+	ON_BN_CLICKED(IDC_SAVECONFIG_BUTTON, &CBackStagePageInfo::OnBnClickedSaveconfig)
+	ON_BN_CLICKED(IDC_LOGIN_BUTTON, &CBackStagePageInfo::OnBnClickedLogin)
 END_MESSAGE_MAP()
 
 CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
@@ -64,6 +67,8 @@ void CBackStagePageInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PREVIEW, m_btnPreview);
 	DDX_Control(pDX, IDC_USERNAME_EDIT, user_name_edit_);
 	DDX_Control(pDX, IDC_USEREMAIL_EDIT, user_email_edit_);
+	DDX_Control(pDX, IDC_USERNAMELOGIN_EDIT, user_name_login_);
+	DDX_Control(pDX, IDC_USEREMAILLOGIN_EDIT, password_log_in_);
 }
 
 
@@ -116,6 +121,11 @@ BOOL CBackStagePageInfo::OnInitDialog()
 // 	}
 // 
 // 	PreparePreviewBitmap();
+
+	/*remove those two lines below*/
+	user_name_login_.SetWindowText(_T("atch.cpp@gmail.com"));
+	password_log_in_.SetWindowText(_T("@A445566tch@"));
+	/**/
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -338,4 +348,37 @@ void CBackStagePageInfo::OnEnKillfocusUseremailEdit()
 {
 	// TODO: Add your control notification handler code here
 	KillTimer(timer_ID_);
+}
+
+
+void CBackStagePageInfo::OnBnClickedSaveconfig()
+{
+	// TODO: Add your control notification handler code here
+	int a{ 0 };
+	git_config* config{nullptr};
+	CGit_05App* app = static_cast<CGit_05App*>(AfxGetApp());
+
+	git_repository_config(&config, app->repos_[0]);
+}
+
+
+void CBackStagePageInfo::OnBnClickedLogin()
+{
+	// TODO: Add your control notification handler code here
+	get_login_credentials_();
+}
+
+void CBackStagePageInfo::get_login_credentials_()
+{
+	using namespace mfc_string_utilities;
+	CString user_name;
+	user_name_login_.GetWindowText(user_name);
+	CString password;
+	password_log_in_.GetWindowText(password);
+
+	CT2CA c_str_username(user_name);
+	CT2CA c_str_password(password);
+
+	git_cred* credentials{ nullptr };
+	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
 }

@@ -61,4 +61,12 @@ public:
 	UINT_PTR timer_ID_;
 	void OnTimer(UINT nIDEvent);
 	afx_msg void OnEnKillfocusUseremailEdit();
+	afx_msg void OnBnClickedSaveconfig();
+	afx_msg void OnBnClickedLogin();
+	/*LOG IN*/
+private:
+	void get_login_credentials_();
+private:
+	CEdit user_name_login_;
+	CEdit password_log_in_;
 };
