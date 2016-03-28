@@ -107,7 +107,6 @@
     <None Include="res\ribbon2.mfcribbon-ms">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Git_05.rc">

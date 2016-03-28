@@ -75,8 +75,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0;C:\git_lib\libgit2-0.24.0\libgit2-0.24.0\include;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0\stage\lib;C:\git_lib\libgit2-0.24.0\build\Debug;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Zip\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\XML\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Util\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Net\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\JSON\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Foundation\include;C:\Users\Artie Fuffkin\Downloads\cpprestsdk-master\cpprestsdk-master\Release\include;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0;C:\git_lib\libgit2-0.24.0\libgit2-0.24.0\include;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\lib;C:\Users\Artie Fuffkin\Downloads\cpprestsdk-master\cpprestsdk-master\Binaries\Win32\Debug;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0\stage\lib;C:\git_lib\libgit2-0.24.0\build\Debug;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>git2.lib</AdditionalDependencies>
+      <AdditionalDependencies>git2.lib;cpprest140d_2_8.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -232,7 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Git_05.reg" />
-    <None Include="packages.config" />
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2" />
     <None Include="res\Git_05.rc2" />
     <None Include="res\ribbon1.mfcribbon-ms" />
@@ -259,18 +258,10 @@
     <Xml Include="res\ribbon.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.2.8.0\build\native\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.2.8.0\build\native\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.targets')" />
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties RESOURCE_FILE="Git_05.rc" />
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.2.8.0\build\native\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.2.8.0\build\native\cpprestsdk.v140.winapp.msvcstl.dyn.rt-dyn.targets'))" />
-  </Target>
 </Project>

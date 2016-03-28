@@ -243,6 +243,6 @@ void CGit_05App::delete_repos_()
 	for (auto repo : repos_)
 	{
 		git_repository_free(repo);
-		delete repo;
+		delete repo;//:AC: warning C4150
 	}
 }

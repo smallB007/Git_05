@@ -38,6 +38,7 @@ CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
 	: CBCGPDialog(CBackStagePageInfo::IDD, pParent)
 {
 	EnableLayout();
+	// Enable D2D support for this window:
 	EnableD2DSupport();
 	/*those memory allocation need to be freed?*/
 	m_pBlackBrush = new CD2DSolidColorBrush(GetRenderTarget(), D2D1::ColorF(D2D1::ColorF::Black));
@@ -60,6 +61,10 @@ CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
 	/**/
 }
 
+CBackStagePageInfo::~CBackStagePageInfo()
+{
+	//delete m_pBlackBrush;
+}
 
 void CBackStagePageInfo::DoDataExchange(CDataExchange* pDX)
 {
@@ -142,12 +147,14 @@ afx_msg LRESULT CBackStagePageInfo::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 {
 	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
 	
+	
 	CRect rect;
  	GetClientRect(rect);
  	pRenderTarget->FillRectangle(rect, m_pLinearGradientBrush);
 	
 	GetDlgItem(IDC_PATH_LABEL)->GetWindowRect(rect);
 	ScreenToClient(rect);
+	
 	pRenderTarget->DrawText(_T("ACCOUNTS"), rect, m_pBlackBrush);
 	
 	GetDlgItem(IDC_USERNAME_STATIC)->GetWindowRect(rect);
@@ -370,7 +377,8 @@ void CBackStagePageInfo::OnBnClickedLogin()
 
 void CBackStagePageInfo::get_login_credentials_()
 {
-	using namespace mfc_string_utilities;
+	using namespace Poco;
+	using namespace Poco::Net;
 	CString user_name;
 	user_name_login_.GetWindowText(user_name);
 	CString password;
@@ -381,4 +389,102 @@ void CBackStagePageInfo::get_login_credentials_()
 
 	git_cred* credentials{ nullptr };
 	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
+
+	using namespace utility;                    // Common utilities like string conversions
+	using namespace web;                        // Common features like URIs.
+	using namespace web::http;                  // Common HTTP functionality
+	using namespace web::http::client;          // HTTP client features
+	using namespace concurrency::streams;       // Asynchronous streams
+
+	auto fileStream = std::make_shared<ostream>();
+
+	// Open stream to output file.
+	pplx::task<void> requestTask = fstream::open_ostream(U("results.html")).then([=](ostream outFile)
+	{
+		*fileStream = outFile;
+
+		// Create http_client to send the request.
+		http_client client(U("https://api.github.com/zen"));
+
+		// Build request URI and start the request.
+		uri_builder builder(U("/search"));
+		builder.append_query(U("q"), U("Casablanca CodePlex"));
+		return client.request(methods::GET/*, builder.to_string()*/);
+	})
+
+		// Handle response headers arriving.
+		.then([=](http_response response)
+	{
+		printf("Received response status code:%u\n", response.status_code());
+
+		// Write response body into the file.
+		return response.body().read_to_end(fileStream->streambuf());
+	})
+
+		// Close the file stream.
+		.then([=](size_t)
+	{
+		return fileStream->close();
+	});
+
+	// Wait for all the outstanding I/O to complete and handle any exceptions
+	try
+	{
+		requestTask.wait();
+	}
+	catch (const std::exception &e)
+	{
+		printf("Error exception:%s\n", e.what());
+	}
+
+// 	URI uri("https://api.github.com/zen");
+// 	std::string path(uri.getPathAndQuery());
+// 	
+// 	HTTPClientSession client(uri.getHost(),uri.getPort());
+// 
+// 	HTTPRequest req(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
+// 
+// 	
+// 
+// 	client.sendRequest(req);
+// 	if (!client.connected())
+// 	{
+// 		int a{ 0 };
+// 	}
+// 	// get response
+// 	HTTPResponse res;
+// 	auto stat = res.getStatus();
+// 	auto reason = res.getReason();
+// 	
+	
+// 	try
+// 	{
+// 		client.receiveResponse(res);
+// 	}
+// 	catch (NetException& e)
+// 	{
+// 		int a;
+// 	}
+// 	catch (NoMessageException& e)
+// 	{
+// 		int a;
+// 	}
+// 	catch (MessageException& e)
+// 	{
+// 		int a;
+// 	}
+// 	catch (ConnectionRefusedException& e)
+// 	{
+// 
+// 	}
+// 	catch (...)
+// 	{
+// 
+// 	}
+	int a{ 0 };
+// 	Poco::Net::HTTPResponse response;
+// 	client.receiveResponse(response);
+// 	int a { 0 };
+	//client.sendRequest(Poco::Net::HTTPRequest::HTTP_GET,)
+
 }

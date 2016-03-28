@@ -70,4 +70,21 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 
+//libgit2
 #include <git2.h>
+
+//casablanca
+#include <cpprest/http_client.h>
+#include <cpprest/filestream.h>
+#include <memory>
+
+//POCO
+//those to winsock2 headers are required in order for POCO to get built
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include "Poco/Net/HTTPClientSession.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/URI.h"
+#include "Poco/Net/NetException.h"
+

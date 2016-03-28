@@ -14,7 +14,7 @@ class CBackStagePageInfo : public CBCGPDialog
 // Construction
 public:
 	CBackStagePageInfo(CWnd* pParent = NULL);   // standard constructor
-
+	~CBackStagePageInfo();
 // Dialog Data
 	enum { IDD = IDD_FORM_INFO };
 	CBCGPButton	m_btnPreview;
