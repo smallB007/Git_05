@@ -390,97 +390,97 @@ void CBackStagePageInfo::get_login_credentials_()
 	git_cred* credentials{ nullptr };
 	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
 
-	using namespace utility;                    // Common utilities like string conversions
-	using namespace web;                        // Common features like URIs.
-	using namespace web::http;                  // Common HTTP functionality
-	using namespace web::http::client;          // HTTP client features
-	using namespace concurrency::streams;       // Asynchronous streams
-
-	auto fileStream = std::make_shared<ostream>();
-
-	// Open stream to output file.
-	pplx::task<void> requestTask = fstream::open_ostream(U("results.html")).then([=](ostream outFile)
-	{
-		*fileStream = outFile;
-
-		// Create http_client to send the request.
-		http_client client(U("https://api.github.com/zen"));
-
-		// Build request URI and start the request.
-		uri_builder builder(U("/search"));
-		builder.append_query(U("q"), U("Casablanca CodePlex"));
-		return client.request(methods::GET/*, builder.to_string()*/);
-	})
-
-		// Handle response headers arriving.
-		.then([=](http_response response)
-	{
-		printf("Received response status code:%u\n", response.status_code());
-
-		// Write response body into the file.
-		return response.body().read_to_end(fileStream->streambuf());
-	})
-
-		// Close the file stream.
-		.then([=](size_t)
-	{
-		return fileStream->close();
-	});
-
-	// Wait for all the outstanding I/O to complete and handle any exceptions
-	try
-	{
-		requestTask.wait();
-	}
-	catch (const std::exception &e)
-	{
-		printf("Error exception:%s\n", e.what());
-	}
-
-// 	URI uri("https://api.github.com/zen");
-// 	std::string path(uri.getPathAndQuery());
-// 	
-// 	HTTPClientSession client(uri.getHost(),uri.getPort());
+// 	using namespace utility;                    // Common utilities like string conversions
+// 	using namespace web;                        // Common features like URIs.
+// 	using namespace web::http;                  // Common HTTP functionality
+// 	using namespace web::http::client;          // HTTP client features
+// 	using namespace concurrency::streams;       // Asynchronous streams
 // 
-// 	HTTPRequest req(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
+// 	auto fileStream = std::make_shared<ostream>();
 // 
-// 	
-// 
-// 	client.sendRequest(req);
-// 	if (!client.connected())
+// 	// Open stream to output file.
+// 	pplx::task<void> requestTask = fstream::open_ostream(U("results.html")).then([=](ostream outFile)
 // 	{
-// 		int a{ 0 };
-// 	}
-// 	// get response
-// 	HTTPResponse res;
-// 	auto stat = res.getStatus();
-// 	auto reason = res.getReason();
-// 	
-	
+// 		*fileStream = outFile;
+// 
+// 		// Create http_client to send the request.
+// 		http_client client(U("https://api.github.com/zen"));
+// 
+// 		// Build request URI and start the request.
+// 		uri_builder builder(U("/search"));
+// 		builder.append_query(U("q"), U("Casablanca CodePlex"));
+// 		return client.request(methods::GET/*, builder.to_string()*/);
+// 	})
+// 
+// 		// Handle response headers arriving.
+// 		.then([=](http_response response)
+// 	{
+// 		printf("Received response status code:%u\n", response.status_code());
+// 
+// 		// Write response body into the file.
+// 		return response.body().read_to_end(fileStream->streambuf());
+// 	})
+// 
+// 		// Close the file stream.
+// 		.then([=](size_t)
+// 	{
+// 		return fileStream->close();
+// 	});
+// 
+// 	// Wait for all the outstanding I/O to complete and handle any exceptions
 // 	try
 // 	{
-// 		client.receiveResponse(res);
+// 		requestTask.wait();
 // 	}
-// 	catch (NetException& e)
+// 	catch (const std::exception &e)
 // 	{
-// 		int a;
+// 		printf("Error exception:%s\n", e.what());
 // 	}
-// 	catch (NoMessageException& e)
-// 	{
-// 		int a;
-// 	}
-// 	catch (MessageException& e)
-// 	{
-// 		int a;
-// 	}
-// 	catch (ConnectionRefusedException& e)
-// 	{
-// 
-// 	}
-// 	catch (...)
-// 	{
-// 
-// 	}
+	using namespace Poco;
+	using namespace Poco::Net;
+	Poco::Net::initializeSSL();
+
+	Poco::Net::Context context(Poco::Net::Context::TLSV1_2_CLIENT_USE, "", "", "", Poco::Net::Context::VERIFY_RELAXED, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+
+	URI uri("https://api.github.com/zen");
+	std::string path(uri.getPathAndQuery());
+	
+	HTTPSClientSession client(uri.getHost(), uri.getPort(), &context);
+
+	HTTPRequest req(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
+
+	auto sess = client.sslSession();
+
+	if (!client.connected())
+	{
+		int a{ 0 };
+	}
+	else
+	{
+		client.sendRequest(req);
+	}
+	// get response
+	HTTPResponse res;
+	auto stat = res.getStatus();
+	auto reason = res.getReason();
+	
+	
+	try
+	{
+		client.receiveResponse(res);
+	}
+	catch (NetException& e)
+	{
+		int a;
+	}
+	catch (ConnectionRefusedException& e)
+	{
+
+	}
+	catch (...)
+	{
+
+	}
 	int a{ 0 };
 // 	Poco::Net::HTTPResponse response;
 // 	client.receiveResponse(response);

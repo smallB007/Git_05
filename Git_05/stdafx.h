@@ -79,10 +79,11 @@
 #include <memory>
 
 //POCO
-//those to winsock2 headers are required in order for POCO to get built
+//those to winsock2 headers are required in order for POCO to get no errors during including of POCO headers
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "Poco/Net/HTTPClientSession.h"
+#include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
 #include "Poco/URI.h"
