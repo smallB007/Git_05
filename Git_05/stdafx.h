@@ -50,7 +50,6 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <BCGCBProInc.h>			// BCGPro Control Bar
 
 
 
@@ -70,22 +69,25 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 
+//std
+#include <memory>
+#include <vector>
+using std::vector;
+
+// BCGPro Control Bar
+#include <BCGCBProInc.h>
+
 //libgit2
 #include <git2.h>
 
-//casablanca
-#include <cpprest/http_client.h>
-#include <cpprest/filestream.h>
-#include <memory>
-
 //POCO
-//those to winsock2 headers are required in order for POCO to get no errors during including of POCO headers
+//those two winsock2 headers are required in order for POCO to get no errors during including of POCO headers
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include "Poco/Net/HTTPClientSession.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/URI.h"
-#include "Poco/Net/NetException.h"
+// #include "Poco/Net/HTTPClientSession.h"
+// #include "Poco/Net/HTTPSClientSession.h"
+// #include "Poco/Net/HTTPRequest.h"
+// #include "Poco/Net/HTTPResponse.h"
+// #include "Poco/URI.h"
+// #include "Poco/Net/NetException.h"
 

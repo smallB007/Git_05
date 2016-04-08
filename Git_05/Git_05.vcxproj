@@ -75,8 +75,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\OpenSSL-Win32\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Data\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Zip\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\XML\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Util\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\NetSSL_OpenSSL\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Net\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\MongoDB\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\JSON\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Crypto\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Foundation\include;C:\Users\Artie Fuffkin\Downloads\cpprestsdk-master\cpprestsdk-master\Release\include;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0;C:\git_lib\libgit2-0.24.0\libgit2-0.24.0\include;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\lib;C:\Users\Artie Fuffkin\Downloads\cpprestsdk-master\cpprestsdk-master\Binaries\Win32\Debug;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0\stage\lib;C:\git_lib\libgit2-0.24.0\build\Debug;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\OpenSSL-Win32\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Data\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Zip\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\XML\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Util\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\NetSSL_OpenSSL\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Net\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\MongoDB\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\JSON\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Crypto\include;C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\Foundation\include;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0;C:\git_lib\libgit2-0.24.0\libgit2-0.24.0\include;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\BCGCBPro;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Artie Fuffkin\Downloads\poco-1.7.2-all\poco-1.7.2-all\lib;C:\Users\Artie Fuffkin\Downloads\boost_1_60_0\boost_1_60_0\stage\lib;C:\git_lib\libgit2-0.24.0\build\Debug;C:\Program Files %28x86%29\BCGSoft\BCGControlBarPro\Bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>git2.lib;cpprest140d_2_8.lib</AdditionalDependencies>
+      <AdditionalDependencies>git2.lib;</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -204,6 +204,7 @@
     <ClInclude Include="Git_05.h" />
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
+    <ClInclude Include="HTTPSClient.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputBar.h" />
     <ClInclude Include="PropertiesViewBar.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="Git_05.cpp" />
     <ClCompile Include="Git_05Doc.cpp" />
     <ClCompile Include="Git_05View.cpp" />
+    <ClCompile Include="HTTPSClient.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputBar.cpp" />
     <ClCompile Include="PropertiesViewBar.cpp" />
