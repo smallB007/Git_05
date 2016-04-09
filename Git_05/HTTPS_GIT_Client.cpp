@@ -1,59 +1,69 @@
 #include "stdafx.h"
-#include "HTTPSClient.h"
+#include "HTTPS_GIT_Client.h"
 
-using namespace Poco;
-using namespace Poco::Net;
-using namespace Poco::JSON;
-using namespace Poco::Dynamic;
+// using namespace Poco;
+// using namespace Poco::Net;
+// using namespace Poco::JSON;
+// using namespace Poco::Dynamic;
 
 typedef Poco::JSON::Array JSON_Array;
 
-HTTPSClient::HTTPSClient()
+HTTPS_GIT_Client::HTTPS_GIT_Client()
 {
 	Poco::Net::initializeSSL();
-	SharedPtr<InvalidCertificateHandler> ptrCert{nullptr};// = new ConsoleCertificateHandler(false);
+	Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> ptrCert{nullptr};// = new ConsoleCertificateHandler(false);
 	
-	Context::Ptr ptrContext = new Context(Context::CLIENT_USE, "", "", "", Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
-	SSLManager::instance().initializeClient(0, ptrCert, ptrContext);
+	Poco::Net::Context::Ptr ptrContext = new Poco::Net::Context(Poco::Net::Context::CLIENT_USE, "", "", "", Poco::Net::Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+	Poco::Net::SSLManager::instance().initializeClient(0, ptrCert, ptrContext);
+}
+
+
+HTTPS_GIT_Client::~HTTPS_GIT_Client()
+{
+	Poco::Net::uninitializeSSL();
+}
+
+void HTTPS_GIT_Client::connect()
+{
 	try
 	{
 		//URI uri("https://api.github.com/zen");
-		URI uri("https://api.github.com/user");
-		URI uri_repos("https://api.github.com/users/smallB007/repos");//works
+		Poco::URI uri("https://api.github.com/user");
+		Poco::URI uri_repos("https://api.github.com/users/smallB007/repos");//works
 		//URI uri("https://github.com/login/");
 		//URI uri("https://github.com/login/");//works
 
-		HTTPSClientSession s(uri.getHost(), uri.getPort());
-		HTTPRequest request(HTTPRequest::HTTP_GET, uri.getPath());
+		Poco::Net::HTTPSClientSession s(uri.getHost(), uri.getPort());
+		Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, uri.getPath());
 		request.set("user-agent", "Poco HTTPSClientSession");
-		HTTPBasicCredentials cred("smallB007", "@A445566tch@");
+		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
 		cred.authenticate(request);
 
 		//request.add("username", "smallB007");
 		//request.add("password", "@A445566tch@");
 		s.sendRequest(request);
-		HTTPResponse response;
+		Poco::Net::HTTPResponse response;
 		std::istream& rs = s.receiveResponse(response);
-		StreamCopier::copyStream(rs, std::cout);
+		Poco::StreamCopier::copyStream(rs, std::cout);
 		std::cout << std::endl;
 		std::cout << "======================REPOS=============================\n";
-		HTTPRequest request_repos(HTTPRequest::HTTP_GET, uri_repos.getPath());
+		Poco::Net::HTTPRequest request_repos(Poco::Net::HTTPRequest::HTTP_GET, uri_repos.getPath());
 		request_repos.set("user-agent", "Poco HTTPSClientSession");
 		cred.authenticate(request_repos);
 		s.sendRequest(request_repos);
-		HTTPResponse response_repos;
+		Poco::Net::HTTPResponse response_repos;
 		std::istream& rs_repos = s.receiveResponse(response_repos);
 		std::string response_content{ std::istreambuf_iterator<char>(rs_repos),
 			std::istreambuf_iterator<char>() };
-		StreamCopier::copyStream(rs_repos, std::cout);
+		Poco::StreamCopier::copyStream(rs_repos, std::cout);
 		std::cout << std::endl;
 
-		Parser parser;
-		Var result = parser.parse(response_content);
+		Poco::JSON::Parser parser;
+		Poco::Dynamic::Var result = parser.parse(response_content);
 		JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
 		for (int repo_index{ 0 }, repos_total = arr->size(); repo_index < repos_total; ++repo_index)
 		{
-			Object::Ptr object = arr->getObject(repo_index);
+			Poco::JSON::Object::Ptr object = arr->getObject(repo_index);
 			std::vector<std::string> names;
 			object->getNames(names);
 			std::cout << repo_index << "======================REPOS=============================\n";
@@ -83,7 +93,7 @@ HTTPSClient::HTTPSClient()
 	{
 		std::cout << "Poco::InvalidAccessException";
 	}
-	catch (Exception& ex)
+	catch (Poco::Exception& ex)
 	{
 		std::cout << ex.displayText() << std::endl;
 	}
@@ -91,10 +101,4 @@ HTTPSClient::HTTPSClient()
 	{
 		std::cout << "Unknown exception occurred";
 	}
-}
-
-
-HTTPSClient::~HTTPSClient()
-{
-	Poco::Net::uninitializeSSL();
 }

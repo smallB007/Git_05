@@ -52,7 +52,8 @@ CGit_05App::CGit_05App()
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
-	https_client_ptr_ = std::make_shared<HTTPSClient>();
+	https_GIT_client_ptr_ = std::make_shared<HTTPS_GIT_Client>();
+	https_GIT_client_ptr_->connect();
 }
 
 

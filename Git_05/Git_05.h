@@ -7,7 +7,7 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include "HTTPSClient.h"
+#include "HTTPS_GIT_Client.h"
 
 // CGit_05App:
 // See Git_05.cpp for the implementation of this class
@@ -17,7 +17,7 @@ class CGit_05App : public CBCGPWinApp
 {
 	friend class CBackStagePageInfo;
 private:
-	std::shared_ptr<HTTPSClient> https_client_ptr_;
+	std::shared_ptr<HTTPS_GIT_Client> https_GIT_client_ptr_;
 	vector<git_repository*> repos_;
 	void delete_repos_();
 public:

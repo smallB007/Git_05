@@ -25,8 +25,6 @@ protected:
 
 // Implementation
 protected:
-
-
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
 	//afx_msg void OnPaint();

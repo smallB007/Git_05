@@ -204,7 +204,7 @@
     <ClInclude Include="Git_05.h" />
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
-    <ClInclude Include="HTTPSClient.h" />
+    <ClInclude Include="HTTPS_GIT_Client.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputBar.h" />
     <ClInclude Include="PropertiesViewBar.h" />
@@ -219,7 +219,7 @@
     <ClCompile Include="Git_05.cpp" />
     <ClCompile Include="Git_05Doc.cpp" />
     <ClCompile Include="Git_05View.cpp" />
-    <ClCompile Include="HTTPSClient.cpp" />
+    <ClCompile Include="HTTPS_GIT_Client.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputBar.cpp" />
     <ClCompile Include="PropertiesViewBar.cpp" />

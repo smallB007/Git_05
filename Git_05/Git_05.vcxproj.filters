@@ -57,7 +57,7 @@
     <ClInclude Include="CStringUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HTTPSClient.h">
+    <ClInclude Include="HTTPS_GIT_Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,7 +95,7 @@
     <ClCompile Include="EmailValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HTTPSClient.cpp">
+    <ClCompile Include="HTTPS_GIT_Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,10 +16,11 @@
 #include <memory>
 #include <iostream>
 
-class HTTPSClient
+class HTTPS_GIT_Client
 {
 public:
-	HTTPSClient();
-	~HTTPSClient();
+	HTTPS_GIT_Client();
+	~HTTPS_GIT_Client();
+	void connect();
 };
 
