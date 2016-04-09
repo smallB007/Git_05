@@ -102,3 +102,9 @@ void HTTPS_GIT_Client::connect()
 		std::cout << "Unknown exception occurred";
 	}
 }
+
+/*This method isn't called get_repositories, because the get_ methods will be talking to server*/
+decltype(HTTPS_GIT_Client::repositories_) HTTPS_GIT_Client::repositories() const
+{
+	return repositories_;
+}
