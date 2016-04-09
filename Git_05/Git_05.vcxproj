@@ -196,6 +196,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h" />
@@ -204,6 +205,11 @@
     <ClInclude Include="Git_05.h" />
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
+    <ClInclude Include="Git_Object.hpp" />
+    <ClInclude Include="Git_User.hpp" />
+    <ClInclude Include="Git_User_Attributes.hpp" />
+    <ClInclude Include="Git_Repository.hpp" />
+    <ClInclude Include="Git_Repository_Attributes.hpp" />
     <ClInclude Include="HTTPS_GIT_Client.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputBar.h" />
@@ -219,6 +225,11 @@
     <ClCompile Include="Git_05.cpp" />
     <ClCompile Include="Git_05Doc.cpp" />
     <ClCompile Include="Git_05View.cpp" />
+    <ClCompile Include="Git_Object.cpp" />
+    <ClCompile Include="Git_User.cpp" />
+    <ClCompile Include="Git_User_Attributes.cpp" />
+    <ClCompile Include="Git_Repository.cpp" />
+    <ClCompile Include="Git_Repository_Attributes.cpp" />
     <ClCompile Include="HTTPS_GIT_Client.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputBar.cpp" />
