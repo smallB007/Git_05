@@ -121,7 +121,12 @@ void HTTPS_GIT_Client::connect()
 	}
 }
 
- std::set<Git_Repository,Less<Git_Repository>> HTTPS_GIT_Client::user_repositories(const Git_User & user) const
+void HTTPS_GIT_Client::login()
+{
+
+}
+
+std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositories(const Git_User & user) const
 {
 	auto it  = user_repos_.find(user);
 	if (it != cend(user_repos_))
@@ -135,7 +140,7 @@ void HTTPS_GIT_Client::connect()
 
 }
 
-void HTTPS_GIT_Client::get_user_repositories_(const Git_User & user)
+void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)
 {
 
 }
