@@ -34,6 +34,7 @@ struct Git_Plan
 
 class Git_User_Attributes
 {
+	friend class Git_User;
 	typedef std::string string_t;
 	typedef std::time_t time_t;
 private:

@@ -1,0 +1,1 @@
+1. Write exception type for HTTPS_GIT_Client::user_repositories(const Git_User & user) const
