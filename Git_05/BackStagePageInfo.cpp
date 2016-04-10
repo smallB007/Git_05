@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CBackStagePageInfo, CBCGPDialog)
 	ON_EN_KILLFOCUS(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnKillfocusUseremailEdit)
 	ON_BN_CLICKED(IDC_SAVECONFIG_BUTTON, &CBackStagePageInfo::OnBnClickedSaveconfig)
 	ON_BN_CLICKED(IDC_LOGIN_BUTTON, &CBackStagePageInfo::OnBnClickedLogin)
+	ON_BN_CLICKED(IDC_ACCOUNT_BUTTON, &CBackStagePageInfo::OnBnClicked_AccountButton)
 END_MESSAGE_MAP()
 
 CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
@@ -73,6 +74,7 @@ void CBackStagePageInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_USEREMAIL_EDIT, user_email_edit_);
 	DDX_Control(pDX, IDC_USERNAMELOGIN_EDIT, user_name_login_);
 	DDX_Control(pDX, IDC_USEREMAILLOGIN_EDIT, password_log_in_);
+	DDX_Control(pDX, IDC_ACCOUNT_BUTTON, avatar_btn_);
 }
 
 
@@ -360,9 +362,8 @@ void CBackStagePageInfo::OnEnKillfocusUseremailEdit()
 void CBackStagePageInfo::OnBnClickedSaveconfig()
 {
 	// TODO: Add your control notification handler code here
-	int a{ 0 };
 	git_config* config{nullptr};
-	CGit_05App* app = static_cast<CGit_05App*>(AfxGetApp());
+	CGit_05App* app = get_main_app_();
 
 	git_repository_config(&config, app->repos_[0]);
 }
@@ -387,4 +388,70 @@ void CBackStagePageInfo::get_login_credentials_()
 	git_cred* credentials{ nullptr };
 	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
 
+}
+
+
+void CBackStagePageInfo::OnBnClicked_AccountButton()
+{
+	// TODO: Add your control notification handler code here
+	CGit_05App* app = get_main_app_();
+	app->https_GIT_client_ptr_->current_user_avatar();
+	/************************************************************************/
+	/*                                                                      */
+	/************************************************************************/
+
+
+	CImage image;
+	image.Load(_T("C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png")); // just change extension to load jpg
+	auto h = image.GetHeight();
+	auto w = image.GetWidth();
+ 	CBitmap bitmap;
+	bitmap.Attach(image.Detach());
+
+	CDC memDC;
+	memDC.CreateCompatibleDC(GetDC());
+
+	CDC memDCStretched;
+	memDCStretched.CreateCompatibleDC(GetDC());
+
+	CRect rect;
+	avatar_btn_.GetClientRect(rect);
+	CBitmap bmpStretched;
+	bmpStretched.CreateCompatibleBitmap(GetDC(), rect.Width(), rect.Height());
+
+	CBitmap* pbmpMemOld = (CBitmap*)memDC.SelectObject(&bitmap);
+	CBitmap* pbmpMemStretchedOld = (CBitmap*)memDCStretched.SelectObject(&bmpStretched);
+
+	memDCStretched.StretchBlt(0, 0, rect.Width(), rect.Height(), &memDC,
+													0, 0, w, h, SRCCOPY);
+
+	memDCStretched.SelectObject(pbmpMemStretchedOld);
+
+	//m_ctlStatic.SetBitmap(&bmpStretched);
+	avatar_btn_.SetBitmap(bmpStretched);
+	bmpStretched.Detach();
+// 	CRect rect;
+// 	avatar_btn_.GetClientRect(rect);
+// 	CDC dcDst;
+// 	dcDst.CreateCompatibleDC(NULL);
+// 	image.StretchBlt(dcDst.GetSafeHdc(), rect);
+
+	
+	//bitmap.SetBitmapDimension(rect.Width(),rect.Height());
+// 	CBitmap bitmap;
+// 	bitmap.Attach(image.Detach());
+// 	
+// 	auto sz = bitmap.GetBitmapDimension();
+//  	CHwndRenderTarget* render_target = GetRenderTarget();
+// 	auto path = CString(L"C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png");
+// 	CD2DBitmap* d2bitmap = new CD2DBitmap(render_target,path.GetString(),CD2DSizeU(150,150));
+// 	d2bitmap->Create(render_target);
+// 	CRect rect;
+// 	avatar_btn_.GetClientRect(rect);
+	//render_target->DrawBitmap(d2bitmap,rect);
+	
+	
+// 	CD2DBitmap* bitmap = new CD2DBitmap(render_target, CString(L"C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png"));
+
+	//render_target->DrawBitmap()
 }

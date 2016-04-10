@@ -17,6 +17,7 @@ HTTPS_GIT_Client::HTTPS_GIT_Client()
 	
 	Poco::Net::Context::Ptr ptrContext = new Poco::Net::Context(Poco::Net::Context::CLIENT_USE, "", "", "", Poco::Net::Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 	Poco::Net::SSLManager::instance().initializeClient(0, ptrCert, ptrContext);
+	user_repos_.clear();
 }
 
 
@@ -56,12 +57,15 @@ void HTTPS_GIT_Client::connect()
 {
 	try
 	{
+		//URI uri_avatar("https://api.github.com/zen");
 		//URI uri("https://api.github.com/zen");
+
 		Poco::URI uri("https://api.github.com/user");
 		Poco::URI uri_repos("https://api.github.com/users/smallB007/repos");//works
 		//URI uri("https://github.com/login/");
 
 		Poco::Net::HTTPSClientSession client_session(uri.getHost(), uri.getPort());
+		//Poco::Net::HTTPSClientSession client_session(uri.getHost(), uri.getPort());
 		Poco::Net::HTTPRequest request_user(Poco::Net::HTTPRequest::HTTP_GET, uri.getPath());
 		request_user.set("user-agent", "Poco HTTPSClientSession");
 		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
@@ -80,7 +84,7 @@ void HTTPS_GIT_Client::connect()
 		
 		Poco::JSON::Object::Ptr obj = result_.extract<Poco::JSON::Object::Ptr>();
  		fill_json_data_(obj,git_user);
-		
+		current_user_ = git_user;
 		std::cout << "======================REPOS=============================\n";
 	
 		Poco::Net::HTTPRequest request_repos(Poco::Net::HTTPRequest::HTTP_GET, uri_repos.getPath());
@@ -140,7 +144,53 @@ std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositori
 
 }
 
-void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)
+ void HTTPS_GIT_Client::current_user_avatar()
+ {
+	 GET_current_user_avatar_();
+ }
+
+ void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)
 {
 
 }
+#include <fstream>
+void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)
+{
+	try
+	{
+		Poco::URI uri_avatar(user.get_avatar_url());
+		
+
+		Poco::Net::HTTPSClientSession client_session(uri_avatar.getHost(), uri_avatar.getPort());
+		Poco::Net::HTTPRequest request_user(Poco::Net::HTTPRequest::HTTP_GET, uri_avatar.getPath());
+		request_user.set("user-agent", "Poco HTTPSClientSession");
+		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
+		cred.authenticate(request_user);
+		client_session.sendRequest(request_user);
+
+		Poco::Net::HTTPResponse response_user;
+		std::istream& istream_rs_user = client_session.receiveResponse(response_user);
+
+		png::image< png::rgb_pixel > image(istream_rs_user);
+		image.write("avatar.png");
+
+	}
+	catch (Poco::InvalidAccessException& e)
+	{
+		std::cout << "Poco::InvalidAccessException";
+	}
+	catch (Poco::Exception& ex)
+	{
+		std::cout << ex.displayText() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "Unknown exception occurred";
+	}
+}
+
+void HTTPS_GIT_Client::GET_current_user_avatar_()
+{
+	GET_user_avatar_(current_user_);
+}
+

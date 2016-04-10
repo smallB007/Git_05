@@ -49,15 +49,25 @@ class HTTPS_GIT_Client
 	typedef std::map<Git_User, std::set<Git_Repository,Less<Git_Repository>>, Less<Git_User>> user_repos_t;
 
 private:
+
+	//Poco::Net::HTTPSClientSession client_session_;//maybe it is OK but for now each mthd will create its own
+	Git_User current_user_;
 	user_repos_t user_repos_;
 	void GET_user_repositories_(const Git_User& user);
-	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object& git_object);
+	void GET_user_avatar_(const Git_User& user);
+	void GET_current_user_avatar_();
+	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object & git_object);
+
 
 public:
 	HTTPS_GIT_Client();
 	~HTTPS_GIT_Client();
 	void connect();
-	void login();
+
 	std::set<Git_Repository,Less<Git_Repository>> user_repositories(const Git_User& user)const;
+	void current_user_avatar();
+
+	void login();
+
 };
 
