@@ -454,6 +454,4 @@ void CBackStagePageInfo::OnBnClicked_AccountButton()
 // 	CD2DBitmap* bitmap = new CD2DBitmap(render_target, CString(L"C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png"));
 
 	//render_target->DrawBitmap()
-	
-
 }

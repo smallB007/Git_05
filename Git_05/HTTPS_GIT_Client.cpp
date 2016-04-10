@@ -58,6 +58,8 @@ void HTTPS_GIT_Client::connect()
 	try
 	{
 		//URI uri_avatar("https://api.github.com/zen");
+		//URI uri("https://api.github.com/zen");
+
 		Poco::URI uri("https://api.github.com/user");
 		Poco::URI uri_repos("https://api.github.com/users/smallB007/repos");//works
 		//URI uri("https://github.com/login/");
@@ -123,7 +125,12 @@ void HTTPS_GIT_Client::connect()
 	}
 }
 
- std::set<Git_Repository,Less<Git_Repository>> HTTPS_GIT_Client::user_repositories(const Git_User & user) const
+void HTTPS_GIT_Client::login()
+{
+
+}
+
+std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositories(const Git_User & user) const
 {
 	auto it  = user_repos_.find(user);
 	if (it != cend(user_repos_))
@@ -186,3 +193,4 @@ void HTTPS_GIT_Client::GET_current_user_avatar_()
 {
 	GET_user_avatar_(current_user_);
 }
+
