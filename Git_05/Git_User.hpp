@@ -7,5 +7,6 @@ private:
 public:
 	Git_User();
 	~Git_User();
+	string_t get_avatar_url()const;
 };
 

@@ -68,4 +68,9 @@ private:
 	CEdit user_name_login_;
 	CEdit password_log_in_;
 	CButton avatar_btn_;
+public:
+	afx_msg void OnBnClicked_AccountButton();
+	/*Inter windows utils*/
+private:
+	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };
 };

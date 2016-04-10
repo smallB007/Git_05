@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CBackStagePageInfo, CBCGPDialog)
 	ON_EN_KILLFOCUS(IDC_USEREMAIL_EDIT, &CBackStagePageInfo::OnEnKillfocusUseremailEdit)
 	ON_BN_CLICKED(IDC_SAVECONFIG_BUTTON, &CBackStagePageInfo::OnBnClickedSaveconfig)
 	ON_BN_CLICKED(IDC_LOGIN_BUTTON, &CBackStagePageInfo::OnBnClickedLogin)
+	ON_BN_CLICKED(IDC_ACCOUNT_BUTTON, &CBackStagePageInfo::OnBnClicked_AccountButton)
 END_MESSAGE_MAP()
 
 CBackStagePageInfo::CBackStagePageInfo(CWnd* pParent /*=NULL*/)
@@ -361,9 +362,8 @@ void CBackStagePageInfo::OnEnKillfocusUseremailEdit()
 void CBackStagePageInfo::OnBnClickedSaveconfig()
 {
 	// TODO: Add your control notification handler code here
-	int a{ 0 };
 	git_config* config{nullptr};
-	CGit_05App* app = static_cast<CGit_05App*>(AfxGetApp());
+	CGit_05App* app = get_main_app_();
 
 	git_repository_config(&config, app->repos_[0]);
 }
@@ -388,4 +388,12 @@ void CBackStagePageInfo::get_login_credentials_()
 	git_cred* credentials{ nullptr };
 	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
 
+}
+
+
+void CBackStagePageInfo::OnBnClicked_AccountButton()
+{
+	// TODO: Add your control notification handler code here
+	CGit_05App* app = get_main_app_();
+	app->https_GIT_client_ptr_->current_user_avatar();
 }

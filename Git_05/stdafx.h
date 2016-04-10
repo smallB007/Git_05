@@ -91,3 +91,8 @@ using std::vector;
 // #include "Poco/URI.h"
 // #include "Poco/Net/NetException.h"
 
+//libpng
+//#include <png.h>
+
+//png++
+#include <png++/png.hpp>
