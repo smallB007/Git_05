@@ -163,21 +163,10 @@ void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)
 
 		Poco::Net::HTTPResponse response_user;
 		std::istream& istream_rs_user = client_session.receiveResponse(response_user);
-// 		std::string response_user_content{ std::istreambuf_iterator<char>(istream_rs_user),
-// 										   std::istreambuf_iterator<char>() };
-// 
-// 		std::ofstream f_out("avatar.png");
-// 		f_out << response_user_content;
-// 		f_out.close();
+
 		png::image< png::rgb_pixel > image(istream_rs_user);
-		image.write("avatar_.png");
-// 		Git_User git_user;
-// 				Poco::JSON::Parser parser_;
-// 				Poco::Dynamic::Var result_ = parser_.parse(response_user_content);
-// 		
-// 		
-// 				Poco::JSON::Object::Ptr obj = result_.extract<Poco::JSON::Object::Ptr>();
-//		fill_json_data_(obj, git_user);
+		image.write("avatar.png");
+
 	}
 	catch (Poco::InvalidAccessException& e)
 	{

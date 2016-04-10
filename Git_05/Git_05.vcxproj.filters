@@ -17,6 +17,7 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="ToDo.txt" />
+    <Text Include="KB.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Git_05.h">
