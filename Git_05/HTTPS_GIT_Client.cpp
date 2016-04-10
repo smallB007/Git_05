@@ -135,7 +135,7 @@ void HTTPS_GIT_Client::connect()
 
 }
 
-void HTTPS_GIT_Client::get_user_repositories_(const Git_User & user)
+void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)
 {
 
 }

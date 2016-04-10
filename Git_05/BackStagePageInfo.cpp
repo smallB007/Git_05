@@ -73,6 +73,7 @@ void CBackStagePageInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_USEREMAIL_EDIT, user_email_edit_);
 	DDX_Control(pDX, IDC_USERNAMELOGIN_EDIT, user_name_login_);
 	DDX_Control(pDX, IDC_USEREMAILLOGIN_EDIT, password_log_in_);
+	DDX_Control(pDX, IDC_ACCOUNT_BUTTON, avatar_btn_);
 }
 
 

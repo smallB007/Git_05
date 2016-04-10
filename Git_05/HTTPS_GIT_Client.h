@@ -50,7 +50,7 @@ class HTTPS_GIT_Client
 
 private:
 	user_repos_t user_repos_;
-	void get_user_repositories_(const Git_User& user);
+	void GET_user_repositories_(const Git_User& user);
 	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object & git_object);
 
 public:

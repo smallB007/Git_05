@@ -67,4 +67,5 @@ private:
 private:
 	CEdit user_name_login_;
 	CEdit password_log_in_;
+	CButton avatar_btn_;
 };
