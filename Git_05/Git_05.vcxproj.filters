@@ -1,196 +1,229 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-    <Text Include="ToDo.txt" />
-<<<<<<< HEAD
-    <Text Include="KB.txt" />
-=======
->>>>>>> master
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Git_05.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_05Doc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_05View.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkSpaceBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkSpaceBar2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PropertiesViewBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BackStagePageInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EmailValidator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CStringUtilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HTTPS_GIT_Client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_Repository.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_Repository_Attributes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_User_Attributes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_User.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Git_Object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Git_05.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Git_05Doc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Git_05View.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkSpaceBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkSpaceBar2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="BackStagePageInfo.cpp">
+      <Filter>BCG\cpp</Filter>
     </ClCompile>
     <ClCompile Include="OutputBar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BCG\cpp</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesViewBar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="BackStagePageInfo.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WorkSpaceBar.cpp">
+      <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="EmailValidator.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WorkSpaceBar2.cpp">
+      <Filter>BCG\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_05.cpp">
+      <Filter>MFC\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_05Doc.cpp">
+      <Filter>MFC\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_05View.cpp">
+      <Filter>MFC\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>MFC\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>MFC\cpp</Filter>
     </ClCompile>
     <ClCompile Include="HTTPS_GIT_Client.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Git_Repository.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Git_Repository_Attributes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Git_User_Attributes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Git_User.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="EmailValidator.cpp">
+      <Filter>Git_05\cpp</Filter>
     </ClCompile>
     <ClCompile Include="Git_Object.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_Repository.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_Repository_Attributes.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_User.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Git_User_Attributes.cpp">
+      <Filter>Git_05\cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Git_05.reg" />
-    <None Include="res\Git_05.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ClInclude Include="BackStagePageInfo.h">
+      <Filter>BCG\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputBar.h">
+      <Filter>BCG\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesViewBar.h">
+      <Filter>BCG\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar.h">
+      <Filter>BCG\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar2.h">
+      <Filter>BCG\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_05.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_05Doc.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_05View.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>MFC\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="CStringUtilities.h">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_Object.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_Repository.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_Repository_Attributes.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_User.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Git_User_Attributes.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="HTTPS_GIT_Client.h">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="EmailValidator.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Xml>
+    <Xml Include="res\ribbon.xml">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Xml>
+    <Xml Include="res\BCGSoft_ribbon\TODO.xml">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BCGSoft_ribbon\category_backstage_small.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_large_0.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_small_0.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\ribbonfilelarge.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\Workspace.png">
+      <Filter>BCG\miscelleneaus</Filter>
+    </Image>
+    <Image Include="res\Git_05.ico">
+      <Filter>MFC\miscellenaous</Filter>
+    </Image>
+    <Image Include="res\Git_05Doc.ico">
+      <Filter>MFC\miscellenaous</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\main.png">
+      <Filter>MFC\miscellenaous</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">
-      <Filter>Resource Files</Filter>
+      <Filter>BCG\miscelleneaus</Filter>
     </None>
     <None Include="res\ribbon1.mfcribbon-ms">
-      <Filter>Resource Files</Filter>
+      <Filter>BCG\miscelleneaus</Filter>
     </None>
     <None Include="res\ribbon2.mfcribbon-ms">
-      <Filter>Resource Files</Filter>
+      <Filter>BCG\miscelleneaus</Filter>
     </None>
+    <None Include="res\Git_05.rc2">
+      <Filter>MFC\miscellenaous</Filter>
+    </None>
+    <None Include="Git_05.reg">
+      <Filter>MFC\miscellenaous</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>MFC\miscellenaous</Filter>
+    </Text>
+    <Text Include="KB.txt">
+      <Filter>Git_05\miscellenaous</Filter>
+    </Text>
+    <Text Include="ToDo.txt">
+      <Filter>Git_05\miscellenaous</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="BCG">
+      <UniqueIdentifier>{f5dadad6-8c19-4dd1-bf67-8377e602281c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BCG\hpp">
+      <UniqueIdentifier>{c0d75f9b-bb99-41d1-bff6-7a2423dd05eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BCG\cpp">
+      <UniqueIdentifier>{02b162bc-b418-422b-834c-058feb443a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BCG\miscelleneaus">
+      <UniqueIdentifier>{eca3c1db-df74-4463-81a7-c4b7bfc78e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MFC">
+      <UniqueIdentifier>{2d683510-3560-4801-b4de-1b0250e7ddcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MFC\hpp">
+      <UniqueIdentifier>{ad7fdd86-2ce9-4c55-af29-6985b6c93db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MFC\cpp">
+      <UniqueIdentifier>{bd295148-6b86-4c4c-9cc3-b7e0fa402c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MFC\miscellenaous">
+      <UniqueIdentifier>{d8638f26-d4b1-4604-9da0-b8d0d6e31724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git_05">
+      <UniqueIdentifier>{511b6d6c-d127-4654-81ce-f61563581303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git_05\hpp">
+      <UniqueIdentifier>{9d3c3f88-6e1d-4e74-8689-e6c316ccd414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git_05\cpp">
+      <UniqueIdentifier>{a011fac2-c6cd-489e-906a-a08323a3a51b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git_05\miscellenaous">
+      <UniqueIdentifier>{08db997d-525c-4ba5-8e7a-c56085df29c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Git_05.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>MFC\miscellenaous</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\Workspace.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Git_05Doc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Git_05.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\BCGSoft_ribbon\main.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\BCGSoft_ribbon\category_backstage_small.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\BCGSoft_ribbon\category_small_0.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\BCGSoft_ribbon\category_large_0.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\ribbonfilelarge.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="res\BCGSoft_ribbon\ribbon.xml" />
-    <Xml Include="res\BCGSoft_ribbon\TODO.xml">
-      <Filter>Resource Files</Filter>
-    </Xml>
-    <Xml Include="res\ribbon.xml" />
   </ItemGroup>
 </Project>

@@ -59,7 +59,7 @@ int CWorkSpaceBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	// Setup tree content:
-	HTREEITEM hRoot = m_wndTree.InsertItem(_T("Root 1"));
+	HTREEITEM hRoot = m_wndTree.InsertItem(_T("Repositories"));
 	m_wndTree.InsertItem(_T("Item 1"), hRoot);
 	m_wndTree.InsertItem(_T("Item 2"), hRoot);
 	

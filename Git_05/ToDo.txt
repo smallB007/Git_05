@@ -1,5 +1,5 @@
-
-3. Download and insert an avatar pic!(very important)
+4. Check this: http://www.semdesigns.com/Products/SmartDifferencer/
+3[Done]. Download and insert an avatar pic!(very important)
 2. Insert user's repos into view (temporarily later on the structure where and how the repos are presented most likely will change)
 
 1. Write exception type for HTTPS_GIT_Client::user_repositories(const Git_User & user) const

@@ -15,7 +15,7 @@
 
 class CGit_05App : public CBCGPWinApp
 {
-	friend class CBackStagePageInfo;
+	//friend class CBackStagePageInfo;
 private:
 	std::shared_ptr<HTTPS_GIT_Client> https_GIT_client_ptr_;
 	vector<git_repository*> repos_;
@@ -25,7 +25,7 @@ public:
 
 	// Override from CBCGPWorkspace
 	virtual void PreLoadState ();
-
+	const HTTPS_GIT_Client* const get_https_git_client_p();
 
 // Overrides
 public:

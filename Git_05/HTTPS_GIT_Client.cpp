@@ -144,17 +144,17 @@ std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositori
 
 }
 
- void HTTPS_GIT_Client::current_user_avatar()
+ void HTTPS_GIT_Client::current_user_avatar()const
  {
 	 GET_current_user_avatar_();
  }
 
- void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)
+ void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)const
 {
 
 }
 #include <fstream>
-void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)
+void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)const
 {
 	try
 	{
@@ -189,7 +189,7 @@ void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)
 	}
 }
 
-void HTTPS_GIT_Client::GET_current_user_avatar_()
+void HTTPS_GIT_Client::GET_current_user_avatar_()const
 {
 	GET_user_avatar_(current_user_);
 }

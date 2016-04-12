@@ -197,6 +197,12 @@ void CGit_05App::PreLoadState()
 {
 }
 
+
+const HTTPS_GIT_Client* const CGit_05App::get_https_git_client_p()
+{
+	return https_GIT_client_ptr_.get();
+}
+
 void CGit_05App::On_Add_Repo()
 {
 	throw - 1;

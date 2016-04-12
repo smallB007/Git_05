@@ -365,7 +365,7 @@ void CBackStagePageInfo::OnBnClickedSaveconfig()
 	git_config* config{nullptr};
 	CGit_05App* app = get_main_app_();
 
-	git_repository_config(&config, app->repos_[0]);
+	//git_repository_config(&config, app->repos_[0]);
 }
 
 
@@ -395,63 +395,42 @@ void CBackStagePageInfo::OnBnClicked_AccountButton()
 {
 	// TODO: Add your control notification handler code here
 	CGit_05App* app = get_main_app_();
-	app->https_GIT_client_ptr_->current_user_avatar();
+	app->get_https_git_client_p()->current_user_avatar();//:AC: writes *.png file
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-
-
+	//Artie, try and rewrite it with direct2d
+	
 	CImage image;
 	image.Load(_T("C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png")); // just change extension to load jpg
-	auto h = image.GetHeight();
-	auto w = image.GetWidth();
+	auto original_height = image.GetHeight();
+	auto original_width = image.GetWidth();
  	CBitmap bitmap;
 	bitmap.Attach(image.Detach());
-
-	CDC memDC;
-	memDC.CreateCompatibleDC(GetDC());
-
-	CDC memDCStretched;
-	memDCStretched.CreateCompatibleDC(GetDC());
+	
+	auto pDC = GetDC();
 
 	CRect rect;
 	avatar_btn_.GetClientRect(rect);
+	
+	CDC memDC;
+	memDC.CreateCompatibleDC(pDC);
+
+	CDC memDCStretched;
+	memDCStretched.CreateCompatibleDC(pDC);
+
+
 	CBitmap bmpStretched;
 	bmpStretched.CreateCompatibleBitmap(GetDC(), rect.Width(), rect.Height());
 
-	CBitmap* pbmpMemOld = (CBitmap*)memDC.SelectObject(&bitmap);
-	CBitmap* pbmpMemStretchedOld = (CBitmap*)memDCStretched.SelectObject(&bmpStretched);
+	CBitmap* pbmpMemOld = memDC.SelectObject(&bitmap);
+	CBitmap* pbmpMemStretchedOld = memDCStretched.SelectObject(&bmpStretched);
 
-	memDCStretched.StretchBlt(0, 0, rect.Width(), rect.Height(), &memDC,
-													0, 0, w, h, SRCCOPY);
+	memDCStretched.StretchBlt(0, 0, rect.Width(), rect.Height(), &memDC,0, 0, original_width, original_height, SRCCOPY);
 
 	memDCStretched.SelectObject(pbmpMemStretchedOld);
 
-	//m_ctlStatic.SetBitmap(&bmpStretched);
 	avatar_btn_.SetBitmap(bmpStretched);
 	bmpStretched.Detach();
-// 	CRect rect;
-// 	avatar_btn_.GetClientRect(rect);
-// 	CDC dcDst;
-// 	dcDst.CreateCompatibleDC(NULL);
-// 	image.StretchBlt(dcDst.GetSafeHdc(), rect);
 
-	
-	//bitmap.SetBitmapDimension(rect.Width(),rect.Height());
-// 	CBitmap bitmap;
-// 	bitmap.Attach(image.Detach());
-// 	
-// 	auto sz = bitmap.GetBitmapDimension();
-//  	CHwndRenderTarget* render_target = GetRenderTarget();
-// 	auto path = CString(L"C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png");
-// 	CD2DBitmap* d2bitmap = new CD2DBitmap(render_target,path.GetString(),CD2DSizeU(150,150));
-// 	d2bitmap->Create(render_target);
-// 	CRect rect;
-// 	avatar_btn_.GetClientRect(rect);
-	//render_target->DrawBitmap(d2bitmap,rect);
-	
-	
-// 	CD2DBitmap* bitmap = new CD2DBitmap(render_target, CString(L"C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png"));
-
-	//render_target->DrawBitmap()
 }

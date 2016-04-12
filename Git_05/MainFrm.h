@@ -38,8 +38,8 @@ public:
 protected:  // control bar embedded members
 	CBCGPRibbonStatusBar	m_wndStatusBar;
 	CBCGPRibbonBar			m_wndRibbonBar;
-	CBCGPMenuBar			m_wndMenuBar;
-	CBCGPToolBar			m_wndToolBar;
+	//CBCGPMenuBar			m_wndMenuBar;
+	//CBCGPToolBar			m_wndToolBar;//this and this^ is unnecessary as we have a ribbon but for now leave it in case we want to give user the ability to switch
 	CWorkSpaceBar			m_wndWorkSpace;
 	CWorkSpaceBar2			m_wndWorkSpace2;
 	COutputBar				m_wndOutput;
