@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 
-typedef std::string string_t;
+typedef std::wstring string_t;
 typedef string_t attribute;
 typedef string_t value;
 

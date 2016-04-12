@@ -44,6 +44,9 @@ protected:  // control bar embedded members
 	CWorkSpaceBar2			m_wndWorkSpace2;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
+private:
+	
+	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

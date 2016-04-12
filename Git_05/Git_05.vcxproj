@@ -206,6 +206,7 @@
     <ClInclude Include="Git_05.h" />
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
+    <ClInclude Include="Git_05_Utils.h" />
     <ClInclude Include="Git_Object.hpp" />
     <ClInclude Include="Git_User.hpp" />
     <ClInclude Include="Git_User_Attributes.hpp" />

@@ -98,3 +98,5 @@ using std::vector;
 //png++
 #include <png++/png.hpp>
 
+//Git_05 Utils
+#include "Git_05_Utils.h"

@@ -111,6 +111,9 @@
     <ClInclude Include="EmailValidator.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="Git_05_Utils.h">
+      <Filter>Git_05</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">

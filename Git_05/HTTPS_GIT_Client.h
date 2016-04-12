@@ -30,7 +30,7 @@ struct Less<Git_User>
 {
 	bool operator()(const Git_User& left, const Git_User& right)
 	{
-		return left.get_attribute("name") < right.get_attribute("name");
+		return left.get_attribute(_T("name")) < right.get_attribute(_T("name"));
 	}
 };
 template<>
@@ -38,7 +38,7 @@ struct Less<Git_Repository>
 {
 	bool operator()(const Git_Repository& left, const Git_Repository& right)
 	{
-		return left.get_attribute("name") < right.get_attribute("name");
+		return left.get_attribute(_T("name")) < right.get_attribute(_T("name"));
 	}
 };
 
@@ -57,15 +57,15 @@ private:
 	void GET_user_avatar_(const Git_User& user)const;
 	void GET_current_user_avatar_()const;
 	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object & git_object);
+	std::set<Git_Repository,Less<Git_Repository>> user_repositories_(const Git_User& user)const;
 
 
 public:
 	HTTPS_GIT_Client();
 	~HTTPS_GIT_Client();
 	void connect();
-
-	std::set<Git_Repository,Less<Git_Repository>> user_repositories(const Git_User& user)const;
-	void current_user_avatar()const;
+	std::set<Git_Repository, Less<Git_Repository>> current_user_repositories()const;
+	void current_user_avatar()const;//:AC: rename it or do something with it as to describe better what it does, analogous to user_repositories?
 
 	void login();
 

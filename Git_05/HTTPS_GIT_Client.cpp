@@ -35,14 +35,14 @@ void HTTPS_GIT_Client::fill_json_data_(const Poco::JSON::Object::Ptr& json_objec
 		try
 		{
 			auto val = json_object->getValue<std::string>(name);//30==j causes error
-			git_object.insert_attribute(name,val);
+			git_object.insert_attribute(string_to_wstring(name),string_to_wstring(val));
 		}
 		catch (Poco::InvalidAccessException& e)
 		{
 			try
 			{
 				json_object->getNullableValue<int>(name);
-				git_object.insert_attribute(name, "null");
+				git_object.insert_attribute(string_to_wstring(name), _T("null"));
 			}
 			catch (...)
 			{
@@ -125,12 +125,18 @@ void HTTPS_GIT_Client::connect()
 	}
 }
 
+
+std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::current_user_repositories() const
+{
+	return user_repositories_(current_user_);
+}
+
 void HTTPS_GIT_Client::login()
 {
 
 }
 
-std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositories(const Git_User & user) const
+std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositories_(const Git_User & user) const
 {
 	auto it  = user_repos_.find(user);
 	if (it != cend(user_repos_))
@@ -153,13 +159,16 @@ std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositori
 {
 
 }
-#include <fstream>
+
 void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)const
 {
+	/*
+	Because of the fact that POCO deals with std::string and we that is MFC deals with wstring 
+	we must convert on the border between POCO and Git_05 app from string to wstring and back
+	*/
 	try
 	{
-		Poco::URI uri_avatar(user.get_avatar_url());
-		
+		Poco::URI uri_avatar(wstring_to_string(user.get_avatar_url()));
 
 		Poco::Net::HTTPSClientSession client_session(uri_avatar.getHost(), uri_avatar.getPort());
 		Poco::Net::HTTPRequest request_user(Poco::Net::HTTPRequest::HTTP_GET, uri_avatar.getPath());

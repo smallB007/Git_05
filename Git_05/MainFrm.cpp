@@ -45,6 +45,9 @@ CMainFrame::~CMainFrame()
 {
 }
 
+
+
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CBCGPFrameWnd::OnCreate(lpCreateStruct) == -1)
@@ -129,6 +132,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
+	
 	return 0;
 }
 
