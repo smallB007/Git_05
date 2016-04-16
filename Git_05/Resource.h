@@ -57,6 +57,7 @@
 #define IDC_USEREMAIL_ERROR_STATIC      1079
 #define IDC_USERNAMELOGIN_EDIT          1081
 #define IDC_USEREMAILLOGIN_EDIT         1082
+#define IDC_VIEW_1                      1085
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_WORKSPACE               32791
 #define ID_VIEW_WORKSPACE2              32792
@@ -102,7 +103,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        170
 #define _APS_NEXT_COMMAND_VALUE         32866
-#define _APS_NEXT_CONTROL_VALUE         1083
+#define _APS_NEXT_CONTROL_VALUE         1086
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

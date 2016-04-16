@@ -23,6 +23,9 @@ BEGIN_MESSAGE_MAP(CGit_05View, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_MESSAGE(WM_PRINTCLIENT, OnPrintClient)
 	ON_REGISTERED_MESSAGE(BCGM_CHANGEVISUALMANAGER, OnChangeVisualManager)
+#ifdef DIRECT_2D
+	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CGit_05View::OnDrawDirect2D)
+#endif
 END_MESSAGE_MAP()
 
 // CGit_05View construction/destruction
@@ -30,7 +33,7 @@ END_MESSAGE_MAP()
 CGit_05View::CGit_05View()
 {
 	// TODO: add construction code here
-
+	EnableD2DSupport();
 }
 
 CGit_05View::~CGit_05View()
@@ -55,7 +58,14 @@ void CGit_05View::OnDraw(CDC* /*pDC*/)
 	// TODO: add draw code for native data here
 }
 
-
+#ifdef DIRECT_2D
+LRESULT CGit_05View::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
+{
+	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
+	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Aquamarine, 1.0f));
+	return LRESULT();
+}
+#endif
 // CGit_05View printing
 
 void CGit_05View::OnFilePrintPreview()

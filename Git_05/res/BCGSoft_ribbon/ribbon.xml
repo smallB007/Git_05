@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>1</VERSION_STAMP>
+		<VERSION_STAMP>2</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -360,6 +360,23 @@
 			<CATEGORY>
 				<ELEMENT_NAME>Category</ELEMENT_NAME>
 				<NAME>Other</NAME>
+				<PANELS>
+					<PANEL>
+						<ELEMENT_NAME>Panel</ELEMENT_NAME>
+						<NAME>Views</NAME>
+						<INDEX>2</INDEX>
+						<ELEMENTS>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>ID_VIEW_WORKSPACE</NAME>
+									<VALUE>32791</VALUE>
+								</ID>
+								<TEXT>View 1</TEXT>
+							</ELEMENT>
+						</ELEMENTS>
+					</PANEL>
+				</PANELS>
 			</CATEGORY>
 		</CATEGORIES>
 	</RIBBON_BAR>

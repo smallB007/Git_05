@@ -132,7 +132,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
-	
 	return 0;
 }
 

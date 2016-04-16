@@ -21,6 +21,10 @@ public:
 // Overrides
 	public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+#ifdef DIRECT_2D
+	afx_msg LRESULT OnDrawDirect2D(WPARAM wParam, LPARAM lParam);
+#endif // DIRECT_2D
+
 virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);

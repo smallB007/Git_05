@@ -100,3 +100,6 @@ using std::vector;
 
 //Git_05 Utils
 #include "Git_05_Utils.h"
+
+
+#define DIRECT_2D 
