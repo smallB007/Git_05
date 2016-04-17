@@ -11,7 +11,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const int nBorderSize = 1;
+const int nBorderSize = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar2
@@ -71,7 +71,9 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy) 
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
-
+	CRect rect;
+	GetWindowRect(rect);
+	m_pRender->OnResize(rect.Width(), rect.Height());
 	// Tree control should cover a whole client area:
 // 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
 // 		cx - 2 * nBorderSize, cy - 2 * nBorderSize,

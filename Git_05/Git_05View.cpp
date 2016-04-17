@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CGit_05View, CView)
 	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CGit_05View::OnDrawDirect2D)
 #endif
 	ON_WM_CREATE()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CGit_05View construction/destruction
@@ -144,4 +145,12 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 
 	return 0;
+}
+
+void CGit_05View::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+	CRect rect;
+	GetWindowRect(rect);
+	m_pRender->OnResize(rect.Width(), rect.Height());
 }

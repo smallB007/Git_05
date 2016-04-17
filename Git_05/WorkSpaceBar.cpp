@@ -11,7 +11,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const int nBorderSize = 1;
+const int nBorderSize = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar

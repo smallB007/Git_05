@@ -72,7 +72,9 @@ int CWorkSpaceBar_Git_Tree::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CWorkSpaceBar_Git_Tree::OnSize(UINT nType, int cx, int cy) 
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
-
+	CRect rect;
+	GetWindowRect(rect);
+	m_pRender->OnResize(rect.Width(), rect.Height());
 	// Tree control should cover a whole client area:
 // 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
 // 		cx - 2 * nBorderSize, cy - 2 * nBorderSize,
