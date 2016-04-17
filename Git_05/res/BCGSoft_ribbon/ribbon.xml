@@ -374,6 +374,14 @@
 								</ID>
 								<TEXT>View 1</TEXT>
 							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>ID_VIEW_WORKSPACE2</NAME>
+									<VALUE>32792</VALUE>
+								</ID>
+								<TEXT>View 2</TEXT>
+							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 				</PANELS>
