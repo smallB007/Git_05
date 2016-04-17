@@ -18,6 +18,8 @@ IMPLEMENT_DYNCREATE(CMainFrame, CBCGPFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_VIEW_WORKSPACE_GIT_TREE, OnViewWorkspace_Git_Tree)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE, OnUpdateViewWorkspace_Git_Tree)
 	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
 	ON_COMMAND(ID_VIEW_WORKSPACE2, OnViewWorkspace2)
@@ -81,6 +83,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	imagesWorkspace.Load (IDB_WORKSPACE);
 	imagesWorkspace.SmoothResize(globalData.GetRibbonImageScale());
 
+		if (!wnd_workspace_git_tree_.Create(_T("Git Tree"), this, CRect(0, 0, 200, 200),
+			TRUE, ID_VIEW_WORKSPACE_GIT_TREE,
+			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_TOP | CBRS_FLOAT_MULTI))
+		{
+			TRACE0("Failed to create Workspace bar\n");
+			return -1;      // fail to create
+		}
+
+	wnd_workspace_git_tree_.SetIcon(imagesWorkspace.ExtractIcon(0), FALSE);
+
 	if (!m_wndWorkSpace.Create (_T("View 1"), this, CRect (0, 0, 200, 200),
 		TRUE, ID_VIEW_WORKSPACE,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
@@ -122,6 +134,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndPropGrid.SetIcon (imagesWorkspace.ExtractIcon (3), FALSE);
 
+	wnd_workspace_git_tree_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace2.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
@@ -132,6 +145,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
+	DockControlBar(&wnd_workspace_git_tree_);
 	return 0;
 }
 
@@ -268,6 +282,20 @@ void CMainFrame::ShowOptions (int nPage)
 	{
 		return;
 	}
+}
+
+void CMainFrame::OnViewWorkspace_Git_Tree()
+{
+	ShowControlBar(&wnd_workspace_git_tree_,
+		!(wnd_workspace_git_tree_.IsVisible()),
+		FALSE, TRUE);
+	RecalcLayout();
+}
+
+void CMainFrame::OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(wnd_workspace_git_tree_.IsVisible());
+	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
 }
 
 void CMainFrame::OnViewWorkspace() 

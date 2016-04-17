@@ -1,14 +1,14 @@
-// workspace2.h : interface of the CWorkSpaceBar2 class
+// workspace2.h : interface of the CWorkSpaceBar_Git_Tree class
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 #include "Direct2Handler.hpp"
-class CWorkSpaceBar2 : public CBCGPDockingControlBar
+class CWorkSpaceBar_Git_Tree : public CBCGPDockingControlBar
 {
 	Direct2DHandler* m_pRender;
 public:
-	CWorkSpaceBar2();
+	CWorkSpaceBar_Git_Tree();
 
 // Attributes
 protected:
@@ -21,7 +21,7 @@ public:
 
 // Implementation
 public:
-	virtual ~CWorkSpaceBar2();
+	virtual ~CWorkSpaceBar_Git_Tree();
 
 // Generated message map functions
 protected:

@@ -382,6 +382,14 @@
 								</ID>
 								<TEXT>View 2</TEXT>
 							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>ID_VIEW_WORKSPACE_GIT_TREE</NAME>
+									<VALUE>32866</VALUE>
+								</ID>
+								<TEXT>Git Tree</TEXT>
+							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 				</PANELS>

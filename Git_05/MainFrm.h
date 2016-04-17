@@ -7,6 +7,7 @@
 #include "WorkSpaceBar2.h"
 #include "OutputBar.h"
 #include "PropertiesViewBar.h"
+#include "WorkSpaceBar_Git_Tree.h"
 
 class CMainFrame : public CBCGPFrameWnd
 {
@@ -44,6 +45,7 @@ protected:  // control bar embedded members
 	CWorkSpaceBar2			m_wndWorkSpace2;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
+	CWorkSpaceBar_Git_Tree wnd_workspace_git_tree_;
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
@@ -52,6 +54,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnRibbonCustomize (WPARAM wp, LPARAM lp);
 	afx_msg void OnToolsOptions();
+	afx_msg void OnViewWorkspace_Git_Tree();
+	afx_msg void OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace();
 	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace2();

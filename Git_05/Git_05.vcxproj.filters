@@ -52,6 +52,12 @@
     <ClCompile Include="Git_User_Attributes.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Direct2Handler.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkSpaceBar_Git_Tree.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -112,7 +118,13 @@
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
     <ClInclude Include="Git_05_Utils.h">
-      <Filter>Git_05</Filter>
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct2Handler.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar_Git_Tree.h">
+      <Filter>Git_05\hpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

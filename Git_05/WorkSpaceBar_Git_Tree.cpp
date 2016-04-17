@@ -1,9 +1,9 @@
-// workspace2.cpp : implementation of the CWorkSpaceBar2 class
+// workspace2.cpp : implementation of the CWorkSpaceBar_Git_Tree class
 //
 
 #include "stdafx.h"
 #include "Git_05.h"
-#include "WorkSpaceBar2.h"
+#include "WorkSpaceBar_Git_Tree.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,30 +14,30 @@ static char THIS_FILE[] = __FILE__;
 const int nBorderSize = 1;
 
 /////////////////////////////////////////////////////////////////////////////
-// CWorkSpaceBar2
+// CWorkSpaceBar_Git_Tree
 
-BEGIN_MESSAGE_MAP(CWorkSpaceBar2, CBCGPDockingControlBar)
+BEGIN_MESSAGE_MAP(CWorkSpaceBar_Git_Tree, CBCGPDockingControlBar)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CWorkSpaceBar2 construction/destruction
+// CWorkSpaceBar_Git_Tree construction/destruction
 
-CWorkSpaceBar2::CWorkSpaceBar2()
+CWorkSpaceBar_Git_Tree::CWorkSpaceBar_Git_Tree()
 {
 	// TODO: add one-time construction code here
 }
 
-CWorkSpaceBar2::~CWorkSpaceBar2()
+CWorkSpaceBar_Git_Tree::~CWorkSpaceBar_Git_Tree()
 {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CWorkSpaceBar2 message handlers
+// CWorkSpaceBar_Git_Tree message handlers
 
-int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CWorkSpaceBar_Git_Tree::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -68,7 +68,7 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy) 
+void CWorkSpaceBar_Git_Tree::OnSize(UINT nType, int cx, int cy) 
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
 
@@ -78,7 +78,7 @@ void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy)
 // 		SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void CWorkSpaceBar2::OnPaint() 
+void CWorkSpaceBar_Git_Tree::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
 	

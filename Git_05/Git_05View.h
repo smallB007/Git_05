@@ -3,10 +3,11 @@
 
 
 #pragma once
-
+#include "Direct2Handler.hpp"
 
 class CGit_05View : public CView
 {
+	Direct2DHandler* m_pRender;
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)
@@ -46,6 +47,7 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg LRESULT OnPrintClient(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnChangeVisualManager(WPARAM wParam, LPARAM lParam);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 };
 

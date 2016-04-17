@@ -26,6 +26,7 @@ BEGIN_MESSAGE_MAP(CGit_05View, CView)
 #ifdef DIRECT_2D
 	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CGit_05View::OnDrawDirect2D)
 #endif
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // CGit_05View construction/destruction
@@ -33,7 +34,7 @@ END_MESSAGE_MAP()
 CGit_05View::CGit_05View()
 {
 	// TODO: add construction code here
-	EnableD2DSupport();
+	//EnableD2DSupport();
 }
 
 CGit_05View::~CGit_05View()
@@ -56,6 +57,8 @@ void CGit_05View::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 
 	// TODO: add draw code for native data here
+	if (m_pRender)
+		m_pRender->OnRender();
 }
 
 #ifdef DIRECT_2D
@@ -128,5 +131,17 @@ LRESULT CGit_05View::OnPrintClient(WPARAM wp, LPARAM lp)
 
 LRESULT CGit_05View::OnChangeVisualManager(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
+	return 0;
+}
+
+int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	m_pRender = new Direct2DHandler(m_hWnd);//make it shared
+	m_pRender->Initialize();
+
+
 	return 0;
 }
