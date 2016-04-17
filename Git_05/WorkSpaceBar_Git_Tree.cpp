@@ -41,8 +41,8 @@ int CWorkSpaceBar_Git_Tree::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	m_pRender = new Direct2DHandler(m_hWnd);//make it shared
-	m_pRender->Initialize();
+	m_pRender = new Direct2DHandler(m_hWnd,D2D1::ColorF::Aqua);//make it shared
+	//m_pRender->Initialize();
 // 	CRect rectDummy;
 // 	rectDummy.SetRectEmpty();
 // 	

@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Direct2DHandler.hpp"
+#include "Direct2Handler.hpp"
 
 #pragma comment( lib, "d2d1.lib" )
 
@@ -17,13 +17,15 @@ inline void SafeRelease(
 	}
 }
 
-Direct2DHandler::Direct2DHandler(HWND hWnd) :
+Direct2DHandler::Direct2DHandler(HWND hWnd, D2D1::ColorF backgroundColor) :
 	m_hWnd(hWnd),
 	m_pDirect2dFactory(NULL),
 	m_pRenderTarget(NULL),
-	m_pLightSlateGrayBrush(NULL)
+	m_pLightSlateGrayBrush(NULL),
+	background_color_(backgroundColor)
 {
 	CoInitialize(NULL);
+	Initialize_();
 }
 
 
@@ -45,7 +47,7 @@ Direct2DHandler::~Direct2DHandler(void)
 	CoUninitialize();
 }
 
-HRESULT Direct2DHandler::Initialize()
+HRESULT Direct2DHandler::Initialize_()
 {
 	HRESULT hr = S_OK;
 
@@ -106,7 +108,7 @@ HRESULT Direct2DHandler::OnRender()
 	{
 		m_pRenderTarget->BeginDraw();
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::AliceBlue, 1.0f));
+		m_pRenderTarget->Clear(background_color_);//D2D1::ColorF(D2D1::ColorF::Aquamarine, 1.0f)
 		// Iterate and draw all primitives
 		for (std::vector<ID2D1Geometry*>::iterator it = m_Geometries.begin();
 			it != m_Geometries.end(); ++it)

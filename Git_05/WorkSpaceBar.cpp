@@ -32,7 +32,7 @@ END_MESSAGE_MAP()
 CWorkSpaceBar::CWorkSpaceBar()
 {
 	// TODO: add one-time construction code here
-	EnableD2DSupport();
+	//EnableD2DSupport();
 }
 
 CWorkSpaceBar::~CWorkSpaceBar()

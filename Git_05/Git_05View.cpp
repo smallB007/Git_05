@@ -139,8 +139,8 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	m_pRender = new Direct2DHandler(m_hWnd);//make it shared
-	m_pRender->Initialize();
+	m_pRender = new Direct2DHandler(m_hWnd,D2D1::ColorF::DarkBlue);//make it shared
+	//m_pRender->Initialize();
 
 
 	return 0;

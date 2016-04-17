@@ -42,7 +42,7 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	m_pRender = new Direct2DHandler(m_hWnd);//make it shared
-	m_pRender->Initialize();
+	//m_pRender->Initialize();
 // 	CRect rectDummy;
 // 	rectDummy.SetRectEmpty();
 // 	
