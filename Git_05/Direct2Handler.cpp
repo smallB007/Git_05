@@ -78,9 +78,9 @@ HRESULT Direct2DHandler::CreateDeviceResources()
 			&m_pRenderTarget
 		);
 
-
 		if (SUCCEEDED(hr))
 		{
+			m_pRenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE::D2D1_ANTIALIAS_MODE_FORCE_DWORD);
 			// Create a gray brush.
 			hr = m_pRenderTarget->CreateSolidColorBrush(
 				D2D1::ColorF(D2D1::ColorF::Cyan),
@@ -113,7 +113,8 @@ HRESULT Direct2DHandler::OnRender()
 		for (std::vector<ID2D1Geometry*>::iterator it = m_Geometries.begin();
 			it != m_Geometries.end(); ++it)
 		{
-			m_pRenderTarget->DrawGeometry(*it, m_pLightSlateGrayBrush);
+			//m_pRenderTarget->DrawGeometry(*it, m_pLightSlateGrayBrush);
+			m_pRenderTarget->FillGeometry(*it, m_pLightSlateGrayBrush);
 		}
 
 		hr = m_pRenderTarget->EndDraw();
@@ -163,5 +164,6 @@ void Direct2DHandler::CreateEllipse(LPCRECT pRectBoundingBox)
 
 	ID2D1EllipseGeometry* pEllipse;
 	m_pDirect2dFactory->CreateEllipseGeometry(ellipse, &pEllipse);
+	
 	m_Geometries.push_back(pEllipse);
 }

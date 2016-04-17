@@ -42,7 +42,11 @@ int CWorkSpaceBar_Git_Tree::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	//m_pRender = new Direct2DHandler(m_hWnd, D2D1::ColorF::Aqua);//make it shared
-	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd, D2D1::ColorF::Aqua);//make it shared
+	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd, D2D1::ColorF::Black);//make it shared
+	CRect rect;
+	GetClientRect(rect);
+	rect.DeflateRect(130, 130, 130, 130);
+	m_pRender->CreateEllipse(rect);
 	//m_pRender->Initialize();
 // 	CRect rectDummy;
 // 	rectDummy.SetRectEmpty();
@@ -73,7 +77,7 @@ void CWorkSpaceBar_Git_Tree::OnSize(UINT nType, int cx, int cy)
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
 	CRect rect;
-	GetWindowRect(rect);
+	GetClientRect(rect);
 	m_pRender->OnResize(rect.Width(), rect.Height());
 	// Tree control should cover a whole client area:
 // 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
