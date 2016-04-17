@@ -4,9 +4,10 @@
 
 #pragma once
 #include "Direct2Handler.hpp"
+#include <memory>
 class CWorkSpaceBar2 : public CBCGPDockingControlBar
 {
-	Direct2DHandler* m_pRender;
+	std::unique_ptr<Direct2DHandler> m_pRender;
 public:
 	CWorkSpaceBar2();
 

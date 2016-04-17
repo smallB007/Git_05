@@ -4,10 +4,11 @@
 
 #pragma once
 #include "Direct2Handler.hpp"
+#include <memory>
 
 class CGit_05View : public CView
 {
-	Direct2DHandler* m_pRender;
+	std::unique_ptr<Direct2DHandler> m_pRender;
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)
