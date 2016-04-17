@@ -102,4 +102,4 @@ using std::vector;
 #include "Git_05_Utils.h"
 
 
-#define NO_MFC_DIRECT_2D 
+#define MFC_DIRECT_2D 

@@ -19,7 +19,11 @@ const int nBorderSize = 1;
 BEGIN_MESSAGE_MAP(CWorkSpaceBar_Git_Tree, CBCGPDockingControlBar)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+#ifdef MFC_DIRECT_2D
+	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CWorkSpaceBar_Git_Tree::OnDrawDirect2D)
+#else
 	ON_WM_PAINT()
+#endif
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -28,6 +32,7 @@ END_MESSAGE_MAP()
 CWorkSpaceBar_Git_Tree::CWorkSpaceBar_Git_Tree()
 {
 	// TODO: add one-time construction code here
+	EnableD2DSupport();
 }
 
 CWorkSpaceBar_Git_Tree::~CWorkSpaceBar_Git_Tree()
@@ -72,13 +77,21 @@ int CWorkSpaceBar_Git_Tree::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CWorkSpaceBar_Git_Tree::OnSize(UINT nType, int cx, int cy) 
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
-
+	//GetRenderTarget()->Clear(D2D1::ColorF(D2D1::ColorF::DarkGoldenrod, 1.0f));
 	// Tree control should cover a whole client area:
 // 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
 // 		cx - 2 * nBorderSize, cy - 2 * nBorderSize,
 // 		SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
+#ifdef MFC_DIRECT_2D
+afx_msg LRESULT CWorkSpaceBar_Git_Tree::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
+{
+	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
+	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::DarkGoldenrod, 1.0f));
+	return TRUE;
+}
+#else
 void CWorkSpaceBar_Git_Tree::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
@@ -94,3 +107,4 @@ void CWorkSpaceBar_Git_Tree::OnPaint()
 // 
 // 	dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
 }
+#endif
