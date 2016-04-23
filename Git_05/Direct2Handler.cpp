@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "Direct2Handler.hpp"
 
-#pragma comment( lib, "d2d1.lib" )
-
 
 template<class Interface>
 inline void SafeRelease(
@@ -15,7 +13,7 @@ inline void SafeRelease(
 
 		(*ppInterfaceToRelease) = NULL;
 	}
-}
+} 
 
 Direct2DHandler::Direct2DHandler(HWND hWnd, D2D1::ColorF backgroundColor) :
 	m_hWnd(hWnd),
@@ -103,7 +101,7 @@ HRESULT Direct2DHandler::OnRender()
 	HRESULT hr = S_OK;
 
 	hr = CreateDeviceResources();
-
+	
 	if (SUCCEEDED(hr))
 	{
 		m_pRenderTarget->BeginDraw();
@@ -146,6 +144,38 @@ void Direct2DHandler::CreateRectangle(LPCRECT pRect, bool bFill)
 	ID2D1RectangleGeometry* pRectangle;
 	m_pDirect2dFactory->CreateRectangleGeometry(rectangle, &pRectangle);
 	m_Geometries.push_back(pRectangle);
+}
+
+
+
+void Direct2DHandler::DrawBitmap(CImage* image, LPCRECT pRect)
+{
+	D2D1_RECT_F rectangle = D2D1::Rect(pRect->left, pRect->top, pRect->right, pRect->bottom);
+	D2D1_SIZE_U size;
+	size.height = 500;// rectangle.top - rectangle.bottom;
+	size.width = 500; //rectangle.right - rectangle.left;
+	ID2D1Bitmap* bitmap;
+	// Create a pixel format and initial its format
+	// and alphaMode fields.
+	D2D1_PIXEL_FORMAT pixelFormat = D2D1::PixelFormat(
+		DXGI_FORMAT_B8G8R8A8_UNORM,
+		D2D1_ALPHA_MODE_IGNORE
+	);
+	//ResourceLoader.LoadResourceBitmap(,64, 64, bitmap);
+// https://msdn.microsoft.com/en-us/library/windows/desktop/dd756686%28v=vs.85%29.aspx
+// https://msdn.microsoft.com/en-us/library/windows/desktop/dd756685%28v=vs.85%29.aspx
+	//https://msdn.microsoft.com/en-us/library/windows/desktop/ee719660%28v=vs.85%29.aspx
+	//https://msdn.microsoft.com/en-us/library/windows/desktop/ms648042%28v=vs.85%29.aspx
+	//WIC Factory
+//	https://msdn.microsoft.com/en-us/library/windows/desktop/ff973956.aspx
+	//Hilo app
+	//https://msdn.microsoft.com/en-us/library/windows/desktop/ff708696.aspx
+// 	D2D1_BITMAP_PROPERTIES bitmap_props{ pixelFormat,480,480 };
+// 	m_pRenderTarget->CreateBitmap(size, bitmap_props, &bitmap);
+// 	HBITMAP h_bitmap = image->Detach();
+// 	
+// 	m_pRenderTarget->DrawBitmap(bitmap, rectangle);
+	int a = { 0 };
 }
 
 void Direct2DHandler::CreateRoundedRectangle(LPCRECT pRect, int radiusx, int radiusY, bool bFill)

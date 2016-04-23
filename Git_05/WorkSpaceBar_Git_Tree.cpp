@@ -89,10 +89,18 @@ void CWorkSpaceBar_Git_Tree::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	
-	CRect rectTree;
+	CRect rect;
+	GetClientRect(rect);
 
+	CImage image;
+	image.Load(_T("C:\\Users\\Artie Fuffkin\\Documents\\visual studio 2015\\Projects\\Git_05\\Git_05\\avatar.png")); // just change extension to load jpg
+	
 	if (m_pRender)
+	{
 		m_pRender->OnRender();
+		m_pRender->DrawBitmap(&image,rect);
+	}
+
 // 	m_wndTree.GetWindowRect(rectTree);
 // 	ScreenToClient(rectTree);
 // 

@@ -3,7 +3,7 @@
 #include <d2d1helper.h>
 #include <vector>
 
-
+/*Responsible for drawing*/
 class Direct2DHandler
 {
 	HRESULT Initialize_(); // Initialize the rendering
@@ -16,14 +16,14 @@ public:
 	void CreateRectangle(LPCRECT pRect, bool bFill);
 	void CreateRoundedRectangle(LPCRECT pRect, int radiusx, int radiusY, bool bFill);
 	void CreateEllipse(LPCRECT pRectBoundingBox);
-
+	void DrawBitmap(CImage* image, LPCRECT pRect);
 	void CreateSolidBrush(COLORREF rgbval);
 	void CreateGradientBrush(COLORREF rgbval);
 
 private:
 	HRESULT CreateDeviceResources(); // Create resources for drawing
 	void DiscardDeviceResources(); // Release resouces for drawing
-
+	HRESULT GetWICFactory(IWICImagingFactory** factory);
 private:
 
 	HWND m_hWnd;

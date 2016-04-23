@@ -58,6 +58,9 @@
     <ClCompile Include="WorkSpaceBar_Git_Tree.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Direct2DUtility.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -126,6 +129,15 @@
     <ClInclude Include="WorkSpaceBar_Git_Tree.h">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="ComPtr.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct2DUtility.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ComHelpers.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
@@ -169,6 +181,8 @@
     <Image Include="res\BCGSoft_ribbon\main.png">
       <Filter>MFC\miscellenaous</Filter>
     </Image>
+    <Image Include="Artwork\gameicon32x32.png" />
+    <Image Include="Artwork\GAMEICON_32X32.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">
@@ -234,6 +248,9 @@
     </Filter>
     <Filter Include="Git_05\miscellenaous">
       <UniqueIdentifier>{08db997d-525c-4ba5-8e7a-c56085df29c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git_05\resources">
+      <UniqueIdentifier>{7c3a0629-2259-4f34-a411-a5e175d23f8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

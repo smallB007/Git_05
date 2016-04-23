@@ -51,24 +51,6 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 
-
-
-
-
-
-
-
-
-#if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_IA64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
-
 //std
 #include <memory>
 #include <vector>
@@ -103,3 +85,72 @@ using std::vector;
 
 
 #define NO_MFC_DIRECT_2D 
+///////////HILO//////////
+
+// Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN
+
+// Better type safety for Shell IDLists 
+// For more info refer to http://msdn.microsoft.com/en-us/library/bb773321(VS.85).aspx
+#define STRICT_TYPED_ITEMIDS
+
+// Don't use min and max macros, we'll use std functions instead
+#define NOMINMAX
+
+// Windows Headers
+#include <Windows.h>
+#include <UIAnimation.h>
+#include <commctrl.h>
+// Windows Headers
+#include <Windows.h>
+#include <WinBase.h>
+#include <Unknwn.h>
+#include <wincodecsdk.h>
+
+
+// Shell
+#include <ShellAPI.h>
+#include <ShlObj.h>
+#include <StructuredQuery.h>
+#include <PropKey.h>
+
+// Graphics
+#include <D2d1.h>
+#include <DWrite.h>
+#include <WinCodec.h>
+
+// Commonly used headers
+#include "ComPtr.hpp"
+// #include "SharedObject.h"
+#include "ComHelpers.hpp"
+// 
+// #include "AnimationUtility.h"
+// #include "ImageEditorInterface.h"
+#include "Direct2DUtility.hpp"
+// #include "ImageOperation.h"
+// #include "Window.h"
+// #include "WindowMessageHandler.h"
+// #include "WindowFactory.h"
+
+// Useful macros
+#ifndef HINST_THISCOMPONENT
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+#define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
+#endif
+
+#ifndef IDC_PEN
+#define IDC_PEN MAKEINTRESOURCE(32631)
+#endif
+
+// Common constants
+const double PI = 3.14159265358979323846;
+
+// Use the correct version of the common control library based on the currently selected CPU architecture
+// This is needed in order to use TaskDialog, since TaskDialog requires version 6.0 of Comctl32.dll
+#if defined _M_IX86
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#elif defined _M_X64
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#else
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#endif
