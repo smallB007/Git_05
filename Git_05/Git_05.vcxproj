@@ -264,6 +264,7 @@
     <ResourceCompile Include="Git_05.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="arrow.png" />
     <Image Include="Artwork\gameicon32x32.png" />
     <Image Include="Artwork\GAMEICON_32X32.bmp" />
     <Image Include="res\BCGSoft_ribbon\category_backstage_small.png" />

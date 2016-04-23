@@ -29,7 +29,7 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 	afx_msg LRESULT OnDrawDirect2D(WPARAM wParam, LPARAM lParam);
 #else
 	afx_msg void OnPaint();

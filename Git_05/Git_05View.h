@@ -8,7 +8,7 @@
 
 class CGit_05View : public CView
 {
-	std::unique_ptr<Direct2DHandler> m_pRender;
+	//std::unique_ptr<Direct2DHandler> m_pRender;
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)
@@ -23,9 +23,9 @@ public:
 // Overrides
 	public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 	afx_msg LRESULT OnDrawDirect2D(WPARAM wParam, LPARAM lParam);
-#endif // DIRECT_2D
+#endif // MFC_DIRECT_2D
 
 virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:

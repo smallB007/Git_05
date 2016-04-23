@@ -183,6 +183,7 @@
     </Image>
     <Image Include="Artwork\gameicon32x32.png" />
     <Image Include="Artwork\GAMEICON_32X32.bmp" />
+    <Image Include="arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">

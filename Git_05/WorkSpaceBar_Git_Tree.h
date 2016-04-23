@@ -3,11 +3,19 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "Direct2Handler.hpp"
+//#include "Direct2Handler.hpp"
 #include <memory>
 class CWorkSpaceBar_Git_Tree : public CBCGPDockingControlBar
 {
-	std::unique_ptr<Direct2DHandler> m_pRender;
+	//std::unique_ptr<Direct2DHandler> m_pRender;
+	ComPtr<ID2D1Factory> m_d2dFactory;
+	ComPtr<IDWriteFactory> m_dWriteFactory;
+	ComPtr<IDWriteTextFormat> m_textFormat;
+	ComPtr<ID2D1HwndRenderTarget> m_renderTarget;
+	ComPtr<ID2D1Bitmap> m_arrowBitmap;
+	ComPtr<ID2D1SolidColorBrush> m_fontBrush;
+	ComPtr<ID2D1SolidColorBrush> m_selectionBrush;
+	HRESULT hr_{ S_OK };
 public:
 	CWorkSpaceBar_Git_Tree();
 
@@ -17,6 +25,21 @@ protected:
 
 // Operations
 public:
+	//Taken from HILO app
+	//{{HILO
+	// Direct2D methods
+	HRESULT CreateDeviceResources();
+	HRESULT CreateDeviceIndependentResources();
+	HRESULT DiscardDeviceResources();
+
+	// Rendering methods
+	HRESULT DrawClientArea();
+	//void DrawHistoryItems();
+	//void DrawOrbitItems();
+	//void DrawSelectionBox(D2D1_ROUNDED_RECT rect);
+
+	//HRESULT ResetOrbitValues();
+	//}}HILO
 
 // Overrides
 

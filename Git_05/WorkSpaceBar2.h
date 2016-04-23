@@ -7,7 +7,7 @@
 #include <memory>
 class CWorkSpaceBar2 : public CBCGPDockingControlBar
 {
-	std::unique_ptr<Direct2DHandler> m_pRender;
+	//std::unique_ptr<Direct2DHandler> m_pRender;
 public:
 	CWorkSpaceBar2();
 

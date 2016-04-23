@@ -41,7 +41,7 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd);//make it shared
+	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd);//make it shared
 	//m_pRender->Initialize();
 // 	CRect rectDummy;
 // 	rectDummy.SetRectEmpty();
@@ -71,9 +71,10 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy) 
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
-	CRect rect;
-	GetWindowRect(rect);
-	m_pRender->OnResize(rect.Width(), rect.Height());
+	
+// 	CRect rect;
+// 	GetWindowRect(rect);
+// 	m_pRender->OnResize(rect.Width(), rect.Height());
 	// Tree control should cover a whole client area:
 // 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
 // 		cx - 2 * nBorderSize, cy - 2 * nBorderSize,
@@ -82,12 +83,19 @@ void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy)
 
 void CWorkSpaceBar2::OnPaint() 
 {
+	CBCGPDockingControlBar::OnPaint();
 	CPaintDC dc(this); // device context for painting
-	
-	CRect rectTree;
+	CRect rect;
+	GetClientRect(rect);
+	ScreenToClient(rect);
 
-	if (m_pRender)
-		m_pRender->OnRender();
+	rect.InflateRect(nBorderSize, nBorderSize);
+
+	dc.Draw3dRect(rect, globalData.clrBarShadow, globalData.clrBarShadow);
+// 	CRect rectTree;
+// 
+// 	if (m_pRender)
+// 		m_pRender->OnRender();
 // 	m_wndTree.GetWindowRect(rectTree);
 // 	ScreenToClient(rectTree);
 // 

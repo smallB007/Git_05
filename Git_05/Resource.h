@@ -28,6 +28,7 @@
 #define IDB_BITMAP                      172
 #define IDB_PNG1                        174
 #define IDB_GAME_ICON_PNG               174
+#define IDB_PNG2                        175
 #define IDC_COMPANY_URL                 1041
 #define IDC_INFO_LABEL                  1042
 #define IDC_PATH_LABEL                  1043
@@ -105,7 +106,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32867
 #define _APS_NEXT_CONTROL_VALUE         1086
 #define _APS_NEXT_SYMED_VALUE           117

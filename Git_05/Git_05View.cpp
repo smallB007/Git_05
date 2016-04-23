@@ -23,7 +23,7 @@ BEGIN_MESSAGE_MAP(CGit_05View, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_MESSAGE(WM_PRINTCLIENT, OnPrintClient)
 	ON_REGISTERED_MESSAGE(BCGM_CHANGEVISUALMANAGER, OnChangeVisualManager)
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CGit_05View::OnDrawDirect2D)
 #endif
 	ON_WM_CREATE()
@@ -58,11 +58,11 @@ void CGit_05View::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 
 	// TODO: add draw code for native data here
-	if (m_pRender)
-		m_pRender->OnRender();
+// 	if (m_pRender)
+// 		m_pRender->OnRender();
 }
 
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 LRESULT CGit_05View::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 {
 	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
@@ -140,7 +140,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::DarkBlue);//make it shared
+	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::DarkBlue);//make it shared
 	//m_pRender->Initialize();
 	
 
@@ -151,7 +151,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CGit_05View::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
-	CRect rect;
-	GetWindowRect(rect);
-	m_pRender->OnResize(rect.Width(), rect.Height());
+// 	CRect rect;
+// 	GetWindowRect(rect);
+// 	m_pRender->OnResize(rect.Width(), rect.Height());
 }

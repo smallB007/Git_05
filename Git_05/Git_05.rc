@@ -500,6 +500,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 
 IDB_GAME_ICON_PNG       PNG                     "Artwork\\gameicon32x32.png"
 
+ARROWIMAGE              PNG                     "arrow.png"
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -536,13 +538,6 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
 
 #endif    // English (United Kingdom) resources
 /////////////////////////////////////////////////////////////////////////////

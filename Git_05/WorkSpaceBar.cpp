@@ -19,7 +19,7 @@ const int nBorderSize = 0;
 BEGIN_MESSAGE_MAP(CWorkSpaceBar, CBCGPDockingControlBar)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 	ON_REGISTERED_MESSAGE(AFX_WM_DRAW2D, &CWorkSpaceBar::OnDrawDirect2D)
 #else
 	ON_WM_PAINT()
@@ -84,7 +84,7 @@ void CWorkSpaceBar::OnSize(UINT nType, int cx, int cy)
 
 
 
-#ifdef DIRECT_2D
+#ifdef MFC_DIRECT_2D
 LRESULT CWorkSpaceBar::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 {
 	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
@@ -109,7 +109,7 @@ void CWorkSpaceBar::OnPaint()
 
 	dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
 }
-#endif // DIRECT_2D
+#endif // MFC_DIRECT_2D
 
 void CWorkSpaceBar::fill_repositories_()
 {
