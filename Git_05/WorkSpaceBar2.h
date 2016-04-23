@@ -13,7 +13,7 @@ public:
 
 // Attributes
 protected:
-	//CBCGPTreeCtrl	m_wndTree;
+	CBCGPTreeCtrl	m_wndTree;
 
 // Operations
 public:

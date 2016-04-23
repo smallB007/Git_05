@@ -43,27 +43,27 @@ int CWorkSpaceBar2::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd);//make it shared
 	//m_pRender->Initialize();
-// 	CRect rectDummy;
-// 	rectDummy.SetRectEmpty();
-// 	
-// 	// Create tree control:
-// 	const DWORD dwViewStyle =	WS_CHILD | WS_VISIBLE | TVS_HASLINES | 
-// 								TVS_LINESATROOT | TVS_HASBUTTONS;
-// 	
-// 	m_wndTree.m_bVisualManagerStyle = TRUE;
-// 
-// 	if (!m_wndTree.Create(dwViewStyle, rectDummy, this, 1))
-// 	{
-// 		TRACE0("Failed to create workspace view\n");
-// 		return -1;      // fail to create
-// 	}
-// 
-// 	// Setup tree content:
-// 	HTREEITEM hRoot = m_wndTree.InsertItem(_T("Root 1"));
-// 	m_wndTree.InsertItem(_T("Item 1"), hRoot);
-// 	m_wndTree.InsertItem(_T("Item 2"), hRoot);
-// 	
-// 	m_wndTree.Expand(hRoot, TVE_EXPAND);
+	CRect rectDummy;
+	rectDummy.SetRectEmpty();
+	
+	// Create tree control:
+	const DWORD dwViewStyle =	WS_CHILD | WS_VISIBLE | TVS_HASLINES | 
+								TVS_LINESATROOT | TVS_HASBUTTONS;
+	
+	m_wndTree.m_bVisualManagerStyle = TRUE;
+
+	if (!m_wndTree.Create(dwViewStyle, rectDummy, this, 1))
+	{
+		TRACE0("Failed to create workspace view\n");
+		return -1;      // fail to create
+	}
+
+	// Setup tree content:
+	HTREEITEM hRoot = m_wndTree.InsertItem(_T("Root 1"));
+	m_wndTree.InsertItem(_T("Item 1"), hRoot);
+	m_wndTree.InsertItem(_T("Item 2"), hRoot);
+	
+	m_wndTree.Expand(hRoot, TVE_EXPAND);
 
 	return 0;
 }
@@ -72,34 +72,30 @@ void CWorkSpaceBar2::OnSize(UINT nType, int cx, int cy)
 {
 	CBCGPDockingControlBar::OnSize(nType, cx, cy);
 	
-// 	CRect rect;
-// 	GetWindowRect(rect);
-// 	m_pRender->OnResize(rect.Width(), rect.Height());
+	CPaintDC dc(this); // device context for painting
+	
+	
+
+	CRect rect;
+	GetWindowRect(rect);
+
 	// Tree control should cover a whole client area:
-// 	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
-// 		cx - 2 * nBorderSize, cy - 2 * nBorderSize,
-// 		SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndTree.SetWindowPos(NULL, nBorderSize, nBorderSize, 
+		cx - 2 * nBorderSize, cy - 2 * nBorderSize,
+		SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 void CWorkSpaceBar2::OnPaint() 
 {
 	CBCGPDockingControlBar::OnPaint();
 	CPaintDC dc(this); // device context for painting
-	CRect rect;
-	GetClientRect(rect);
-	ScreenToClient(rect);
 
-	rect.InflateRect(nBorderSize, nBorderSize);
+	CRect rectTree;
+	
+	m_wndTree.GetWindowRect(rectTree);
+	ScreenToClient(rectTree);
 
-	dc.Draw3dRect(rect, globalData.clrBarShadow, globalData.clrBarShadow);
-// 	CRect rectTree;
-// 
-// 	if (m_pRender)
-// 		m_pRender->OnRender();
-// 	m_wndTree.GetWindowRect(rectTree);
-// 	ScreenToClient(rectTree);
-// 
-// 	rectTree.InflateRect(nBorderSize, nBorderSize);
-// 
-// 	dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
+	rectTree.InflateRect(nBorderSize, nBorderSize);
+
+	dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
 }
