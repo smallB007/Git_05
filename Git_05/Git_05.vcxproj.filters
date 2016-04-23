@@ -61,6 +61,9 @@
     <ClCompile Include="Direct2DUtility.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Direct2DRenderer.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="ComHelpers.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="Direct2DRenderer.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
@@ -181,9 +187,15 @@
     <Image Include="res\BCGSoft_ribbon\main.png">
       <Filter>MFC\miscellenaous</Filter>
     </Image>
-    <Image Include="Artwork\gameicon32x32.png" />
-    <Image Include="Artwork\GAMEICON_32X32.bmp" />
-    <Image Include="arrow.png" />
+    <Image Include="arrow.png">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\gameicon32x32.png">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\GAMEICON_32X32.bmp">
+      <Filter>Git_05\resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">

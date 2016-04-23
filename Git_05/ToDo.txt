@@ -1,3 +1,4 @@
+6. Checkboxes to show hide Workspaces do not represent real state
 5. Split repos into All Public Private
 4. Check this: http://www.semdesigns.com/Products/SmartDifferencer/
 3[Done]. Download and insert an avatar pic!(very important)

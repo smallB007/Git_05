@@ -204,6 +204,7 @@
     <ClInclude Include="ComHelpers.hpp" />
     <ClInclude Include="ComPtr.hpp" />
     <ClInclude Include="CStringUtilities.h" />
+    <ClInclude Include="Direct2DRenderer.hpp" />
     <ClInclude Include="Direct2DUtility.hpp" />
     <ClInclude Include="Direct2Handler.hpp" />
     <ClInclude Include="EmailValidator.hpp" />
@@ -228,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
+    <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DUtility.cpp" />
     <ClCompile Include="Direct2Handler.cpp" />
     <ClCompile Include="EmailValidator.cpp" />
