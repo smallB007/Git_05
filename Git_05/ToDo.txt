@@ -1,4 +1,6 @@
-6. Checkboxes to show hide Workspaces do not represent real state
+
+6[Done]. Checkboxes to show hide Workspaces do not represent real state
+[How] It looks like BCGPro cannot deal with more than two workspacebars, that's why git tree is simply Workspacebar2 with flag to render tree not showing list of repos
 5. Split repos into All Public Private
 4. Check this: http://www.semdesigns.com/Products/SmartDifferencer/
 3[Done]. Download and insert an avatar pic!(very important)

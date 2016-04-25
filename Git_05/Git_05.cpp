@@ -26,8 +26,20 @@ BEGIN_MESSAGE_MAP(CGit_05App, CBCGPWinApp)
 	ON_COMMAND(IDC_CREATE_REPO_BUTTON, OnCreateRepoButton)
 END_MESSAGE_MAP()
 
-
+struct threadInfo_t
+{
+	HTTPS_GIT_Client* https_client;
+};
 // CGit_05App construction
+UINT ThreadFunc(LPVOID pParam)
+{
+	threadInfo_t* t_info = static_cast<threadInfo_t*>(pParam);
+	auto client = t_info->https_client;
+	client->connect();
+	return 0;
+}
+
+
 
 
 CGit_05App::CGit_05App()
@@ -53,6 +65,11 @@ CGit_05App::CGit_05App()
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 	https_GIT_client_ptr_ = std::make_shared<HTTPS_GIT_Client>();
+	threadInfo_t thread_info;
+	thread_info.https_client = https_GIT_client_ptr_.get();
+	//CWinThread* pThread = AfxBeginThread(ThreadFunc, &thread_info);:AC: make that happen
+
+
 	https_GIT_client_ptr_->connect();
 }
 

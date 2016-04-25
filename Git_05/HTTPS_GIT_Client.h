@@ -22,7 +22,8 @@
 
 #include "Git_User.hpp"
 #include "Git_Repository.hpp"
-
+#include "GIT_Branch.hpp"
+#include "GIT_Commit.hpp"
 template<class T>
 struct Less;
 template<>
@@ -37,6 +38,24 @@ template<>
 struct Less<Git_Repository>
 {
 	bool operator()(const Git_Repository& left, const Git_Repository& right)
+	{
+		return left.get_attribute(_T("name")) < right.get_attribute(_T("name"));
+	}
+};
+
+template<>
+struct Less<GIT_Branch>
+{
+	bool operator()(const GIT_Branch& left, const GIT_Branch& right)
+	{
+		return left.get_attribute(_T("name")) < right.get_attribute(_T("name"));
+	}
+};
+
+template<>
+struct Less<GIT_Commit>
+{
+	bool operator()(const GIT_Commit& left, const GIT_Commit& right)
 	{
 		return left.get_attribute(_T("name")) < right.get_attribute(_T("name"));
 	}
@@ -58,7 +77,8 @@ private:
 	void GET_current_user_avatar_()const;
 	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object & git_object);
 	std::set<Git_Repository,Less<Git_Repository>> user_repositories_(const Git_User& user)const;
-
+	void extract_info_from_repo_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session);
+	void get_branches_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session);
 
 public:
 	HTTPS_GIT_Client();

@@ -213,7 +213,10 @@
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
     <ClInclude Include="Git_05_Utils.h" />
+    <ClInclude Include="GIT_Branch.hpp" />
+    <ClInclude Include="GIT_Commit.hpp" />
     <ClInclude Include="Git_Object.hpp" />
+    <ClInclude Include="GIT_Tree.hpp" />
     <ClInclude Include="Git_User.hpp" />
     <ClInclude Include="Git_User_Attributes.hpp" />
     <ClInclude Include="Git_Repository.hpp" />
@@ -229,7 +232,6 @@
     <ClInclude Include="WorkSpaceBar3.h" />
     <ClInclude Include="WorkSpaceBar4.h" />
     <ClInclude Include="WorkSpaceBar_Git_Tree.h" />
-    <ClInclude Include="WorkSpaceBar_Git_Tree2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
@@ -241,7 +243,10 @@
     <ClCompile Include="Git_05.cpp" />
     <ClCompile Include="Git_05Doc.cpp" />
     <ClCompile Include="Git_05View.cpp" />
+    <ClCompile Include="GIT_Branch.cpp" />
+    <ClCompile Include="GIT_Commit.cpp" />
     <ClCompile Include="Git_Object.cpp" />
+    <ClCompile Include="GIT_Tree.cpp" />
     <ClCompile Include="Git_User.cpp" />
     <ClCompile Include="Git_User_Attributes.cpp" />
     <ClCompile Include="Git_Repository.cpp" />
@@ -261,7 +266,6 @@
     <ClCompile Include="WorkSpaceBar3.cpp" />
     <ClCompile Include="WorkSpaceBar4.cpp" />
     <ClCompile Include="WorkSpaceBar_Git_Tree.cpp" />
-    <ClCompile Include="WorkSpaceBar_Git_Tree2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Git_05.reg" />

@@ -70,8 +70,12 @@
     <ClCompile Include="WorkSpaceBar4.cpp">
       <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="DemoListView.cpp" />
-    <ClCompile Include="WorkSpaceBar_Git_Tree2.cpp" />
+    <ClCompile Include="DemoListView.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="GIT_Tree.cpp" />
+    <ClCompile Include="GIT_Branch.cpp" />
+    <ClCompile Include="GIT_Commit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -158,8 +162,12 @@
     <ClInclude Include="WorkSpaceBar4.h">
       <Filter>BCG\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="DemoListView.hpp" />
-    <ClInclude Include="WorkSpaceBar_Git_Tree2.h" />
+    <ClInclude Include="DemoListView.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="GIT_Tree.hpp" />
+    <ClInclude Include="GIT_Branch.hpp" />
+    <ClInclude Include="GIT_Commit.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
@@ -212,14 +220,30 @@
     <Image Include="Artwork\GAMEICON_32X32.bmp">
       <Filter>Git_05\resources</Filter>
     </Image>
-    <Image Include="res\icon1.ico" />
-    <Image Include="res\cat.ico" />
-    <Image Include="res\cat-small.ico" />
-    <Image Include="res\dog.ico" />
-    <Image Include="res\dog-small.ico" />
-    <Image Include="res\elephant.ico" />
-    <Image Include="res\elephant-small.ico" />
-    <Image Include="res\images_n.bmp" />
+    <Image Include="res\images_n.bmp">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\cat.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\cat-small.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\dog.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\dog-small.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\elephant.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\elephant-small.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">

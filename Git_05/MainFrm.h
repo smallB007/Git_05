@@ -3,14 +3,10 @@
 
 
 #pragma once
-//#include "WorkSpaceBar.h"
-//#include "WorkSpaceBar2.h"
 #include "WorkSpaceBar3.h"
 #include "WorkSpaceBar4.h"
 #include "OutputBar.h"
 #include "PropertiesViewBar.h"
-//#include "WorkSpaceBar_Git_Tree.h"
-#include "WorkSpaceBar_Git_Tree2.h"
 
 class CMainFrame : public CBCGPFrameWnd
 {
