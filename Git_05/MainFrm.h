@@ -63,10 +63,12 @@ protected:
 	afx_msg void OnToolsOptions();
 	afx_msg void OnViewWorkspace_Git_Tree2();
 	afx_msg void OnUpdateViewWorkspace_Git_Tree2(CCmdUI* pCmdUI);
-	//afx_msg void OnViewWorkspace();
-	//afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
-	//afx_msg void OnViewWorkspace2();
-	//afx_msg void OnUpdateViewWorkspace2(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace3();
+	afx_msg void OnUpdateViewWorkspace3(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace4();
+	afx_msg void OnUpdateViewWorkspace4(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace41();
+	afx_msg void OnUpdateViewWorkspace41(CCmdUI* pCmdUI);
 	afx_msg void OnViewOutput();
 	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnViewPropGrid();

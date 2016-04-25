@@ -18,12 +18,14 @@ IMPLEMENT_DYNCREATE(CMainFrame, CBCGPFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_VIEW_WORKSPACE_GIT_TREE2, OnViewWorkspace_Git_Tree2)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE2, OnUpdateViewWorkspace_Git_Tree2)
-	//ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
-	//ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
-	//ON_COMMAND(ID_VIEW_WORKSPACE2, OnViewWorkspace2)
-	//ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE2, OnUpdateViewWorkspace2)
+	//ON_COMMAND(ID_VIEW_WORKSPACE_GIT_TREE2, OnViewWorkspace_Git_Tree2)
+	//ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE2, OnUpdateViewWorkspace_Git_Tree2)
+	ON_COMMAND(ID_VIEW_WORKSPACE3, OnViewWorkspace3)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE3, OnUpdateViewWorkspace3)
+	ON_COMMAND(ID_VIEW_WORKSPACE4, OnViewWorkspace4)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE4, OnUpdateViewWorkspace4)
+	ON_COMMAND(ID_VIEW_WORKSPACE41, OnViewWorkspace41)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE41, OnUpdateViewWorkspace41)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	ON_COMMAND(ID_VIEW_PROPERTIES, OnViewPropGrid)
@@ -335,33 +337,47 @@ void CMainFrame::OnUpdateViewWorkspace_Git_Tree2(CCmdUI* pCmdUI)
 	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());*/
 }
 
-//void CMainFrame::OnViewWorkspace() 
-//{
-//	ShowControlBar (&m_wndWorkSpace,
-//					!(m_wndWorkSpace.IsVisible ()),
-//					FALSE, TRUE);
-//	RecalcLayout ();
-//}
+void CMainFrame::OnViewWorkspace3() 
+{
+	ShowControlBar (&m_wndWorkSpace3,
+					!(m_wndWorkSpace3.IsVisible ()),
+					FALSE, TRUE);
+	RecalcLayout ();
+}
 
-//void CMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
-//{
-//	pCmdUI->SetCheck (m_wndWorkSpace.IsVisible ());
-//	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
-//}
-//
-//void CMainFrame::OnViewWorkspace2() 
-//{
-//	ShowControlBar (&m_wndWorkSpace2,
-//					!(m_wndWorkSpace2.IsVisible ()),
-//					FALSE, TRUE);
-//	RecalcLayout ();
-//}
-//
-//void CMainFrame::OnUpdateViewWorkspace2(CCmdUI* pCmdUI) 
-//{
-//	pCmdUI->SetCheck (m_wndWorkSpace2.IsVisible ());
-//	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
-//}
+void CMainFrame::OnUpdateViewWorkspace3(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck (m_wndWorkSpace3.IsVisible ());
+	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
+}
+
+void CMainFrame::OnViewWorkspace4() 
+{
+	ShowControlBar (&m_wndWorkSpace4,
+					!(m_wndWorkSpace4.IsVisible ()),
+					FALSE, TRUE);
+	RecalcLayout ();
+}
+
+void CMainFrame::OnUpdateViewWorkspace4(CCmdUI* pCmdUI) 
+{
+	pCmdUI->SetCheck (m_wndWorkSpace4.IsVisible ());
+	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
+}
+
+void CMainFrame::OnViewWorkspace41()
+{
+	ShowControlBar(&m_wndWorkSpace41,
+		!(m_wndWorkSpace41.IsVisible()),
+		FALSE, TRUE);
+	RecalcLayout();
+}
+
+void CMainFrame::OnUpdateViewWorkspace41(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_wndWorkSpace41.IsVisible());
+	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
+}
 
  // WORKSPACEBAR
 void CMainFrame::OnViewOutput() 

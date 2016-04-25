@@ -369,24 +369,24 @@
 							<ELEMENT>
 								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_VIEW_WORKSPACE</NAME>
-									<VALUE>32791</VALUE>
+									<NAME>ID_VIEW_WORKSPACE3</NAME>
+									<VALUE>32793</VALUE>
 								</ID>
 								<TEXT>View 1</TEXT>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_VIEW_WORKSPACE2</NAME>
-									<VALUE>32792</VALUE>
+									<NAME>ID_VIEW_WORKSPACE4</NAME>
+									<VALUE>32794</VALUE>
 								</ID>
 								<TEXT>View 2</TEXT>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
 								<ID>
-									<NAME>ID_VIEW_WORKSPACE_GIT_TREE</NAME>
-									<VALUE>32866</VALUE>
+									<NAME>ID_VIEW_WORKSPACE41</NAME>
+									<VALUE>32795</VALUE>
 								</ID>
 								<TEXT>Git Tree</TEXT>
 							</ELEMENT>
