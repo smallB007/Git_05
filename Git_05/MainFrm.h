@@ -6,9 +6,11 @@
 //#include "WorkSpaceBar.h"
 //#include "WorkSpaceBar2.h"
 #include "WorkSpaceBar3.h"
+#include "WorkSpaceBar4.h"
 #include "OutputBar.h"
 #include "PropertiesViewBar.h"
-#include "WorkSpaceBar_Git_Tree.h"
+//#include "WorkSpaceBar_Git_Tree.h"
+#include "WorkSpaceBar_Git_Tree2.h"
 
 class CMainFrame : public CBCGPFrameWnd
 {
@@ -45,9 +47,12 @@ protected:  // control bar embedded members
 	//CWorkSpaceBar			m_wndWorkSpace;
 	//CWorkSpaceBar2			m_wndWorkSpace2;
 	CWorkSpaceBar3			m_wndWorkSpace3;
+	CWorkSpaceBar4			m_wndWorkSpace4;
+	CWorkSpaceBar4			m_wndWorkSpace41;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
-	CWorkSpaceBar_Git_Tree wnd_workspace_git_tree_;
+	//CWorkSpaceBar_Git_Tree wnd_workspace_git_tree_;
+	//CWorkSpaceBar_Git_Tree2 wnd_workspace_git_tree_2;
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
@@ -56,12 +61,12 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnRibbonCustomize (WPARAM wp, LPARAM lp);
 	afx_msg void OnToolsOptions();
-	afx_msg void OnViewWorkspace_Git_Tree();
-	afx_msg void OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace();
-	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace2();
-	afx_msg void OnUpdateViewWorkspace2(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace_Git_Tree2();
+	afx_msg void OnUpdateViewWorkspace_Git_Tree2(CCmdUI* pCmdUI);
+	//afx_msg void OnViewWorkspace();
+	//afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
+	//afx_msg void OnViewWorkspace2();
+	//afx_msg void OnUpdateViewWorkspace2(CCmdUI* pCmdUI);
 	afx_msg void OnViewOutput();
 	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnViewPropGrid();

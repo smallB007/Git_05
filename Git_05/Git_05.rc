@@ -495,6 +495,26 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_CAT                 ICON                    "res\\cat.ico"
+
+IDI_CAT_SMALL           ICON                    "res\\cat-small.ico"
+
+IDI_DOG                 ICON                    "res\\dog.ico"
+
+IDI_DOG_SMALL           ICON                    "res\\dog-small.ico"
+
+IDI_ELEPHANT            ICON                    "res\\elephant.ico"
+
+IDI_ELEPHANT_SMALL      ICON                    "res\\elephant-small.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // PNG
 //
 
@@ -583,6 +603,14 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMAGES_NORMAL       BITMAP                  "res\\images_n.bmp"
 
 #endif    // English (United Kingdom) resources
 /////////////////////////////////////////////////////////////////////////////

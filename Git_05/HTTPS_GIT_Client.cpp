@@ -145,7 +145,8 @@ std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositori
 	}
 	else
 	{
-		throw "No repos found for this user";
+		return std::set<Git_Repository, Less<Git_Repository>>();
+		//throw "No repos found for this user";
 	}
 
 }

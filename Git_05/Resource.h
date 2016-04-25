@@ -30,6 +30,15 @@
 #define IDB_GAME_ICON_PNG               174
 #define IDB_PNG2                        175
 #define IDD_DIALOG1                     176
+#define IDI_ICON6                       184
+#define IDB_BITMAP1                     185
+#define IDB_IMAGES_NORMAL               185
+#define IDI_CAT                         310
+#define IDI_CAT_SMALL                   311
+#define IDI_DOG                         312
+#define IDI_DOG_SMALL                   313
+#define IDI_ELEPHANT                    314
+#define IDI_ELEPHANT_SMALL              315
 #define IDC_COMPANY_URL                 1041
 #define IDC_INFO_LABEL                  1042
 #define IDC_PATH_LABEL                  1043
@@ -64,9 +73,14 @@
 #define IDC_USEREMAILLOGIN_EDIT         1082
 #define IDC_VIEW_1                      1085
 #define ID_VIEW_TOOLBARS                32771
+#define ID_VIEW_TILE                    32774
+#define ID_VIEW_LARGEICONS              32775
+#define ID_VIEW_SMALLICONS              32776
 #define ID_VIEW_WORKSPACE               32791
 #define ID_VIEW_WORKSPACE2              32792
 #define ID_VIEW_WORKSPACE3              32793
+#define ID_VIEW_WORKSPACE4              32794
+#define ID_VIEW_WORKSPACE41             32795
 #define ID_VIEW_OUTPUT                  32803
 #define ID_VIEW_APPLOOK_2000            32826
 #define ID_VIEW_APPLOOK_XP              32827
@@ -103,13 +117,14 @@
 #define ID_BUTTON2                      32864
 #define ID_SOME_OFFICE_THEME            32865
 #define ID_VIEW_WORKSPACE_GIT_TREE      32866
+#define ID_VIEW_WORKSPACE_GIT_TREE2     32867
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         32867
+#define _APS_NEXT_RESOURCE_VALUE        186
+#define _APS_NEXT_COMMAND_VALUE         32868
 #define _APS_NEXT_CONTROL_VALUE         1086
 #define _APS_NEXT_SYMED_VALUE           117
 #endif

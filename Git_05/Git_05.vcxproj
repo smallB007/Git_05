@@ -204,6 +204,7 @@
     <ClInclude Include="ComHelpers.hpp" />
     <ClInclude Include="ComPtr.hpp" />
     <ClInclude Include="CStringUtilities.h" />
+    <ClInclude Include="DemoListView.hpp" />
     <ClInclude Include="Direct2DRenderer.hpp" />
     <ClInclude Include="Direct2DUtility.hpp" />
     <ClInclude Include="Direct2Handler.hpp" />
@@ -226,10 +227,13 @@
     <ClInclude Include="WorkSpaceBar.h" />
     <ClInclude Include="WorkSpaceBar2.h" />
     <ClInclude Include="WorkSpaceBar3.h" />
+    <ClInclude Include="WorkSpaceBar4.h" />
     <ClInclude Include="WorkSpaceBar_Git_Tree.h" />
+    <ClInclude Include="WorkSpaceBar_Git_Tree2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
+    <ClCompile Include="DemoListView.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DUtility.cpp" />
     <ClCompile Include="Direct2Handler.cpp" />
@@ -255,7 +259,9 @@
     <ClCompile Include="WorkSpaceBar.cpp" />
     <ClCompile Include="WorkSpaceBar2.cpp" />
     <ClCompile Include="WorkSpaceBar3.cpp" />
+    <ClCompile Include="WorkSpaceBar4.cpp" />
     <ClCompile Include="WorkSpaceBar_Git_Tree.cpp" />
+    <ClCompile Include="WorkSpaceBar_Git_Tree2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Git_05.reg" />
@@ -276,8 +282,16 @@
     <Image Include="res\BCGSoft_ribbon\category_small_0.png" />
     <Image Include="res\BCGSoft_ribbon\main.png" />
     <Image Include="res\BCGSoft_ribbon\ribbon_bar.png" />
+    <Image Include="res\cat-small.ico" />
+    <Image Include="res\cat.ico" />
+    <Image Include="res\dog-small.ico" />
+    <Image Include="res\dog.ico" />
+    <Image Include="res\elephant-small.ico" />
+    <Image Include="res\elephant.ico" />
     <Image Include="res\Git_05.ico" />
     <Image Include="res\Git_05Doc.ico" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\images_n.bmp" />
     <Image Include="res\ribbonfilelarge.png" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Workspace.png" />

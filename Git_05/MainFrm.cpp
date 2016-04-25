@@ -18,8 +18,8 @@ IMPLEMENT_DYNCREATE(CMainFrame, CBCGPFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_VIEW_WORKSPACE_GIT_TREE, OnViewWorkspace_Git_Tree)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE, OnUpdateViewWorkspace_Git_Tree)
+	ON_COMMAND(ID_VIEW_WORKSPACE_GIT_TREE2, OnViewWorkspace_Git_Tree2)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE2, OnUpdateViewWorkspace_Git_Tree2)
 	//ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
 	//ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
 	//ON_COMMAND(ID_VIEW_WORKSPACE2, OnViewWorkspace2)
@@ -83,15 +83,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	imagesWorkspace.Load (IDB_WORKSPACE);
 	imagesWorkspace.SmoothResize(globalData.GetRibbonImageScale());
 
-		if (!wnd_workspace_git_tree_.Create(_T("Git Tree"), this, CRect(0, 0, 200, 200),
-			TRUE, ID_VIEW_WORKSPACE_GIT_TREE,
-			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_TOP | CBRS_FLOAT_MULTI))
-		{
-			TRACE0("Failed to create Workspace bar\n");
-			return -1;      // fail to create
-		}
+	//	if (!wnd_workspace_git_tree_2.Create(_T("Git Tree 2"), this, CRect(0, 0, 200, 200),
+	//		TRUE, ID_VIEW_WORKSPACE_GIT_TREE2,
+	//		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_TOP | CBRS_FLOAT_MULTI))
+	//	{
+	//		TRACE0("Failed to create Workspace bar\n");
+	//		return -1;      // fail to create
+	//	}
 
-	wnd_workspace_git_tree_.SetIcon(imagesWorkspace.ExtractIcon(0), FALSE);
+	//wnd_workspace_git_tree_2.SetIcon(imagesWorkspace.ExtractIcon(0), FALSE);
 
 	//if (!m_wndWorkSpace.Create (_T("View 1"), this, CRect (0, 0, 200, 200),
 	//	TRUE, ID_VIEW_WORKSPACE,
@@ -114,7 +114,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndWorkSpace2.SetIcon (imagesWorkspace.ExtractIcon (1), FALSE);
 
 	if (!m_wndWorkSpace3.Create (_T("View 3"), this, CRect (0, 0, 200, 200),
-		TRUE, ID_VIEW_WORKSPACE2,
+		TRUE, ID_VIEW_WORKSPACE3,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("Failed to create Workspace bar 3\n");
@@ -123,6 +123,27 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndWorkSpace3.SetIcon (imagesWorkspace.ExtractIcon (1), FALSE);
 
+	if (!m_wndWorkSpace4.Create(_T("View 4"), this, CRect(0, 0, 200, 200),
+		TRUE, ID_VIEW_WORKSPACE4,
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("Failed to create Workspace bar 4\n");
+		return -1;      // fail to create
+	}
+	m_wndWorkSpace4.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
+
+
+		m_wndWorkSpace41.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::GIT_TREE);
+
+		if (!m_wndWorkSpace41.Create(_T("View 41"), this, CRect(0, 0, 200, 200),
+			TRUE, ID_VIEW_WORKSPACE41,
+			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+		{
+			TRACE0("Failed to create Workspace bar 4\n");
+			return -1;      // fail to create
+		}
+
+	m_wndWorkSpace41.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 
 	if (!m_wndOutput.Create (_T("Output"), this, CSize (150, 150),
 		TRUE /* Has gripper */, ID_VIEW_OUTPUT,
@@ -144,20 +165,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndPropGrid.SetIcon (imagesWorkspace.ExtractIcon (3), FALSE);
 
-	wnd_workspace_git_tree_.EnableDocking(CBRS_ALIGN_ANY);
+	//wnd_workspace_git_tree_2.EnableDocking(CBRS_ALIGN_ANY);
 	//m_wndWorkSpace.EnableDocking(CBRS_ALIGN_ANY);
 	//m_wndWorkSpace2.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace3.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndWorkSpace4.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndWorkSpace41.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndPropGrid.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	EnableAutoHideBars(CBRS_ALIGN_ANY);
 	//DockControlBar(&m_wndWorkSpace);
 	DockControlBar(&m_wndWorkSpace3);
+	DockControlBar(&m_wndWorkSpace4);
+	DockControlBar(&m_wndWorkSpace41);
 	//m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
-	DockControlBar(&wnd_workspace_git_tree_);
+	//DockControlBar(&wnd_workspace_git_tree_2);
 	return 0;
 }
 
@@ -296,18 +321,18 @@ void CMainFrame::ShowOptions (int nPage)
 	}
 }
 
-void CMainFrame::OnViewWorkspace_Git_Tree()
+void CMainFrame::OnViewWorkspace_Git_Tree2()
 {
-	ShowControlBar(&wnd_workspace_git_tree_,
-		!(wnd_workspace_git_tree_.IsVisible()),
+	/*ShowControlBar(&wnd_workspace_git_tree_2,
+		!(wnd_workspace_git_tree_2.IsVisible()),
 		FALSE, TRUE);
-	RecalcLayout();
+	RecalcLayout();*/
 }
 
-void CMainFrame::OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI)
+void CMainFrame::OnUpdateViewWorkspace_Git_Tree2(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(wnd_workspace_git_tree_.IsVisible());
-	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
+	/*pCmdUI->SetCheck(wnd_workspace_git_tree_2.IsVisible());
+	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());*/
 }
 
 //void CMainFrame::OnViewWorkspace() 
