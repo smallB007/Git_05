@@ -3,8 +3,9 @@
 
 
 #pragma once
-#include "WorkSpaceBar.h"
-#include "WorkSpaceBar2.h"
+//#include "WorkSpaceBar.h"
+//#include "WorkSpaceBar2.h"
+#include "WorkSpaceBar3.h"
 #include "OutputBar.h"
 #include "PropertiesViewBar.h"
 #include "WorkSpaceBar_Git_Tree.h"
@@ -41,8 +42,9 @@ protected:  // control bar embedded members
 	CBCGPRibbonBar			m_wndRibbonBar;
 	//CBCGPMenuBar			m_wndMenuBar;
 	//CBCGPToolBar			m_wndToolBar;//this and this^ is unnecessary as we have a ribbon but for now leave it in case we want to give user the ability to switch
-	CWorkSpaceBar			m_wndWorkSpace;
-	CWorkSpaceBar2			m_wndWorkSpace2;
+	//CWorkSpaceBar			m_wndWorkSpace;
+	//CWorkSpaceBar2			m_wndWorkSpace2;
+	CWorkSpaceBar3			m_wndWorkSpace3;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
 	CWorkSpaceBar_Git_Tree wnd_workspace_git_tree_;

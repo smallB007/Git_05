@@ -225,6 +225,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WorkSpaceBar.h" />
     <ClInclude Include="WorkSpaceBar2.h" />
+    <ClInclude Include="WorkSpaceBar3.h" />
     <ClInclude Include="WorkSpaceBar_Git_Tree.h" />
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +254,7 @@
     </ClCompile>
     <ClCompile Include="WorkSpaceBar.cpp" />
     <ClCompile Include="WorkSpaceBar2.cpp" />
+    <ClCompile Include="WorkSpaceBar3.cpp" />
     <ClCompile Include="WorkSpaceBar_Git_Tree.cpp" />
   </ItemGroup>
   <ItemGroup>

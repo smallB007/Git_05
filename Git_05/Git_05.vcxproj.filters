@@ -64,6 +64,9 @@
     <ClCompile Include="Direct2DRenderer.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="WorkSpaceBar3.cpp">
+      <Filter>BCG\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="Direct2DRenderer.hpp">
       <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkSpaceBar3.h">
+      <Filter>BCG\hpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

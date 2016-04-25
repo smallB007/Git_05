@@ -14,7 +14,7 @@ public:
 // Attributes
 protected:
 	CBCGPTreeCtrl	m_wndTree;
-
+	CDialog dialog;
 // Operations
 public:
 
