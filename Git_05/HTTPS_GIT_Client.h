@@ -79,7 +79,7 @@ private:
 	template<class Git_Object_Class>
 	void GET_Git_Object_details_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri, Git_Object_Class& git_object);
 	template<class Git_Object_Class>
-	void GET_Git_Object_details_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri,std::set<Git_Object_Class, Less<Git_Object_Class>>* collection);
+	void GET_Git_Object_details_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri,std::set<Git_Object_Class, Less<Git_Object_Class>>* collection,bool clearCollection = true);
 	void GET_user_details_(Poco::Net::HTTPSClientSession& client_session);
 	void GET_user_repositories_(Poco::Net::HTTPSClientSession& client_session, const Git_User & user, std::set<Git_Repository, Less<Git_Repository>>* collection);
 	void GET_user_avatar_(const Git_User& user)const;
