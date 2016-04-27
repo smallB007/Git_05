@@ -218,73 +218,106 @@ void HTTPS_GIT_Client::connect()
 
 void HTTPS_GIT_Client::extract_info_from_repo_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session)
 {
-	get_branches_(repo,client_session);
+	std::set<GIT_Branch, Less<GIT_Branch>> branches;
+	get_branches_(repo,client_session,&branches);
+	std::set<GIT_Commit, Less<GIT_Commit>> commits;
+	get_commits_(repo,client_session,&branches);
+}
+
+void HTTPS_GIT_Client::get_commits_(const Git_Repository & repo,Poco::Net::HTTPSClientSession& client_session, std::set<GIT_Branch, Less<GIT_Branch>>*const branches)
+{
+	std::string url = wstring_to_string(repo.get_attribute(L"commits_url"));
+	remove_url_end_hint_(url);
+	Poco::URI uri_commits(url);
+	std::set<GIT_Commit, Less<GIT_Commit>> commits;
+	GET_Git_Object_details_(client_session, uri_commits, &commits);
+// 	for (const auto& branch : *branches)
+// 	{
+// 		url += '/';
+// 		url += wstring_to_string(branch.get_attribute(L"name"));
+// 		Poco::URI uri_commits_for_branch(url);
+// 		std::set<GIT_Commit, Less<GIT_Commit>> commits_for_branch;
+// 		GET_Git_Object_details_(client_session, uri_commits_for_branch, &commits_for_branch);
+// 	}
+}
+std::string HTTPS_GIT_Client::remove_url_end_hint_(std::string& url_with_end_hint)const
+{
+	size_t i = url_with_end_hint.find_first_of('{');
+	auto iter = cbegin(url_with_end_hint) + i;
+	url_with_end_hint.erase(iter, cend(url_with_end_hint));
+	return url_with_end_hint;
 }
 #include "GIT_Branch.hpp"
 #include <algorithm>
-void HTTPS_GIT_Client::get_branches_(const Git_Repository & repo, Poco::Net::HTTPSClientSession& client_session)
+void HTTPS_GIT_Client::get_branches_(const Git_Repository & repo, Poco::Net::HTTPSClientSession& client_session, std::set<GIT_Branch, Less<GIT_Branch>>*const branches)
 {
-	std::string cleaned_url = wstring_to_string(repo.get_attribute(L"branches_url"));
-	size_t i = cleaned_url.find_first_of('{');
-	auto iter = cbegin(cleaned_url) + i;
-	cleaned_url.erase(iter, cend(cleaned_url));
-	Poco::URI uri_branches(cleaned_url);
+	std::string url = wstring_to_string(repo.get_attribute(L"branches_url"));
+	remove_url_end_hint_(url);
+	Poco::URI uri_branches(url);
+	GET_Git_Object_details_(client_session, uri_branches, branches);
 	//Poco::URI _uri_branches("/repos/smallB007/Git_05/branches");
 	//auto br = uri_branches.getPath();
-	Poco::Net::HTTPRequest request_branches(Poco::Net::HTTPRequest::HTTP_GET, uri_branches.getPath());
-	request_branches.set("user-agent", "Poco HTTPSClientSession");
-	Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
-	cred.authenticate(request_branches);
-	client_session.sendRequest(request_branches);
-	Poco::Net::HTTPResponse response_branches;
-	std::istream& rs_branches = client_session.receiveResponse(response_branches);
-	std::string response_branches_content{ std::istreambuf_iterator<char>(rs_branches),
-		std::istreambuf_iterator<char>() };
+// 	Poco::Net::HTTPRequest request_branches(Poco::Net::HTTPRequest::HTTP_GET, uri_branches.getPath());
+// 	request_branches.set("user-agent", "Poco HTTPSClientSession");
+// 	Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
+// 	cred.authenticate(request_branches);
+// 	client_session.sendRequest(request_branches);
+// 	Poco::Net::HTTPResponse response_branches;
+// 	std::istream& rs_branches = client_session.receiveResponse(response_branches);
+// 	std::string response_branches_content{ std::istreambuf_iterator<char>(rs_branches),
+// 		std::istreambuf_iterator<char>() };
+// 
+// 	Poco::JSON::Parser parser;
+// 	Poco::Dynamic::Var result = parser.parse(response_branches_content);
+// 	
+// 	JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
+// 	//std::set<GIT_Branch, Less<GIT_Branch>> branches;
+// 	for (int branch_index{ 0 }, branches_total = arr->size(); branch_index < branches_total; ++branch_index)
+// 	{
+// 		GIT_Branch branch;
+// 		Poco::JSON::Object::Ptr object = arr->getObject(branch_index);
+// 		fill_json_data_(object, branch);
+// 		branches->insert(branch);
+// 	}
 
-	Poco::JSON::Parser parser;
-	Poco::Dynamic::Var result = parser.parse(response_branches_content);
-	
-	JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
-	std::set<GIT_Branch, Less<GIT_Branch>> branches;
-	for (int branch_index{ 0 }, branches_total = arr->size(); branch_index < branches_total; ++branch_index)
-	{
-		GIT_Branch branch;
-		Poco::JSON::Object::Ptr object = arr->getObject(branch_index);
-		fill_json_data_(object, branch);
-		branches.insert(branch);
-	}
-
-	{
-		std::string cleaned_url = wstring_to_string(repo.get_attribute(L"commits_url"));
-		size_t i = cleaned_url.find_first_of('{');
-		auto iter = cbegin(cleaned_url) + i;
-		cleaned_url.erase(iter, cend(cleaned_url));
-		Poco::URI uri_commits(cleaned_url);
-		Poco::Net::HTTPRequest request_commits(Poco::Net::HTTPRequest::HTTP_GET, uri_commits.getPath());
-		request_commits.set("user-agent", "Poco HTTPSClientSession");
-		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
-		cred.authenticate(request_commits);
-		client_session.sendRequest(request_commits);
-		Poco::Net::HTTPResponse response_commits;
-		std::istream& rs_commits = client_session.receiveResponse(response_commits);
-		std::string response_commits_content{ std::istreambuf_iterator<char>(rs_commits),
-			std::istreambuf_iterator<char>() };
-
-		Poco::JSON::Parser parser;
-		Poco::Dynamic::Var result = parser.parse(response_commits_content);
-
-		JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
-		std::set<GIT_Commit, Less<GIT_Commit>> commits;
-		
-		for (int commit_index{ 0 }, commits_total = arr->size(); commit_index < commits_total; ++commit_index)
-		{
-			Poco::JSON::Object::Ptr object = arr->getObject(commit_index);
-			
-			GIT_Commit commit;
-			fill_json_data_(object, commit);
-			commits.insert(commit);
-		}
-	}
+// 	{
+// 		std::string cleaned_url = wstring_to_string(repo.get_attribute(L"commits_url"));
+// 		size_t i = cleaned_url.find_first_of('{');
+// 		auto iter = cbegin(cleaned_url) + i;
+// 		cleaned_url.erase(iter, cend(cleaned_url));
+// // 		for (const auto& branch : branches)
+// // 		{
+// // 			cleaned_url += '/';
+// // 			cleaned_url += wstring_to_string(branch.get_attribute(L"name"));
+// 
+// 			Poco::URI uri_commits(cleaned_url);
+// 			Poco::Net::HTTPRequest request_commits(Poco::Net::HTTPRequest::HTTP_GET, uri_commits.getPath());
+// 			request_commits.set("user-agent", "Poco HTTPSClientSession");
+// 			Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
+// 			cred.authenticate(request_commits);
+// 			client_session.sendRequest(request_commits);
+// 			Poco::Net::HTTPResponse response_commits;
+// 			std::istream& rs_commits = client_session.receiveResponse(response_commits);
+// 			std::string response_commits_content{ std::istreambuf_iterator<char>(rs_commits),
+// 				std::istreambuf_iterator<char>() };
+// 
+// 			Poco::JSON::Parser parser;
+// 			Poco::Dynamic::Var result = parser.parse(response_commits_content);
+// 
+// 			JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
+// 			//Poco::JSON::Object::Ptr obj_ = result.extract<Poco::JSON::Object::Ptr>();
+// 			std::set<GIT_Commit, Less<GIT_Commit>> commits;
+// 
+// 			for (int commit_index{ 0 }, commits_total = arr->size(); commit_index < commits_total; ++commit_index)
+// 			{
+// 				Poco::JSON::Object::Ptr object = arr->getObject(commit_index);
+// 
+// 				GIT_Commit commit;
+// 				fill_json_data_(object, commit);
+// 				commits.insert(commit);
+// 			}
+// 		//}
+// 	}
 }
 
 std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::current_user_repositories() const

@@ -92,8 +92,9 @@ private:
 	void fill_json_data_(const Poco::JSON::Object::Ptr& arr, Git_Object & git_object);
 	std::set<Git_Repository,Less<Git_Repository>> user_repositories_(const Git_User& user)const;
 	void extract_info_from_repo_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session);
-	void get_branches_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session);
-
+	void get_branches_(const Git_Repository& repo, Poco::Net::HTTPSClientSession& client_session, std::set<GIT_Branch, Less<GIT_Branch>>*const branches);
+	void get_commits_(const Git_Repository & repo, Poco::Net::HTTPSClientSession& client_session, std::set<GIT_Branch, Less<GIT_Branch>>*const branches);
+	std::string remove_url_end_hint_(std::string& url_with_end_hint)const;
 public:
 	HTTPS_GIT_Client();
 	~HTTPS_GIT_Client();

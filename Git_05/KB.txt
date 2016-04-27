@@ -1,4 +1,0 @@
-//PNG processing
-1. libpng requires zlib. Both are available as .exe. Install them. If you get err msg about unistd.h not existing exchange that line 
-for io.h.
-2. Install png++ which is a c++ wrapper on libpng and use it! Enjoy!

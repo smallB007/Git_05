@@ -73,9 +73,18 @@
     <ClCompile Include="DemoListView.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="GIT_Tree.cpp" />
-    <ClCompile Include="GIT_Branch.cpp" />
-    <ClCompile Include="GIT_Commit.cpp" />
+    <ClCompile Include="GIT_Branch.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="GIT_Commit.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="GIT_Tree.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="User_Credentials.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -165,9 +174,18 @@
     <ClInclude Include="DemoListView.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="GIT_Tree.hpp" />
-    <ClInclude Include="GIT_Branch.hpp" />
-    <ClInclude Include="GIT_Commit.hpp" />
+    <ClInclude Include="User_Credentials.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="GIT_Tree.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="GIT_Commit.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="GIT_Branch.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
