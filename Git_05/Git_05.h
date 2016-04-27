@@ -8,10 +8,11 @@
 
 #include "resource.h"       // main symbols
 #include "HTTPS_GIT_Client.h"
-
+//#include "MainFrm.h"
 // CGit_05App:
 // See Git_05.cpp for the implementation of this class
 //
+class CMainFrame;
 
 class CGit_05App : public CBCGPWinApp
 {
@@ -36,6 +37,13 @@ public:
 	afx_msg void On_Add_Repo();
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnCreateRepoButton();
+public:
+	//inner app workings
+
+	CMainFrame* get_main_frame()const;
+
+	void write_credentials_to_file(const char* username, const char* password)const;
+	void read_credentials_from_file(std::string& username, std::string& password)const;
 };
 
 extern CGit_05App theApp;

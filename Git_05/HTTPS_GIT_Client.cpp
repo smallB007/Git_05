@@ -51,7 +51,105 @@ void HTTPS_GIT_Client::fill_json_data_(const Poco::JSON::Object::Ptr& json_objec
 		}
 	}
 }
+#include <utility>
+#include "Git_05.h"
 
+void HTTPS_GIT_Client::get_user_credentials_(std::pair<userName, userPass>& userCredentials)
+{
+	CGit_05App* git_app_p = get_app_();
+	std::string u, p;
+	git_app_p->read_credentials_from_file(u, p);
+
+}
+void sign_in_()
+{
+
+}
+void HTTPS_GIT_Client::log_in_()
+{
+	std::pair<userName, userPass> userCredentials;
+	get_user_credentials_(userCredentials);
+	//get_user_credentials_();
+}
+
+template<class Git_Object_Class,class Git_Object_Collection>
+void HTTPS_GIT_Client::parse_(const std::string& response_user_content,Git_Object_Class& git_object, Git_Object_Collection* git_collection)
+{
+	Poco::JSON::Parser parser_;
+	Poco::Dynamic::Var result_ = parser_.parse(response_user_content);
+
+	try
+	{
+		Poco::JSON::Object::Ptr obj = result_.extract<Poco::JSON::Object::Ptr>();
+		fill_json_data_(obj, git_object);
+	}
+	catch (Poco::Exception& ex)
+	{
+		try
+		{
+			JSON_Array::Ptr arr = result_.extract<JSON_Array::Ptr>();
+
+			for (int git_object_index{ 0 }, git_objects_total = arr->size(); git_object_index < git_objects_total; ++git_object_index)
+			{
+				Git_Object_Class _git_object_;
+				Poco::JSON::Object::Ptr object = arr->getObject(git_object_index);
+				fill_json_data_(object, _git_object_);
+				git_collection->insert(_git_object_);
+			}
+		}
+		catch (...)
+		{
+			std::cout << "Unknown exception occurred";//:AC: get this info to UI
+		}
+	}
+}
+
+void HTTPS_GIT_Client::send_receive_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri, std::string& response)
+{
+	Poco::Net::HTTPRequest http_request(Poco::Net::HTTPRequest::HTTP_GET, uri.getPath());
+	http_request.set("user-agent", "Poco HTTPSClientSession");
+	Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
+	cred.authenticate(http_request);
+	client_session.setTimeout(6'000'000);
+	client_session.sendRequest(http_request);
+
+	Poco::Net::HTTPResponse http_response;
+	std::istream& istream_response = client_session.receiveResponse(http_response);
+	std::string response_content{ std::istreambuf_iterator<char>(istream_response),
+		std::istreambuf_iterator<char>() };
+	response = std::move(response_content);
+}
+
+template<class Git_Object_Class>
+void HTTPS_GIT_Client::GET_Git_Object_details_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri,Git_Object_Class& git_object)
+{
+	std::string response_content;
+	send_receive_(client_session, uri, response_content);
+	git_object.clear();
+	parse_<Git_Object_Class>(response_content, git_object);
+}
+
+template<class Git_Object_Class>
+void HTTPS_GIT_Client::GET_Git_Object_details_(Poco::Net::HTTPSClientSession& client_session, const Poco::URI& uri,
+												std::set<Git_Object_Class, Less<Git_Object_Class>>* collection)
+{
+	std::string response_content;
+	send_receive_(client_session, uri, response_content);
+	collection->clear();
+	parse_<Git_Object_Class>(response_content, Git_Object_Class(),collection);
+}
+
+void HTTPS_GIT_Client::GET_user_details_(Poco::Net::HTTPSClientSession& client_session)
+{
+	Poco::URI uri("https://api.github.com/user");
+	GET_Git_Object_details_<Git_User>(client_session, uri, current_user_);
+}
+
+void HTTPS_GIT_Client::GET_user_repositories_(Poco::Net::HTTPSClientSession& client_session,const Git_User & user, std::set<Git_Repository, Less<Git_Repository>>* collection)
+{
+	Poco::URI uri(wstring_to_string(user.get_attribute(L"repos_url")));
+	GET_Git_Object_details_<Git_Repository>(client_session, uri, collection);
+}
 
 void HTTPS_GIT_Client::connect()
 {
@@ -59,62 +157,50 @@ void HTTPS_GIT_Client::connect()
 	{
 		//URI uri_avatar("https://api.github.com/zen");
 		//URI uri("https://api.github.com/zen");
-
-		Poco::URI uri("https://api.github.com/user");
 		//URI uri("https://github.com/login/");
 
+		Poco::URI uri("https://api.github.com/user");
+
 		Poco::Net::HTTPSClientSession client_session(uri.getHost(), uri.getPort());
-		//Poco::Net::HTTPSClientSession client_session(uri.getHost(), uri.getPort());
-		Poco::Net::HTTPRequest request_user(Poco::Net::HTTPRequest::HTTP_GET, uri.getPath());
-		request_user.set("user-agent", "Poco HTTPSClientSession");
-		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
-		cred.authenticate(request_user);
-		client_session.setTimeout(6'000'000);
-		client_session.sendRequest(request_user);
 
-		Poco::Net::HTTPResponse response_user;
-		std::istream& istream_rs_user = client_session.receiveResponse(response_user);
-		std::string response_user_content{ std::istreambuf_iterator<char>(istream_rs_user),
-											std::istreambuf_iterator<char>() };
-		
- 		Git_User git_user;
-		Poco::JSON::Parser parser_;
-		Poco::Dynamic::Var result_ = parser_.parse(response_user_content);
-		
-		
-		Poco::JSON::Object::Ptr obj = result_.extract<Poco::JSON::Object::Ptr>();
- 		fill_json_data_(obj,git_user);
-		current_user_ = git_user;
-		std::cout << "======================REPOS=============================\n";
-		//Poco::URI uri_repos("https://api.github.com/users/smallB007/repos");//works
-		Poco::URI uri_repos(wstring_to_string( git_user.get_attribute(L"repos_url")));//works
-	
-		Poco::Net::HTTPRequest request_repos(Poco::Net::HTTPRequest::HTTP_GET, uri_repos.getPath());
-		request_repos.set("user-agent", "Poco HTTPSClientSession");
-		cred.authenticate(request_repos);
-		client_session.sendRequest(request_repos);
-		Poco::Net::HTTPResponse response_repos;
-		std::istream& rs_repos = client_session.receiveResponse(response_repos);
-		std::string response_repos_content{ std::istreambuf_iterator<char>(rs_repos),
-											std::istreambuf_iterator<char>() };
-
-		Poco::JSON::Parser parser;
-		Poco::Dynamic::Var result = parser.parse(response_repos_content);
-	
-		JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
-		std::set<Git_Repository,Less<Git_Repository>> repos;
-		for (int repo_index{ 0 }, repos_total = arr->size(); repo_index < repos_total; ++repo_index)
-		{
-			Git_Repository repo;
-			Poco::JSON::Object::Ptr object = arr->getObject(repo_index);
-			fill_json_data_(object, repo);
-			repos.insert(repo);
-		}
+		GET_user_details_(client_session);
+		std::set<Git_Repository, Less<Git_Repository>> repos;
+		GET_user_repositories_(client_session,current_user_,&repos);
 		for (const auto& repo : repos)
 		{
-			extract_info_from_repo_(repo,client_session);
+			extract_info_from_repo_(repo, client_session);
 		}
-		user_repos_.insert(std::make_pair(git_user, repos));
+		std::cout << "======================REPOS=============================\n";
+// 		Poco::URI uri_repos("https://api.github.com/users/smallB007/repos");//works
+// 				Poco::URI uri_repos(wstring_to_string( git_user.get_attribute(L"repos_url")));//works
+// 			
+// 				Poco::Net::HTTPRequest request_repos(Poco::Net::HTTPRequest::HTTP_GET, uri_repos.getPath());
+// 				request_repos.set("user-agent", "Poco HTTPSClientSession");
+// 				cred.authenticate(request_repos);
+// 				client_session.sendRequest(request_repos);
+// 				Poco::Net::HTTPResponse response_repos;
+// 				std::istream& rs_repos = client_session.receiveResponse(response_repos);
+// 				std::string response_repos_content{ std::istreambuf_iterator<char>(rs_repos),
+// 													std::istreambuf_iterator<char>() };
+// 		
+// 				Poco::JSON::Parser parser;
+// 				Poco::Dynamic::Var result = parser.parse(response_repos_content);
+// 			
+// 				JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
+// 				std::set<Git_Repository,Less<Git_Repository>> repos;
+// 				for (int repo_index{ 0 }, repos_total = arr->size(); repo_index < repos_total; ++repo_index)
+// 				{
+// 					Git_Repository repo;
+// 					Poco::JSON::Object::Ptr object = arr->getObject(repo_index);
+// 					fill_json_data_(object, repo);
+// 					repos.insert(repo);
+// 				}
+// 				user_repos_.insert(std::make_pair(git_user, repos));
+// 		
+// 				for (const auto& repo : repos)
+// 				{
+// 					extract_info_from_repo_(repo,client_session);
+// 				}
 	}
 	catch (Poco::InvalidAccessException& e)
 	{
@@ -135,11 +221,16 @@ void HTTPS_GIT_Client::extract_info_from_repo_(const Git_Repository& repo, Poco:
 	get_branches_(repo,client_session);
 }
 #include "GIT_Branch.hpp"
+#include <algorithm>
 void HTTPS_GIT_Client::get_branches_(const Git_Repository & repo, Poco::Net::HTTPSClientSession& client_session)
 {
-	//Poco::URI uri_branches(wstring_to_string(repo.get_attribute(L"branches_url")));
-	Poco::URI uri_branches("/repos/smallB007/Git_05/branches");
-	auto br = uri_branches.getPath();
+	std::string cleaned_url = wstring_to_string(repo.get_attribute(L"branches_url"));
+	size_t i = cleaned_url.find_first_of('{');
+	auto iter = cbegin(cleaned_url) + i;
+	cleaned_url.erase(iter, cend(cleaned_url));
+	Poco::URI uri_branches(cleaned_url);
+	//Poco::URI _uri_branches("/repos/smallB007/Git_05/branches");
+	//auto br = uri_branches.getPath();
 	Poco::Net::HTTPRequest request_branches(Poco::Net::HTTPRequest::HTTP_GET, uri_branches.getPath());
 	request_branches.set("user-agent", "Poco HTTPSClientSession");
 	Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
@@ -162,9 +253,13 @@ void HTTPS_GIT_Client::get_branches_(const Git_Repository & repo, Poco::Net::HTT
 		fill_json_data_(object, branch);
 		branches.insert(branch);
 	}
+
 	{
-		Poco::URI uri_commits("/repos/smallB007/Git_05/commits");
-		auto br = uri_commits.getPath();
+		std::string cleaned_url = wstring_to_string(repo.get_attribute(L"commits_url"));
+		size_t i = cleaned_url.find_first_of('{');
+		auto iter = cbegin(cleaned_url) + i;
+		cleaned_url.erase(iter, cend(cleaned_url));
+		Poco::URI uri_commits(cleaned_url);
 		Poco::Net::HTTPRequest request_commits(Poco::Net::HTTPRequest::HTTP_GET, uri_commits.getPath());
 		request_commits.set("user-agent", "Poco HTTPSClientSession");
 		Poco::Net::HTTPBasicCredentials cred("smallB007", "@A445566tch@");
@@ -180,10 +275,12 @@ void HTTPS_GIT_Client::get_branches_(const Git_Repository & repo, Poco::Net::HTT
 
 		JSON_Array::Ptr arr = result.extract<JSON_Array::Ptr>();
 		std::set<GIT_Commit, Less<GIT_Commit>> commits;
+		
 		for (int commit_index{ 0 }, commits_total = arr->size(); commit_index < commits_total; ++commit_index)
 		{
-			GIT_Commit commit;
 			Poco::JSON::Object::Ptr object = arr->getObject(commit_index);
+			
+			GIT_Commit commit;
 			fill_json_data_(object, commit);
 			commits.insert(commit);
 		}
@@ -220,10 +317,7 @@ std::set<Git_Repository, Less<Git_Repository>> HTTPS_GIT_Client::user_repositori
 	 GET_current_user_avatar_();
  }
 
- void HTTPS_GIT_Client::GET_user_repositories_(const Git_User & user)const
-{
 
-}
 
 void HTTPS_GIT_Client::GET_user_avatar_(const Git_User & user)const
 {
@@ -268,3 +362,8 @@ void HTTPS_GIT_Client::GET_current_user_avatar_()const
 	GET_user_avatar_(current_user_);
 }
 
+#include "Git_05.h"
+CGit_05App* HTTPS_GIT_Client::get_app_() const
+{
+	return static_cast<CGit_05App*>(AfxGetApp());
+}

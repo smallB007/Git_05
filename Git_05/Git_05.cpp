@@ -262,12 +262,37 @@ void CGit_05App::OnCreateRepoButton()
 		}
 	}
 }
+#include "MainFrm.h"
+CMainFrame* CGit_05App::get_main_frame() const
+{
+	return static_cast<CMainFrame*>(AfxGetMainWnd());
+}
+
+#include <fstream>
+void CGit_05App::write_credentials_to_file(const char* username, const char* password)const
+{
+	std::ofstream f_out("credentials.txt");
+	if (f_out)
+	{
+		f_out << username << '\n';
+		f_out << password << '\n';
+	}
+}
+void CGit_05App::read_credentials_from_file(std::string& username, std::string& password)const
+{
+	std::ifstream f_in("credentials.txt");
+	if (f_in)
+	{
+		f_in >> username;
+		f_in >> password;
+	}
+}
 
 void CGit_05App::delete_repos_()
 {
 	for (auto repo : repos_)
 	{
 		git_repository_free(repo);
-		delete repo;//:AC: warning C4150
+		//delete repo;//:AC: warning C4150
 	}
 }

@@ -15,5 +15,6 @@ public:
 	~Git_Object();
 	void insert_attribute(const string_t& key, const string_t& value);
 	string_t get_attribute(const string_t& attribute)const;
+	void clear();
 };
 

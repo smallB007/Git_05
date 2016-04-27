@@ -28,3 +28,8 @@ string_t Git_Object::get_attribute(const string_t& attribute) const
 		throw "No such attribute found";
 	}
 }
+
+void Git_Object::clear()
+{
+	git_object_attributes_.clear();
+}

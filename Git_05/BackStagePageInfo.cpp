@@ -386,8 +386,12 @@ void CBackStagePageInfo::get_login_credentials_()
 	CT2CA c_str_password(password);
 
 	git_cred* credentials{ nullptr };
-	int ret = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
-
+	int failure = git_cred_userpass_plaintext_new(&credentials, c_str_username, c_str_password);
+	if (!failure)
+	{
+		CGit_05App* app_p = get_main_app_();
+		app_p->write_credentials_to_file(c_str_username, c_str_password);
+	}
 }
 
 

@@ -239,7 +239,8 @@ BOOL CMainFrame::CreateRibbonBar ()
 	if (pBackstageCategory != NULL)
 	{
 		CBCGPRibbonBackstageViewPanel* pBackstagePanel = DYNAMIC_DOWNCAST (CBCGPRibbonBackstageViewPanel, pBackstageCategory->GetPanel (0));
-
+		pBackstagePanel->SetPageTransitionEffect(CBCGPPageTransitionManager::BCGPPageTransitionSlide);//doesn't work?
+		
 		if (pBackstagePanel != NULL)
 		{
 			pBackstagePanel->AttachViewToItem (4, new CBCGPRibbonBackstageViewItemForm(IDD_FORM_INFO, RUNTIME_CLASS(CBackStagePageInfo)), FALSE);
