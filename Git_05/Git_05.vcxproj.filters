@@ -85,6 +85,8 @@
     <ClCompile Include="User_Credentials.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="GIT_Engine.cpp" />
+    <ClCompile Include="GIT_Commit_Local.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -186,6 +188,8 @@
     <ClInclude Include="GIT_Branch.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="GIT_Engine.hpp" />
+    <ClInclude Include="GIT_Commit_Local.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">

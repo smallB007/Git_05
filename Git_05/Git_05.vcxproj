@@ -215,6 +215,8 @@
     <ClInclude Include="Git_05_Utils.h" />
     <ClInclude Include="GIT_Branch.hpp" />
     <ClInclude Include="GIT_Commit.hpp" />
+    <ClInclude Include="GIT_Commit_Local.hpp" />
+    <ClInclude Include="GIT_Engine.hpp" />
     <ClInclude Include="Git_Object.hpp" />
     <ClInclude Include="GIT_Tree.hpp" />
     <ClInclude Include="Git_User.hpp" />
@@ -246,6 +248,8 @@
     <ClCompile Include="Git_05View.cpp" />
     <ClCompile Include="GIT_Branch.cpp" />
     <ClCompile Include="GIT_Commit.cpp" />
+    <ClCompile Include="GIT_Commit_Local.cpp" />
+    <ClCompile Include="GIT_Engine.cpp" />
     <ClCompile Include="Git_Object.cpp" />
     <ClCompile Include="GIT_Tree.cpp" />
     <ClCompile Include="Git_User.cpp" />

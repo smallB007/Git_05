@@ -219,19 +219,26 @@ const HTTPS_GIT_Client* const CGit_05App::get_https_git_client_p()
 {
 	return https_GIT_client_ptr_.get();
 }
-
+#include "GIT_Engine.hpp"
+#include "GIT_Commit_Local.hpp"
 void CGit_05App::On_Add_Repo()
 {
-	throw - 1;
+	//throw - 1;
 	LPCTSTR pszFilter =
-		_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
-		_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
+		_T("Git repositories (*.git)|*.git|");
+		//_T("Bitmap files (*.bmp;*.dib;*.rle)|*.bmp;*.dib;*.rle|")
+		//_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
 	
 	CFolderPickerDialog dlgFile;// (TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
 
 	if (IDOK == dlgFile.DoModal())
 	{
-		OpenDocumentFile(dlgFile.GetPathName());
+		auto path_name = dlgFile.GetPathName();
+		CT2CA c_str_path(path_name);
+ 		std::string repo_path(c_str_path);
+
+ 		std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits;
+		GIT_Engine::get_commits_for_branches(repo_path, branch_commits);
 	}
 }
 

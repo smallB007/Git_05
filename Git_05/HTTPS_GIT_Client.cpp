@@ -173,7 +173,7 @@ void HTTPS_GIT_Client::connect()
 		for (const auto& repo : repos)
 		{
 			//we'll try to get that info from libgit and local repos
-			//extract_info_from_repo_(repo, client_session);
+			extract_info_from_repo_(repo, client_session);
 		}
 	}
 	catch (Poco::InvalidAccessException& e)
@@ -205,14 +205,15 @@ void HTTPS_GIT_Client::get_commits_(const Git_Repository & repo,Poco::Net::HTTPS
 		//url += "?page=2";
 	Poco::URI uri_commits(url);
 	//uri_commits.setQuery("per_page=40");
+	uri_commits.addQueryParameter("per_page", "50");
 	std::set<GIT_Commit, Less<GIT_Commit>> commits;
 	GET_Git_Object_details_(client_session, uri_commits, &commits);
-// 	if (commits.size() == 30)
-// 	{
-// 		Poco::URI uri_commits(url);
-// 		uri_commits.addQueryParameter("?page", "2");
-// 		GET_Git_Object_details_(client_session, uri_commits, &commits,false);
-// 	}
+	if (commits.size() == 30)
+	{
+		Poco::URI uri_commits(url);
+		uri_commits.addQueryParameter("per_page", "50");
+		GET_Git_Object_details_(client_session, uri_commits, &commits,false);
+	}
 // 	for (const auto& branch : *branches)
 // 	{
 // 		url += '/';
