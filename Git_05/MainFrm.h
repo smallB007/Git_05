@@ -11,6 +11,7 @@
 class CMainFrame : public CBCGPFrameWnd
 {
 	friend class HTTPS_GIT_Client;
+	friend class CGit_05App;
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -38,17 +39,12 @@ public:
 protected:  // control bar embedded members
 	CBCGPRibbonStatusBar	m_wndStatusBar;
 	CBCGPRibbonBar			m_wndRibbonBar;
-	//CBCGPMenuBar			m_wndMenuBar;
-	//CBCGPToolBar			m_wndToolBar;//this and this^ is unnecessary as we have a ribbon but for now leave it in case we want to give user the ability to switch
-	//CWorkSpaceBar			m_wndWorkSpace;
-	//CWorkSpaceBar2			m_wndWorkSpace2;
+	
 	CWorkSpaceBar3			m_wndWorkSpace3;
 	CWorkSpaceBar4			m_wndWorkSpace4;
 	CWorkSpaceBar4			m_wndWorkSpace41;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
-	//CWorkSpaceBar_Git_Tree wnd_workspace_git_tree_;
-	//CWorkSpaceBar_Git_Tree2 wnd_workspace_git_tree_2;
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h

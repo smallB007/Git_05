@@ -518,9 +518,13 @@ IDI_ELEPHANT_SMALL      ICON                    "res\\elephant-small.ico"
 // PNG
 //
 
-IDB_GAME_ICON_PNG       PNG                     "Artwork\\gameicon32x32.png"
+ARROWIMAGE              PNG                     "Artwork\\arrow.png"
 
-ARROWIMAGE              PNG                     "arrow.png"
+IDB_COMMIT              PNG                     "Artwork\\commit.png"
+
+IDB_HEAD                PNG                     "Artwork\\Head.png"
+
+IDB_TAIL                PNG                     "Artwork\\tail.png"
 
 
 /////////////////////////////////////////////////////////////////////////////

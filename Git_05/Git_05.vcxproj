@@ -230,11 +230,8 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="User_Credentials.hpp" />
-    <ClInclude Include="WorkSpaceBar.h" />
-    <ClInclude Include="WorkSpaceBar2.h" />
     <ClInclude Include="WorkSpaceBar3.h" />
     <ClInclude Include="WorkSpaceBar4.h" />
-    <ClInclude Include="WorkSpaceBar_Git_Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
@@ -267,11 +264,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="User_Credentials.cpp" />
-    <ClCompile Include="WorkSpaceBar.cpp" />
-    <ClCompile Include="WorkSpaceBar2.cpp" />
     <ClCompile Include="WorkSpaceBar3.cpp" />
     <ClCompile Include="WorkSpaceBar4.cpp" />
-    <ClCompile Include="WorkSpaceBar_Git_Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Git_05.reg" />
@@ -285,8 +279,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="arrow.png" />
-    <Image Include="Artwork\gameicon32x32.png" />
-    <Image Include="Artwork\GAMEICON_32X32.bmp" />
+    <Image Include="Artwork\arrow.png" />
+    <Image Include="Artwork\commit.png" />
+    <Image Include="Artwork\Head.png" />
+    <Image Include="Artwork\tail.png" />
     <Image Include="res\BCGSoft_ribbon\category_backstage_small.png" />
     <Image Include="res\BCGSoft_ribbon\category_large_0.png" />
     <Image Include="res\BCGSoft_ribbon\category_small_0.png" />

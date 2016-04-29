@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Git_05.h"
 #include "WorkSpaceBar4.h"
-
+#include "GIT_Commit_Local.hpp"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -40,6 +40,11 @@ void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 	eview_type_ = view_type;
 }
 
+void CWorkSpaceBar4::git_tree(std::map<std::string, std::vector<GIT_Commit_Local>>&& branchCommits)
+{
+	branch_commits_ = branchCommits;
+}
+
 CWorkSpaceBar4::~CWorkSpaceBar4()
 {
 }
@@ -71,6 +76,7 @@ int CWorkSpaceBar4::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		//Tree control should cover a whole client area:
 	case EVIEW_TYPE::REPOS:
 	{
+		renderer_ = std::make_unique<Direct2DRenderer>(m_hWnd);//just so rectArea around list item can be drawn
 		return create_list_ctrl_();
 	}
 	break;
@@ -139,18 +145,28 @@ void CWorkSpaceBar4::OnPaint()
 		//Tree control should cover a whole client area:
 	case EVIEW_TYPE::REPOS:
 	{
-		CRect rectTree;
-		m_wndListCtrl.GetWindowRect(rectTree);
-		ScreenToClient(rectTree);
-
-		rectTree.InflateRect(nBorderSize, nBorderSize);
-
-		dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
+// 		CRect rectTree;
+// 		m_wndListCtrl.GetWindowRect(rectTree);
+// 		ScreenToClient(rectTree);
+// 
+// 		rectTree.InflateRect(nBorderSize, nBorderSize);
+// 
+// 		dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
+// 		CRect rect;
+// 		m_wndListCtrl.GetItemRect(2, &rect, 0);
+// 		renderer_->drawRectangle(rect);
 	}
 	break;
 	case EVIEW_TYPE::GIT_TREE:
 	{
-		renderer_->DrawClientArea();
+		const std::vector<GIT_Commit_Local>* commits{nullptr};
+		if (branch_commits_.size())
+		{
+			auto beg = cbegin(branch_commits_);
+			commits = &(beg->second);//for now only first branch from map, and perhaps I should move it from OnPaint
+		}
+		renderer_->DrawClientArea(commits);
+		
 	}
 	break;
 	}
@@ -193,11 +209,11 @@ int CWorkSpaceBar4::create_list_ctrl_()
 
 	CRect rect;
 	m_wndListCtrl.GetClientRect(&rect);
-	int nColInterval = rect.Width() / 5;
+	int nColInterval = rect.Width() /*/ 5*/;
 
-	m_wndListCtrl.InsertColumn(0, _T("Item Name"), LVCFMT_LEFT, nColInterval * 3);
-	m_wndListCtrl.InsertColumn(1, _T("Value"), LVCFMT_LEFT, nColInterval);
-	m_wndListCtrl.InsertColumn(2, _T("Time"), LVCFMT_LEFT, rect.Width() - 4 * nColInterval);
+	m_wndListCtrl.InsertColumn(0, _T("Item Name"), LVCFMT_JUSTIFYMASK, nColInterval * 3);
+	m_wndListCtrl.InsertColumn(1, _T("Value"), LVCFMT_JUSTIFYMASK, nColInterval);
+	//m_wndListCtrl.InsertColumn(2, _T("Time"), LVCFMT_LEFT, rect.Width() - 4 * nColInterval);
 
 
 
@@ -220,7 +236,16 @@ int CWorkSpaceBar4::create_list_ctrl_()
 
 	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 	m_wndListCtrl.SetImageList(&m_cImageListSmall, LVSIL_SMALL);
-
+	///////////
+	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
+	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_FLATSB);
+	/*
+	// Get the current mouse location and convert it to client
+	// coordinates.
+	CPoint pos( ::GetMessagePos() );
+	ScreenToClient(&pos);
+	*/
+	/////////
 	LVITEM lvi;
 	CString strItem;
 	for (int i = 0; i < 30; i++)
@@ -239,12 +264,12 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
 		m_wndListCtrl.SetItem(&lvi);
 		// Set subitem 2
-		strItem.Format(_T("%s"),
-			COleDateTime::GetCurrentTime().Format(_T("Created: %I:%M:%S %p, %m/%d/%Y")));
-		lvi.iSubItem = 2;
-		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
-		m_wndListCtrl.SetItem(&lvi);
+// 		strItem.Format(_T("%s"),
+// 			COleDateTime::GetCurrentTime().Format(_T("Created: %I:%M:%S %p, %m/%d/%Y")));
+// 		lvi.iSubItem = 2;
+// 		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
+// 		m_wndListCtrl.SetItem(&lvi);
 	}
 
-	m_wndListCtrl.SetView(LV_VIEW_TILE);
+	m_wndListCtrl.SetView(LV_VIEW_MAX);// LV_VIEW_TILE
 }

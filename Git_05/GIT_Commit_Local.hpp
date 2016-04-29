@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
-struct GIT_Commit_Local
+class GIT_Commit_Local
 {
+public:
 	std::string commit_message;
 	git_signature commit_author;
 };

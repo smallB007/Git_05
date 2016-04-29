@@ -70,7 +70,7 @@ CGit_05App::CGit_05App()
 	//CWinThread* pThread = AfxBeginThread(ThreadFunc, &thread_info);:AC: make that happen
 
 
-	https_GIT_client_ptr_->connect();
+	//https_GIT_client_ptr_->connect();
 }
 
 
@@ -230,7 +230,9 @@ void CGit_05App::On_Add_Repo()
 		//_T("JPEG files (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif||");
 	
 	CFolderPickerDialog dlgFile;// (TRUE, NULL, NULL, OFN_HIDEREADONLY, pszFilter, AfxGetMainWnd());
-
+	//:AC: ToDo 
+	//a) if folder selected contains .git folder make sure this works
+	//b) error checking if there is no repo etc
 	if (IDOK == dlgFile.DoModal())
 	{
 		auto path_name = dlgFile.GetPathName();
@@ -239,6 +241,7 @@ void CGit_05App::On_Add_Repo()
 
  		std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits;
 		GIT_Engine::get_commits_for_branches(repo_path, branch_commits);
+		get_main_frame()->m_wndWorkSpace41.git_tree(std::move(branch_commits));
 	}
 }
 

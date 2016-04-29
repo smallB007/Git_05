@@ -10,12 +10,6 @@
     <ClCompile Include="PropertiesViewBar.cpp">
       <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="WorkSpaceBar.cpp">
-      <Filter>BCG\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkSpaceBar2.cpp">
-      <Filter>BCG\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Git_05.cpp">
       <Filter>MFC\cpp</Filter>
     </ClCompile>
@@ -55,9 +49,6 @@
     <ClCompile Include="Direct2Handler.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="WorkSpaceBar_Git_Tree.cpp">
-      <Filter>Git_05\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Direct2DUtility.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
@@ -85,8 +76,12 @@
     <ClCompile Include="User_Credentials.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="GIT_Engine.cpp" />
-    <ClCompile Include="GIT_Commit_Local.cpp" />
+    <ClCompile Include="GIT_Commit_Local.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="GIT_Engine.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -96,12 +91,6 @@
       <Filter>BCG\hpp</Filter>
     </ClInclude>
     <ClInclude Include="PropertiesViewBar.h">
-      <Filter>BCG\hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkSpaceBar.h">
-      <Filter>BCG\hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkSpaceBar2.h">
       <Filter>BCG\hpp</Filter>
     </ClInclude>
     <ClInclude Include="Git_05.h">
@@ -152,9 +141,6 @@
     <ClInclude Include="Direct2Handler.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="WorkSpaceBar_Git_Tree.h">
-      <Filter>Git_05\hpp</Filter>
-    </ClInclude>
     <ClInclude Include="ComPtr.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
@@ -188,8 +174,12 @@
     <ClInclude Include="GIT_Branch.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="GIT_Engine.hpp" />
-    <ClInclude Include="GIT_Commit_Local.hpp" />
+    <ClInclude Include="GIT_Engine.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="GIT_Commit_Local.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
@@ -236,12 +226,6 @@
     <Image Include="arrow.png">
       <Filter>Git_05\resources</Filter>
     </Image>
-    <Image Include="Artwork\gameicon32x32.png">
-      <Filter>Git_05\resources</Filter>
-    </Image>
-    <Image Include="Artwork\GAMEICON_32X32.bmp">
-      <Filter>Git_05\resources</Filter>
-    </Image>
     <Image Include="res\images_n.bmp">
       <Filter>Git_05\resources</Filter>
     </Image>
@@ -264,6 +248,18 @@
       <Filter>Git_05\resources</Filter>
     </Image>
     <Image Include="res\icon1.ico">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\arrow.png">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\commit.png">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\Head.png">
+      <Filter>Git_05\resources</Filter>
+    </Image>
+    <Image Include="Artwork\tail.png">
       <Filter>Git_05\resources</Filter>
     </Image>
   </ItemGroup>

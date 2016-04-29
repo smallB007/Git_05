@@ -6,8 +6,12 @@
 #include "DemoListView.hpp"
 #include "Direct2DRenderer.hpp"
 #include <memory>
+class GIT_Commit_Local;
+
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
 {
+private:
+	std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits_;
 public:
 	enum EVIEW_TYPE{REPOS,GIT_TREE};
 private:
@@ -15,10 +19,11 @@ private:
 	HTREEITEM hRoot_;
 	CImageList m_cImageListNormal, m_cImageListSmall;
 	EVIEW_TYPE eview_type_{ REPOS };
-	int CWorkSpaceBar4::create_list_ctrl_();
+	int create_list_ctrl_();
 public:
 	CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
+	void git_tree(std::map<std::string, std::vector<GIT_Commit_Local>>&& branchCommits);
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;

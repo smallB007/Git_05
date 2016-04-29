@@ -120,7 +120,39 @@ HRESULT Direct2DRenderer::CreateDeviceResources()
 			0,
 			&m_arrowBitmap);
 	}
-
+	if (SUCCEEDED(hr))
+	{
+		// Load back button image
+		hr = Direct2DUtility::LoadBitmapFromResource(
+			m_renderTarget,
+			L"IDB_HEAD",
+			L"PNG",
+			0,
+			0,
+			&head_bitmap_);
+	}
+	if (SUCCEEDED(hr))
+	{
+		// Load back button image
+		hr = Direct2DUtility::LoadBitmapFromResource(
+			m_renderTarget,
+			L"IDB_TAIL",
+			L"PNG",
+			0,
+			0,
+			&tail_bitmap_);
+	}
+	if (SUCCEEDED(hr))
+	{
+		// Load back button image
+		hr = Direct2DUtility::LoadBitmapFromResource(
+			m_renderTarget,
+			L"IDB_COMMIT",
+			L"PNG",
+			0,
+			0,
+			&commit_bitmap_);
+	}
 	// 		if (SUCCEEDED(hr))
 	// 		{
 	// 			// Load default thumbnail image...
@@ -334,7 +366,9 @@ void Direct2DRenderer::Resize(int cx, int cy)
 	m_renderTarget->Resize(size);
 }
 
-HRESULT Direct2DRenderer::DrawClientArea()
+#include "GIT_Commit_Local.hpp"
+
+HRESULT Direct2DRenderer::DrawClientArea(const std::vector<GIT_Commit_Local>*const commits)
 {
 	if (D2DERR_RECREATE_TARGET == hr_)
 	{
@@ -357,8 +391,13 @@ HRESULT Direct2DRenderer::DrawClientArea()
 
 		m_renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Aqua));
-		m_renderTarget->DrawBitmap(m_arrowBitmap, &dx_rect);
-
+		//m_renderTarget->DrawBitmap(m_arrowBitmap, &dx_rect);
+		draw_tail_();
+		if (nullptr != commits)
+		{
+			draw_commits_(commits);
+		}
+		draw_head_();
 		hr = m_renderTarget->EndDraw();
 	}
 
@@ -370,4 +409,30 @@ HRESULT Direct2DRenderer::DrawClientArea()
 	}
 
 	return hr;
+}
+void Direct2DRenderer::drawRectangle(LPRECT rect)
+{
+	if (m_renderTarget)
+	{
+		m_renderTarget->BeginDraw();
+		D2D1_RECT_F dx_rect;
+		dx_rect.bottom = rect->bottom;
+		dx_rect.left = rect->left;
+		dx_rect.right = rect->right;
+		dx_rect.top = rect->top;
+		m_renderTarget->DrawRectangle(dx_rect, m_fontBrush);
+		m_renderTarget->EndDraw();
+	}
+}
+void Direct2DRenderer::draw_tail_()
+{
+
+}
+void Direct2DRenderer::draw_commits_(const std::vector<GIT_Commit_Local>*const commits)
+{
+
+}
+void Direct2DRenderer::draw_head_()
+{
+
 }
