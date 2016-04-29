@@ -12,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 const int nBorderSize = 0;
-
+//#define IDC_LIST_CTRL 1
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4
 
@@ -24,6 +24,7 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 #else
 	ON_WM_PAINT()
 #endif
+	
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,17 @@ CWorkSpaceBar4::~CWorkSpaceBar4()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 message handlers
+
+// void CWorkSpaceBar4::DoDataExchange(CDataExchange* pDX)
+// {
+// 	CBCGPDockingControlBar::DoDataExchange(pDX);
+// 	DDX_Control(pDX, IDC_LIST_CTRL, m_wndListCtrl);
+// 	//DDX_Control(pDX, IDC_USERNAME_EDIT, user_name_edit_);
+// 	//DDX_Control(pDX, IDC_USEREMAIL_EDIT, user_email_edit_);
+// 	//DDX_Control(pDX, IDC_USERNAMELOGIN_EDIT, user_name_login_);
+// 	//DDX_Control(pDX, IDC_USEREMAILLOGIN_EDIT, password_log_in_);
+// 	//DDX_Control(pDX, IDC_ACCOUNT_BUTTON, avatar_btn_);
+// }
 
 int CWorkSpaceBar4::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -211,8 +223,8 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	m_wndListCtrl.GetClientRect(&rect);
 	int nColInterval = rect.Width() /*/ 5*/;
 
-	m_wndListCtrl.InsertColumn(0, _T("Item Name"), LVCFMT_JUSTIFYMASK, nColInterval * 3);
-	m_wndListCtrl.InsertColumn(1, _T("Value"), LVCFMT_JUSTIFYMASK, nColInterval);
+	//m_wndListCtrl.InsertColumn(0, _T("Item Name"), LVCFMT_JUSTIFYMASK, nColInterval * 3);
+	//m_wndListCtrl.InsertColumn(1, _T("Value"), LVCFMT_JUSTIFYMASK, nColInterval);
 	//m_wndListCtrl.InsertColumn(2, _T("Time"), LVCFMT_LEFT, rect.Width() - 4 * nColInterval);
 
 
@@ -233,12 +245,15 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	// Load the small icons
 	cBmp.LoadBitmap(IDB_IMAGES_NORMAL);
 	m_cImageListSmall.Add(&cBmp, RGB(255, 0, 255));
+	cBmp.DeleteObject();
 
 	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 	m_wndListCtrl.SetImageList(&m_cImageListSmall, LVSIL_SMALL);
 	///////////
 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
-	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_FLATSB);
+	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE );
+	COLORREF background_color{RGB(200,200,200)};
+	m_wndListCtrl.SetBkColor(background_color);
 	/*
 	// Get the current mouse location and convert it to client
 	// coordinates.
@@ -259,10 +274,10 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		lvi.iImage = i % 8;		// There are 8 images in the image list
 		m_wndListCtrl.InsertItem(&lvi);
 		// Set subitem 1
-		strItem.Format(_T("%d"), 10 * i);
-		lvi.iSubItem = 1;
-		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
-		m_wndListCtrl.SetItem(&lvi);
+// 		strItem.Format(_T("%d"), 10 * i);
+// 		lvi.iSubItem = 1;
+// 		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
+// 		m_wndListCtrl.SetItem(&lvi);
 		// Set subitem 2
 // 		strItem.Format(_T("%s"),
 // 			COleDateTime::GetCurrentTime().Format(_T("Created: %I:%M:%S %p, %m/%d/%Y")));

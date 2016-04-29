@@ -82,6 +82,7 @@
     <ClCompile Include="GIT_Engine.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Git_05_ListCtr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -180,6 +181,7 @@
     <ClInclude Include="GIT_Commit_Local.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="Git_05_ListCtr.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">

@@ -6,6 +6,7 @@
 #include "DemoListView.hpp"
 #include "Direct2DRenderer.hpp"
 #include <memory>
+#include "Git_05_ListCtr.hpp"
 class GIT_Commit_Local;
 
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
@@ -28,9 +29,10 @@ public:
 protected:
 	//CBCGPTreeCtrl m_wndTree;
 	//CListCtrl& listCtrl;
-	CListCtrl m_wndListCtrl;
+	Git_05_ListCtr m_wndListCtrl;
 	//CDemoListView m_listView;
 	// Operations
+	//virtual void DoDataExchange(CDataExchange* pDX)override;
 public:
 
 	// Overrides
