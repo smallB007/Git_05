@@ -219,72 +219,81 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		return -1;      // fail to create
 	}
 
-	CRect rect;
-	m_wndListCtrl.GetClientRect(&rect);
-	int nColInterval = rect.Width() /*/ 5*/;
+// 		HIMAGELIST hList = ImageList_Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 1);
+// 	 	m_cImageListNormal.Attach(hList);
 
-	//m_wndListCtrl.InsertColumn(0, _T("Item Name"), LVCFMT_JUSTIFYMASK, nColInterval * 3);
-	//m_wndListCtrl.InsertColumn(1, _T("Value"), LVCFMT_JUSTIFYMASK, nColInterval);
-	//m_wndListCtrl.InsertColumn(2, _T("Time"), LVCFMT_LEFT, rect.Width() - 4 * nColInterval);
+	 
+	 	// Load the large icons
+// 	 	CBitmap cBmp;
+// 	 	cBmp.LoadBitmap(IDB_IMAGES_NORMAL);
+// 	 	m_cImageListNormal.Add(&cBmp, RGB(255, 0, 255));
+// 	 	cBmp.DeleteObject();
+	 
+	 
+	 //	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
+	 	
+	 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
+	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE );
+	 	COLORREF background_color{RGB(200,200,200)};
+	 	m_wndListCtrl.SetBkColor(background_color);
+		
+		CWinApp* pApp = AfxGetApp();
+		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_DOG));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_ELEPHANT));
+		m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 
+	m_wndListCtrl.InsertColumn(0, _T("Name"), LVCFMT_CENTER, 200, 0);
+	
+	m_wndListCtrl.InsertColumn(1, _T("Age"), LVCFMT_RIGHT, 200, 1);
+	
+	m_wndListCtrl.InsertColumn(2, _T("Owner"), LVCFMT_CENTER, 200, 2);
+	
+	m_wndListCtrl.InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, 200, 3);
 
+	m_wndListCtrl.InsertItem(0, _T("Martafoi"), 0);
+	m_wndListCtrl.InsertItem(1, _T("Zdreanta"), 1);
+	m_wndListCtrl.InsertItem(2, _T("Jumbo"), 2);
 
-	// Create 256 color image lists
-	HIMAGELIST hList = ImageList_Create(32, 32, ILC_COLOR8 | ILC_MASK, 8, 1);
-	m_cImageListNormal.Attach(hList);
+	m_wndListCtrl.SetItemText(0, 1, _T("8 months"));
+	m_wndListCtrl.SetItemText(1, 1, _T("7 years"));
+	m_wndListCtrl.SetItemText(2, 1, _T("35 years"));
 
-	hList = ImageList_Create(16, 16, ILC_COLOR8 | ILC_MASK, 8, 1);
-	m_cImageListSmall.Attach(hList);
+	m_wndListCtrl.SetItemText(0, 2, _T("John Doe"));
+	m_wndListCtrl.SetItemText(1, 2, _T("Brigitte Bardot"));
+	m_wndListCtrl.SetItemText(2, 2, _T("Hannibal Barcas"));
 
-	// Load the large icons
-	CBitmap cBmp;
-	cBmp.LoadBitmap(IDB_IMAGES_NORMAL);
-	m_cImageListNormal.Add(&cBmp, RGB(255, 0, 255));
-	cBmp.DeleteObject();
+	m_wndListCtrl.SetItemText(0, 3, _T("New York, USA"));
+	m_wndListCtrl.SetItemText(1, 3, _T("Paris, France"));
+	m_wndListCtrl.SetItemText(2, 3, _T("Barcelona, Spain"));
 
-	// Load the small icons
-	cBmp.LoadBitmap(IDB_IMAGES_NORMAL);
-	m_cImageListSmall.Add(&cBmp, RGB(255, 0, 255));
-	cBmp.DeleteObject();
+	VERIFY(_SetTilesViewLinesCount(3));
 
-	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
-	m_wndListCtrl.SetImageList(&m_cImageListSmall, LVSIL_SMALL);
-	///////////
-	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
-	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE );
-	COLORREF background_color{RGB(200,200,200)};
-	m_wndListCtrl.SetBkColor(background_color);
-	/*
-	// Get the current mouse location and convert it to client
-	// coordinates.
-	CPoint pos( ::GetMessagePos() );
-	ScreenToClient(&pos);
-	*/
-	/////////
-	LVITEM lvi;
-	CString strItem;
-	for (int i = 0; i < 30; i++)
-	{
-		// Insert the first item
-		lvi.mask = LVIF_IMAGE | LVIF_TEXT;
-		strItem.Format(_T("Item %i"), i);
-		lvi.iItem = i;
-		lvi.iSubItem = 0;
-		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
-		lvi.iImage = i % 8;		// There are 8 images in the image list
-		m_wndListCtrl.InsertItem(&lvi);
-		// Set subitem 1
-// 		strItem.Format(_T("%d"), 10 * i);
-// 		lvi.iSubItem = 1;
-// 		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
-// 		m_wndListCtrl.SetItem(&lvi);
-		// Set subitem 2
-// 		strItem.Format(_T("%s"),
-// 			COleDateTime::GetCurrentTime().Format(_T("Created: %I:%M:%S %p, %m/%d/%Y")));
-// 		lvi.iSubItem = 2;
-// 		lvi.pszText = (LPTSTR)(LPCTSTR)(strItem);
-// 		m_wndListCtrl.SetItem(&lvi);
-	}
+	UINT arrColumns[3] = { 1, 2, 3 };
+	VERIFY(_SetItemTileLines(0, arrColumns, 3));
+	VERIFY(_SetItemTileLines(1, arrColumns, 3));
+	VERIFY(_SetItemTileLines(2, arrColumns, 3));
+	//m_wndListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+	m_wndListCtrl.SetView(LV_VIEW_TILE);// LV_VIEW_TILE
+}
 
-	m_wndListCtrl.SetView(LV_VIEW_MAX);// LV_VIEW_TILE
+BOOL CWorkSpaceBar4::_SetTilesViewLinesCount(int nCount)
+{
+	LVTILEVIEWINFO lvtvwi = { 0 };
+	lvtvwi.cbSize = sizeof(LVTILEVIEWINFO);
+	lvtvwi.dwMask = LVTVIM_COLUMNS;
+	lvtvwi.cLines = nCount;
+
+	return m_wndListCtrl.SetTileViewInfo(&lvtvwi);
+}
+BOOL CWorkSpaceBar4::_SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount)
+{
+	LVTILEINFO lvti = { 0 };
+	lvti.cbSize = sizeof(LVTILEINFO);
+	lvti.cColumns = nCount;
+	lvti.iItem = nItem;
+	lvti.puColumns = parrColumns;
+
+	return m_wndListCtrl.SetTileInfo(&lvti);
 }

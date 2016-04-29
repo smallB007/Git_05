@@ -21,6 +21,8 @@ private:
 	CImageList m_cImageListNormal, m_cImageListSmall;
 	EVIEW_TYPE eview_type_{ REPOS };
 	int create_list_ctrl_();
+	BOOL _SetTilesViewLinesCount(int nCount);
+	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
 	CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);

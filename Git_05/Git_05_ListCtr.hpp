@@ -5,8 +5,8 @@ class Git_05_ListCtr : public CListCtrl
 {
 	DECLARE_DYNAMIC(Git_05_ListCtr)
 private:
-	COLORREF		m_clrSortedColumn{ RGB(0,150,25) };
-	HFONT			m_hOldFont;
+// 	COLORREF		m_clrSortedColumn{ RGB(0,150,25) };
+// 	HFONT			m_hOldFont;
 
 	//std::unique_ptr<Direct2DRenderer> renderer_;
 	
@@ -14,9 +14,9 @@ public:
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
 	// Support for individual cells text/background colors:
-	virtual COLORREF OnGetCellTextColor(int nRow, int nColum);
-	virtual COLORREF OnGetCellBkColor(int nRow, int nColum);
-	int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//virtual COLORREF OnGetCellTextColor(int nRow, int nColum);
+	//virtual COLORREF OnGetCellBkColor(int nRow, int nColum);
+	//int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual HFONT OnGetCellFont(int /*nRow*/, int /*nColum*/, DWORD /*dwData*/ = 0)
 	{
 		return NULL;
@@ -67,13 +67,14 @@ protected:
 	//afx_msg LRESULT OnPrint(WPARAM wp, LPARAM lp);
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnMouseHover(UINT, CPoint);
+	void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 
 	//static int CALLBACK CompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 	//BOOL InitList();
 	//void InitColors();
 
-	COLORREF GetDefaultBkColor();
-	COLORREF GetMarkedColor();
+	//COLORREF GetDefaultBkColor();
+	//COLORREF GetMarkedColor();
 };
 
