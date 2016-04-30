@@ -19,10 +19,10 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	//}}AFX_MSG_MAP
 	//ON_MESSAGE(WM_PRINT, OnPrint)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+	ON_NOTIFY_REFLECT(NM_HOVER, OnMouseHover)
 	//ON_MESSAGE(WM_STYLECHANGED, OnStyleChanged)
 	//ON_REGISTERED_MESSAGE(BCGM_ONSETCONTROLVMMODE, OnBCGSetControlVMMode)
 	ON_WM_LBUTTONUP()
-	ON_WM_MOUSEHOVER()
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
 END_MESSAGE_MAP()
 
@@ -39,11 +39,7 @@ void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 	CRect rect;
 	GetClientRect(rect);
 	prc.right = rect.right;
-	
-// static 	CDC*  pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
-//  	CBrush brush_back_ground;
-//  	brush_back_ground.CreateSysColorBrush(2);
-//  	pDC->FillRect(&prc, &brush_back_ground);
+
 
 	InvalidateRect(&prc);
 	// (2)
@@ -86,6 +82,10 @@ Git_05_ListCtr::~Git_05_ListCtr()
 // {
 // 	return  m_clrSortedColumn;
 // }
+void Git_05_ListCtr::OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	int a{ 0 };
+}
 
 void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -119,7 +119,6 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			CRect rect;
 			GetClientRect(&rect);
 			prc.right = rect.right;
-			//pDC->DrawEdge(&prc, EDGE_BUMP, BF_RECT);
 
 			COLORREF red;
 			COLORREF green;
@@ -133,6 +132,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			LOGBRUSH br;
 			brush_back_ground.GetLogBrush(&br);
 			pDC->FillRect(&prc, &brush_back_ground);
+			//pDC->DrawEdge(&prc, EDGE_BUMP, BF_RECT);
 			//pDC->FillRect(&prc, &brush_back_ground);//:AC: must be called twice otherwise the first selection will be only column width
 			
 			COLORREF crText = br.lbColor;
@@ -221,7 +221,3 @@ void Git_05_ListCtr::OnLButtonUp(UINT flag, CPoint point)
 // 	dc.FillSolidRect(rect, crText);
 }
 
-void Git_05_ListCtr::OnMouseHover(UINT flag, CPoint point)
-{
-	//CListCtrl::OnLButtonUp(flag, point);
-}

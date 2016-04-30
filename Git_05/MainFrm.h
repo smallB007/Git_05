@@ -48,6 +48,8 @@ protected:  // control bar embedded members
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
+	void setup_git_branches_combo_();
+	void setup_ribbon_background_();
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -75,4 +77,11 @@ protected:
 	void ShowOptions (int nPage);
 
 	CBitmap m_bmpAppPreview;
+private:
+	//_ui_ CComboBox git_tree_branches_;
+
+
+protected:
+	//void DoDataExchange(CDataExchange* pDX);
+	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();
 };

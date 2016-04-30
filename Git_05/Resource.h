@@ -34,6 +34,8 @@
 #define IDB_BITMAP1                     185
 #define IDB_IMAGES_NORMAL               185
 #define IDB_PNG5                        188
+#define IDB_PNG3                        189
+#define IDR_RIBBON_BACKGROUND1          189
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -73,6 +75,7 @@
 #define IDC_USERNAMELOGIN_EDIT          1081
 #define IDC_USEREMAILLOGIN_EDIT         1082
 #define IDC_VIEW_1                      1085
+#define IDC_REPO_BRANCHES_COMBO         1087
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -124,9 +127,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        189
+#define _APS_NEXT_RESOURCE_VALUE        190
 #define _APS_NEXT_COMMAND_VALUE         32868
-#define _APS_NEXT_CONTROL_VALUE         1086
+#define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

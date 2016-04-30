@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>2</VERSION_STAMP>
+		<VERSION_STAMP>3</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -389,6 +389,27 @@
 									<VALUE>32795</VALUE>
 								</ID>
 								<TEXT>Git Tree</TEXT>
+							</ELEMENT>
+						</ELEMENTS>
+					</PANEL>
+				</PANELS>
+			</CATEGORY>
+			<CATEGORY>
+				<ELEMENT_NAME>Category</ELEMENT_NAME>
+				<NAME>Repository</NAME>
+				<PANELS>
+					<PANEL>
+						<ELEMENT_NAME>Panel</ELEMENT_NAME>
+						<NAME>Branches</NAME>
+						<ELEMENTS>
+							<ELEMENT>
+								<ELEMENT_NAME>ComboBox</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_REPO_BRANCHES_COMBO</NAME>
+									<VALUE>1087</VALUE>
+								</ID>
+								<WIDTH>108</WIDTH>
+								<EDIT_BOX>TRUE</EDIT_BOX>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

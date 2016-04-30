@@ -12,6 +12,7 @@
 // CGit_05App:
 // See Git_05.cpp for the implementation of this class
 //
+#define _ui_ 
 class CMainFrame;
 
 class CGit_05App : public CBCGPWinApp
@@ -44,6 +45,8 @@ public:
 
 	void write_credentials_to_file(const char* username, const char* password)const;
 	void read_credentials_from_file(std::string& username, std::string& password)const;
+	void write_visual_theme_to_file_()const;
+	void read_visual_theme_from_file_();
 };
 
 extern CGit_05App theApp;

@@ -24,6 +24,7 @@ BEGIN_MESSAGE_MAP(CGit_05App, CBCGPWinApp)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CBCGPWinApp::OnFilePrintSetup)
 	ON_COMMAND(IDC_ADD_REPO_BUTTON, On_Add_Repo)
 	ON_COMMAND(IDC_CREATE_REPO_BUTTON, OnCreateRepoButton)
+	
 END_MESSAGE_MAP()
 
 struct threadInfo_t
@@ -55,12 +56,8 @@ CGit_05App::CGit_05App()
 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2013_WHITE, ID_VIEW_APPLOOK_2013_1);
 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2013_GRAY, ID_VIEW_APPLOOK_2013_2);
 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2013_DARK_GRAY, ID_VIEW_APPLOOK_2013_3);
-// 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2016_COLORFUL, ID_VIEW_APPLOOK_2016_1);
-// 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2016_DARK_GRAY, ID_VIEW_APPLOOK_2016_2);
-// 	AddVisualTheme(BCGP_VISUAL_THEME_OFFICE_2016_WHITE, ID_VIEW_APPLOOK_2016_3);
 
-	SetVisualTheme(BCGP_VISUAL_THEME_OFFICE_2010_BLUE);
-
+	read_visual_theme_from_file_();
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -152,8 +149,30 @@ BOOL CGit_05App::InitInstance()
 	m_pMainWnd->DragAcceptFiles();
 	
 	git_libgit2_init();
-
+	
 	return TRUE;
+}
+#include <fstream>
+void CGit_05App::write_visual_theme_to_file_()const
+{
+	std::ofstream f_out("visual_theme.txt");
+	if (f_out)
+	{
+		f_out << GetVisualTheme();
+	}
+}
+
+void CGit_05App::read_visual_theme_from_file_()
+{
+	std::ifstream f_in("visual_theme.txt");
+	CBCGPWinApp::BCGP_VISUAL_THEME theme;
+	int t{0};
+	if (f_in)
+	{
+		f_in >> t;
+	}
+	theme = static_cast<CBCGPWinApp::BCGP_VISUAL_THEME>(t);
+	SetVisualTheme(theme);
 }
 
 // CGit_05App message handlers
@@ -163,6 +182,7 @@ int CGit_05App::ExitInstance()
 
 	git_libgit2_shutdown();
 	delete_repos_();
+	write_visual_theme_to_file_();
 	return CBCGPWinApp::ExitInstance();
 }
 
@@ -212,6 +232,7 @@ void CGit_05App::OnAppAbout()
 
 void CGit_05App::PreLoadState()
 {
+
 }
 
 
@@ -297,6 +318,8 @@ void CGit_05App::read_credentials_from_file(std::string& username, std::string& 
 		f_in >> password;
 	}
 }
+
+
 
 void CGit_05App::delete_repos_()
 {

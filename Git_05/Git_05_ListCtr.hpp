@@ -24,29 +24,29 @@ public:
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
 		
-		if (pMsg->message == WM_LBUTTONUP)
-		{
-			CPoint pos(::GetMessagePos());
-			ScreenToClient(&pos);
-			OnLButtonUp(0,pos);
-		}
-		else if (
-			pMsg->message == WM_MOUSEHOVER 
- 				///*||*/ WM_MOUSEMOVE == pMsg->message 
-// 				|| WM_MOUSELEAVE == pMsg->message
-// 				|| WM_MOUSEACTIVATE == pMsg->message
-// 				|| WM_MOUSEFIRST == pMsg->message
-// 				|| WM_MOUSELAST == pMsg->message
-// 				|| WM_MOUSEWHEEL == pMsg->message
- 				///*|| */WM_NCMOUSEHOVER == pMsg->message
-// 				|| WM_NCMOUSELEAVE == pMsg->message
-// 				|| WM_NCMOUSEMOVE == pMsg->message
-				)
-		{
-			CPoint pos(::GetMessagePos());
-			ScreenToClient(&pos);
-			OnMouseHover(0, pos);
-		}
+// 		if (pMsg->message == WM_LBUTTONUP)
+// 		{
+// 			CPoint pos(::GetMessagePos());
+// 			ScreenToClient(&pos);
+// 			OnLButtonUp(0,pos);
+// 		}
+// 		else if (
+// 			//pMsg->message == WM_MOUSEHOVER 
+//  				///*||*/ WM_MOUSEMOVE == pMsg->message 
+// // 				|| WM_MOUSELEAVE == pMsg->message
+// // 				|| WM_MOUSEACTIVATE == pMsg->message
+// // 				|| WM_MOUSEFIRST == pMsg->message
+// // 				|| WM_MOUSELAST == pMsg->message
+// // 				|| WM_MOUSEWHEEL == pMsg->message
+//  				WM_NCMOUSEHOVER == pMsg->message
+// // 				|| WM_NCMOUSELEAVE == pMsg->message
+// // 				|| WM_NCMOUSEMOVE == pMsg->message
+// 				)
+// 		{
+// 			CPoint pos(::GetMessagePos());
+// 			ScreenToClient(&pos);
+// 			//OnMouseHover(0, pos);
+// 		}
 		return CListCtrl::PreTranslateMessage(pMsg);
 	}
 	// ClassWizard generated virtual function overrides
@@ -66,7 +66,7 @@ protected:
 	//afx_msg LRESULT OnBCGSetControlVMMode(WPARAM, LPARAM);
 	//afx_msg LRESULT OnPrint(WPARAM wp, LPARAM lp);
 	afx_msg void OnLButtonUp(UINT, CPoint);
-	afx_msg void OnMouseHover(UINT, CPoint);
+	afx_msg void OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult);
 	void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 

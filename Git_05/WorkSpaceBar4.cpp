@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 	
 END_MESSAGE_MAP()
 
+
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
 
@@ -233,10 +234,19 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	 //	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 	 	
 	 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
-	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE );
+	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT);
 	 	COLORREF background_color{RGB(200,200,200)};
 	 	m_wndListCtrl.SetBkColor(background_color);
+		m_wndListCtrl.SetHoverTime(50);
 		
+// 		CBitmap bitmap;
+// 		bitmap.LoadBitmap(IDB_IMAGES_NORMAL);
+// 		LVBKIMAGE bi;
+// 		bi.hbm = bitmap;
+		m_wndListCtrl.SetBkImage(
+			_T("Artwork//commit.png"),
+			//_T("http://www.microsoft.com/library/images/gifs/homepage/microsoft.gif"),
+			TRUE);
 		CWinApp* pApp = AfxGetApp();
 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));

@@ -36,6 +36,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_COMMAND(IDC_PROGRESS1055, OnProgressBar)
 	ON_COMMAND(IDC_PALETTE_BTN_THEME, OnPaletteTheme)
 	ON_COMMAND(ID_SOME_OFFICE_THEME, OnPaletteTheme)
+	//ON_CBN_SELCHANGE(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
+	ON_COMMAND(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -52,6 +54,40 @@ CMainFrame::~CMainFrame()
 
 
 
+void CMainFrame::setup_git_branches_combo_()
+{
+	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	ASSERT_VALID(pRibbon);
+	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
+	ASSERT_VALID(branches_p);
+	branches_p->AddItem(L"Item 2");
+	branches_p->AddItem(L"Some really long text");
+	branches_p->AddItem(L"Item 1");
+	branches_p->SelectItem(0);
+	if (0)
+	{//width of combobox can be calculated ;)
+		CClientDC dc(this);
+		CFont * pOldFont = dc.SelectObject(this->GetFont());
+		CSize len = dc.GetTextExtent(branches_p->GetItem(0));
+	}
+	branches_p->SetWidth(100);
+}
+
+void CMainFrame::setup_ribbon_background_()
+{
+	CBCGPToolBarImages background;
+	background.Load(IDR_RIBBON_BACKGROUND1);
+	CBCGPWinApp::BCGP_VISUAL_THEME theme{ theApp.GetVisualTheme() };
+	
+ 		if (theme == CBCGPWinApp::BCGP_VISUAL_THEME_OFFICE_2013_DARK_GRAY)
+ 		 	{
+		 		// Make background image darker for Office 2013 Dark theme:
+		 		background.AddaptColors(RGB(255, 255, 255), RGB(230, 230, 230));
+
+		 	}
+
+	m_wndRibbonBar.SetBackgroundImage(background);
+}
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CBCGPFrameWnd::OnCreate(lpCreateStruct) == -1)
@@ -185,6 +221,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
 	//DockControlBar(&wnd_workspace_git_tree_2);
+
+	
+	//branches_p->InsertItem(0, L"Item 0");
+	//branches_p->SetText(L"Item 0");
+	
+	setup_git_branches_combo_();
+
+	setup_ribbon_background_();
 	return 0;
 }
 
@@ -248,6 +292,7 @@ BOOL CMainFrame::CreateRibbonBar ()
 			pBackstagePanel->AttachPrintPreviewToItem(6, FALSE);
 		}
 	}
+	
  // USE_RIBBON_DESIGNER
 	return TRUE;
 }
@@ -428,3 +473,14 @@ void CMainFrame::OnPaletteTheme()
 
 }
 
+// void CMainFrame::DoDataExchange(CDataExchange * pDX)
+// {
+	//CBCGPFrameWnd::DoDataExchange(pDX);
+	//DDX_Control(pDX, IDC_REPO_BRANCHES_COMBO, git_tree_branches_);
+	
+//}
+
+void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
+{
+
+}

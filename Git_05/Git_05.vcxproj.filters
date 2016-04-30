@@ -264,6 +264,7 @@
     <Image Include="Artwork\tail.png">
       <Filter>Git_05\resources</Filter>
     </Image>
+    <Image Include="res\Background1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">
@@ -292,6 +293,10 @@
     <Text Include="ToDo.txt">
       <Filter>Git_05\miscellenaous</Filter>
     </Text>
+    <Text Include="ToDo_Repos_List.txt">
+      <Filter>Git_05</Filter>
+    </Text>
+    <Text Include="ToDo_Git_05_App.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BCG">

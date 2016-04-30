@@ -198,6 +198,8 @@
     <Text Include="KB.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="ToDo.txt" />
+    <Text Include="ToDo_Git_05_App.txt" />
+    <Text Include="ToDo_Repos_List.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h" />
@@ -285,6 +287,7 @@
     <Image Include="Artwork\commit.png" />
     <Image Include="Artwork\Head.png" />
     <Image Include="Artwork\tail.png" />
+    <Image Include="res\Background1.png" />
     <Image Include="res\BCGSoft_ribbon\category_backstage_small.png" />
     <Image Include="res\BCGSoft_ribbon\category_large_0.png" />
     <Image Include="res\BCGSoft_ribbon\category_small_0.png" />

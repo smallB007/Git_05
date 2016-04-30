@@ -526,6 +526,8 @@ IDB_HEAD                PNG                     "Artwork\\Head.png"
 
 IDB_TAIL                PNG                     "Artwork\\tail.png"
 
+IDR_RIBBON_BACKGROUND1  PNG                     "res\\Background1.png"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
