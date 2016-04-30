@@ -67,7 +67,9 @@ protected:
 	//afx_msg LRESULT OnPrint(WPARAM wp, LPARAM lp);
 	afx_msg void OnLButtonUp(UINT, CPoint);
 	afx_msg void OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult);
-	void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnKillFocus(CWnd*);
+	void OnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 
 	//static int CALLBACK CompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);

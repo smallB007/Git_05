@@ -24,10 +24,13 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 #else
 	ON_WM_PAINT()
 #endif
-	
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
-
+void CWorkSpaceBar4::OnLButtonDown(UINT flag, CPoint point)
+{
+	int a{ 0 };
+}
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
 
@@ -234,10 +237,13 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	 //	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 	 	
 	 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
-	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT);
+	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT);
 	 	COLORREF background_color{RGB(200,200,200)};
 	 	m_wndListCtrl.SetBkColor(background_color);
 		m_wndListCtrl.SetHoverTime(50);
+		COLORREF clr{RGB(0,50,20)};
+		
+		m_wndListCtrl.SetOutlineColor(clr);
 		
 // 		CBitmap bitmap;
 // 		bitmap.LoadBitmap(IDB_IMAGES_NORMAL);
@@ -253,14 +259,11 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_DOG));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_ELEPHANT));
 		m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
-
-	m_wndListCtrl.InsertColumn(0, _T("Name"), LVCFMT_CENTER, 200, 0);
-	
-	m_wndListCtrl.InsertColumn(1, _T("Age"), LVCFMT_RIGHT, 200, 1);
-	
-	m_wndListCtrl.InsertColumn(2, _T("Owner"), LVCFMT_CENTER, 200, 2);
-	
-	m_wndListCtrl.InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, 200, 3);
+		
+	m_wndListCtrl.InsertColumn(0, _T("Name"), LVCFMT_CENTER, -1, 0);
+	m_wndListCtrl.InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
+	m_wndListCtrl.InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
+	m_wndListCtrl.InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
 
 	m_wndListCtrl.InsertItem(0, _T("Martafoi"), 0);
 	m_wndListCtrl.InsertItem(1, _T("Zdreanta"), 1);
@@ -285,6 +288,10 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	VERIFY(_SetItemTileLines(1, arrColumns, 3));
 	VERIFY(_SetItemTileLines(2, arrColumns, 3));
 	//m_wndListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+	m_wndListCtrl.SetColumnWidth(0, 1200);
+	m_wndListCtrl.SetColumnWidth(1, 1200);
+	m_wndListCtrl.SetColumnWidth(2, 1200);
+	m_wndListCtrl.SetColumnWidth(3, 1200);
 	m_wndListCtrl.SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
 

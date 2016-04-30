@@ -24,9 +24,24 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	//ON_REGISTERED_MESSAGE(BCGM_ONSETCONTROLVMMODE, OnBCGSetControlVMMode)
 	ON_WM_LBUTTONUP()
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
+	ON_WM_KILLFOCUS()
+	ON_NOTIFY_REFLECT(NM_CLICK, OnClick)
 END_MESSAGE_MAP()
 
 
+void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	int a{ 0 };
+	//OnKillFocus(nullptr);
+}
+void Git_05_ListCtr::OnKillFocus(CWnd*)
+{
+	/*This surprisingly prevents focus from current selection to be lost, yuppie ;)*/
+	//int a{ 0 };
+	CRect rect;
+	GetClientRect(rect);
+	InvalidateRect(&rect);
+}
 void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW & nm = *(LPNMLISTVIEW)pNMHDR;  // (1)
@@ -131,6 +146,8 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 
 			LOGBRUSH br;
 			brush_back_ground.GetLogBrush(&br);
+			//COLORREF clr{ RGB(255,0,0) };
+			//SetOutlineColor(clr);
 			pDC->FillRect(&prc, &brush_back_ground);
 			//pDC->DrawEdge(&prc, EDGE_BUMP, BF_RECT);
 			//pDC->FillRect(&prc, &brush_back_ground);//:AC: must be called twice otherwise the first selection will be only column width
@@ -139,6 +156,8 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			pLVCD->clrTextBk = crText;
 			pLVCD->clrFace = crText;
 			//pLVCD->clrText = green;
+			pLVCD->iIconEffect = 2;
+			//pLVCD->uAlign = LVGA_HEADER_CENTER;
 			
 			
 		}
