@@ -24,13 +24,13 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 #else
 	ON_WM_PAINT()
 #endif
-	ON_WM_LBUTTONDOWN()
+//	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
-void CWorkSpaceBar4::OnLButtonDown(UINT flag, CPoint point)
-{
-	int a{ 0 };
-}
+// void CWorkSpaceBar4::OnLButtonDown(UINT flag, CPoint point)
+// {
+// 	int a{ 0 };
+// }
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
 
@@ -238,21 +238,19 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	 	
 	 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
 	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT);
-	 	COLORREF background_color{RGB(200,200,200)};
-	 	m_wndListCtrl.SetBkColor(background_color);
+	 	m_wndListCtrl.SetBkColor(m_wndListCtrl.background_color_);
 		m_wndListCtrl.SetHoverTime(50);
-		COLORREF clr{RGB(0,50,20)};
 		
-		m_wndListCtrl.SetOutlineColor(clr);
 		
-// 		CBitmap bitmap;
-// 		bitmap.LoadBitmap(IDB_IMAGES_NORMAL);
-// 		LVBKIMAGE bi;
-// 		bi.hbm = bitmap;
-		m_wndListCtrl.SetBkImage(
-			_T("Artwork//commit.png"),
-			//_T("http://www.microsoft.com/library/images/gifs/homepage/microsoft.gif"),
-			TRUE);
+// 		LVBKIMAGEW lvbk;
+// 		CBitmap bm;
+// 		bm.LoadBitmap(IDB_IMAGES_NORMAL);
+// 		lvbk.hbm = bm;
+// 		m_wndListCtrl.SetBkImage(&lvbk);
+// 			//_T("Artwork//commit.png"),
+// 			////_T("http://www.microsoft.com/library/images/gifs/homepage/microsoft.gif"),
+// 			//TRUE);
+
 		CWinApp* pApp = AfxGetApp();
 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));
@@ -261,10 +259,13 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 		
 	m_wndListCtrl.InsertColumn(0, _T("Name"), LVCFMT_CENTER, -1, 0);
+	CRect rect;
+	GetClientRect(&rect);
+	m_wndListCtrl.SetColumnWidth(0, rect.Width());
 	m_wndListCtrl.InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
 	m_wndListCtrl.InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
 	m_wndListCtrl.InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
-
+	
 	m_wndListCtrl.InsertItem(0, _T("Martafoi"), 0);
 	m_wndListCtrl.InsertItem(1, _T("Zdreanta"), 1);
 	m_wndListCtrl.InsertItem(2, _T("Jumbo"), 2);
@@ -287,11 +288,7 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	VERIFY(_SetItemTileLines(0, arrColumns, 3));
 	VERIFY(_SetItemTileLines(1, arrColumns, 3));
 	VERIFY(_SetItemTileLines(2, arrColumns, 3));
-	//m_wndListCtrl.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
-	m_wndListCtrl.SetColumnWidth(0, 1200);
-	m_wndListCtrl.SetColumnWidth(1, 1200);
-	m_wndListCtrl.SetColumnWidth(2, 1200);
-	m_wndListCtrl.SetColumnWidth(3, 1200);
+	
 	m_wndListCtrl.SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
 
