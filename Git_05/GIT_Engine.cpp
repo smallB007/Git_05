@@ -167,12 +167,24 @@ void GIT_Engine::get_repo(const std::string & repo_path, git_repository** repo)
 // 	git_branch_iterator_free(branch_iterator);
 }
 
+static void convert_to_dot_git_path(std::string & repo_path)
+{
+	size_t position = repo_path.find(".git");
+	if (position == std::string::npos)
+	{
+		if (repo_path.find("\\"))
+		{
+			repo_path += "\\.git";
+		}
+		else
+		{
+			repo_path += "/.git";
+		}
+	}
+}
 void GIT_Engine::get_commits_for_branches(const std::string & repo_path, std::map<std::string, std::vector<GIT_Commit_Local>>& branchCommits)
 {
-// 	CT2CA c_str_path(repo_path);
-// 	std::string repo_path(c_str_path);
-
-
+	convert_to_dot_git_path(const_cast<std::string&>(repo_path));
 	git_repository* repo{ nullptr };
 	GIT_Engine::get_repo(repo_path, &repo);
 	std::vector<std::string> local_branches;

@@ -11,9 +11,14 @@ class GIT_Commit_Local;
 
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
 {
-private:
-	std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits_;
 public:
+	typedef std::string repo_name_t;
+	typedef std::string branch_name_t;
+private:
+	//std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits_;
+	std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>> repo_branches_;
+public:
+
 	enum EVIEW_TYPE{REPOS,GIT_TREE};
 private:
 	std::unique_ptr<Direct2DRenderer> renderer_;
@@ -21,17 +26,18 @@ private:
 	CImageList m_cImageListNormal, m_cImageListSmall;
 	EVIEW_TYPE eview_type_{ REPOS };
 	int create_list_ctrl_();
+	int add_repo_to_list_ctrl_(repo_name_t repoName);
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
 	CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
-	void git_tree(std::map<std::string, std::vector<GIT_Commit_Local>>&& branchCommits);
+	void git_tree(decltype(repo_branches_)&& repoBranches);
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;
 	//CListCtrl& listCtrl;
-	Git_05_ListCtr m_wndListCtrl;
+	std::unique_ptr<Git_05_ListCtr> m_wndListCtrl{nullptr};
 	//CDemoListView m_listView;
 	// Operations
 	//virtual void DoDataExchange(CDataExchange* pDX)override;

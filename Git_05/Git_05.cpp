@@ -240,6 +240,44 @@ const HTTPS_GIT_Client* const CGit_05App::get_https_git_client_p()
 {
 	return https_GIT_client_ptr_.get();
 }
+#include <algorithm>
+static std::string get_repo_name(std::string repo_path)
+{
+	std::string repo_name;
+	
+	char path_separator{ '\\' };
+	if (repo_path.find('/') != std::string::npos)
+	{
+		path_separator = '/';
+	}
+	std::string git_suffix(".git");
+	git_suffix.insert(cbegin(git_suffix),path_separator);
+	
+	if (repo_path.substr(repo_path.size() - git_suffix.size()) == git_suffix)
+	{
+		auto dot_git_removed = repo_path.substr(0, repo_path.size() - git_suffix.size());
+		size_t position = dot_git_removed.find_last_of(path_separator);
+		if (position != std::string::npos)
+		{
+			repo_name = dot_git_removed.substr(position);
+			repo_name.erase(std::remove(begin(repo_name),end(repo_name),path_separator), cend(repo_name));
+		}
+// 		auto rbeg = crbegin(dot_git_removed);
+// 		auto rend = crend(dot_git_removed);
+// 
+// 		while (rbeg != rend)
+// 		{
+// 			repo_name += *rbeg;
+// 			++rbeg;
+// 			if (*rbeg == path_separator)
+// 			{
+// 				break;
+// 			}
+// 		}
+	}
+	return repo_name;
+}
+
 #include "GIT_Engine.hpp"
 #include "GIT_Commit_Local.hpp"
 void CGit_05App::On_Add_Repo()
@@ -260,9 +298,17 @@ void CGit_05App::On_Add_Repo()
 		CT2CA c_str_path(path_name);
  		std::string repo_path(c_str_path);
 
- 		std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits;
+		typedef std::string branch_name_t;
+		std::map<branch_name_t, std::vector<GIT_Commit_Local>> branch_commits;
+
 		GIT_Engine::get_commits_for_branches(repo_path, branch_commits);
-		get_main_frame()->m_wndWorkSpace41.git_tree(std::move(branch_commits));
+		
+		typedef std::string repo_name_t;
+		std::map<repo_name_t, decltype(branch_commits)> repo_branches;
+
+		repo_name_t repo_name = get_repo_name(repo_path);
+		repo_branches[repo_name] = branch_commits;
+		get_main_frame()->m_wndWorkSpace_Repos_.git_tree(std::move(repo_branches));
 	}
 }
 

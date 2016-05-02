@@ -45,9 +45,14 @@ void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 	eview_type_ = view_type;
 }
 
-void CWorkSpaceBar4::git_tree(std::map<std::string, std::vector<GIT_Commit_Local>>&& branchCommits)
+
+
+void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
-	branch_commits_ = branchCommits;
+	//branch_commits_ = branchCommits;
+	repo_branches_ = repo_branches;
+	
+	add_repo_to_list_ctrl_((*cbegin(repo_branches)).first);
 }
 
 CWorkSpaceBar4::~CWorkSpaceBar4()
@@ -72,10 +77,7 @@ int CWorkSpaceBar4::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CBCGPDockingControlBar::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
 	
-
-
 	//// Create tree control:
 	//const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES |
 	//	TVS_LINESATROOT | TVS_HASBUTTONS;
@@ -92,8 +94,11 @@ int CWorkSpaceBar4::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		//Tree control should cover a whole client area:
 	case EVIEW_TYPE::REPOS:
 	{
-		renderer_ = std::make_unique<Direct2DRenderer>(m_hWnd);//just so rectArea around list item can be drawn
+		//renderer_ = std::make_unique<Direct2DRenderer>(m_hWnd);//just so rectArea around list item can be drawn
+		m_wndListCtrl = std::make_unique<Git_05_ListCtr>();
 		return create_list_ctrl_();
+		
+		
 	}
 	break;
 	case EVIEW_TYPE::GIT_TREE:
@@ -124,9 +129,10 @@ void CWorkSpaceBar4::OnSize(UINT nType, int cx, int cy)
 		//Tree control should cover a whole client area:
 		case EVIEW_TYPE::REPOS:
 		{
-			m_wndListCtrl.SetWindowPos(NULL, nBorderSize, nBorderSize,
+			m_wndListCtrl->SetWindowPos(NULL, nBorderSize, nBorderSize,
 				cx - 2 * nBorderSize, cy - 2 * nBorderSize,
 				SWP_NOACTIVATE | SWP_NOZORDER);
+
 		}
 		break;
 		case EVIEW_TYPE::GIT_TREE:
@@ -162,26 +168,26 @@ void CWorkSpaceBar4::OnPaint()
 	case EVIEW_TYPE::REPOS:
 	{
 // 		CRect rectTree;
-// 		m_wndListCtrl.GetWindowRect(rectTree);
+// 		m_wndListCtrl->GetWindowRect(rectTree);
 // 		ScreenToClient(rectTree);
 // 
 // 		rectTree.InflateRect(nBorderSize, nBorderSize);
 // 
 // 		dc.Draw3dRect(rectTree, globalData.clrBarShadow, globalData.clrBarShadow);
 // 		CRect rect;
-// 		m_wndListCtrl.GetItemRect(2, &rect, 0);
+// 		m_wndListCtrl->GetItemRect(2, &rect, 0);
 // 		renderer_->drawRectangle(rect);
 	}
 	break;
 	case EVIEW_TYPE::GIT_TREE:
 	{
 		const std::vector<GIT_Commit_Local>* commits{nullptr};
-		if (branch_commits_.size())
-		{
-			auto beg = cbegin(branch_commits_);
-			commits = &(beg->second);//for now only first branch from map, and perhaps I should move it from OnPaint
-		}
-		renderer_->DrawClientArea(commits);
+		//if (branch_commits_.size())
+		//{
+		//	auto beg = cbegin(branch_commits_);
+		//	commits = &(beg->second);//for now only first branch from map, and perhaps I should move it from OnPaint
+		//}
+		//renderer_->DrawClientArea(commits);
 		
 	}
 	break;
@@ -210,86 +216,75 @@ void CWorkSpaceBar4::fill_repositories_()
 int CWorkSpaceBar4::create_list_ctrl_()
 {
 	// Create list control:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE;// | TVS_HASLINES |
+	const DWORD dwViewStyle = WS_BORDER | WS_CHILD | WS_VISIBLE;// | TVS_HASLINES |
 													//TVS_LINESATROOT | TVS_HASBUTTONS;
 
-													//m_wndListCtrl.m_bVisualManagerStyle = TRUE;
+													//m_wndListCtrl->m_bVisualManagerStyle = TRUE;
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	if (!m_wndListCtrl.Create(dwViewStyle, rectDummy, this, 1))
+	if (!m_wndListCtrl->Create(dwViewStyle, rectDummy, this, 1))
 	{
 		TRACE0("Failed to create workspace view\n");
 		return -1;      // fail to create
 	}
-
-// 		HIMAGELIST hList = ImageList_Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 1);
-// 	 	m_cImageListNormal.Attach(hList);
-
-	 
-	 	// Load the large icons
-// 	 	CBitmap cBmp;
-// 	 	cBmp.LoadBitmap(IDB_IMAGES_NORMAL);
-// 	 	m_cImageListNormal.Add(&cBmp, RGB(255, 0, 255));
-// 	 	cBmp.DeleteObject();
-	 
-	 
-	 //	m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
-	 	
-	 	m_wndListCtrl.ModifyStyle(0, LVS_REPORT);
-	 	m_wndListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT);
-	 	m_wndListCtrl.SetBkColor(m_wndListCtrl.background_color_);
-		m_wndListCtrl.SetHoverTime(50);
-		
-		
-// 		LVBKIMAGEW lvbk;
-// 		CBitmap bm;
-// 		bm.LoadBitmap(IDB_IMAGES_NORMAL);
-// 		lvbk.hbm = bm;
-// 		m_wndListCtrl.SetBkImage(&lvbk);
-// 			//_T("Artwork//commit.png"),
-// 			////_T("http://www.microsoft.com/library/images/gifs/homepage/microsoft.gif"),
-// 			//TRUE);
+	
 
 		CWinApp* pApp = AfxGetApp();
 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_DOG));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_ELEPHANT));
-		m_wndListCtrl.SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
-		
-	m_wndListCtrl.InsertColumn(0, _T("Name"), LVCFMT_CENTER, -1, 0);
-	CRect rect;
-	GetClientRect(&rect);
-	m_wndListCtrl.SetColumnWidth(0, rect.Width());
-	m_wndListCtrl.InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
-	m_wndListCtrl.InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
-	m_wndListCtrl.InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
-	
-	m_wndListCtrl.InsertItem(0, _T("Martafoi"), 0);
-	m_wndListCtrl.InsertItem(1, _T("Zdreanta"), 1);
-	m_wndListCtrl.InsertItem(2, _T("Jumbo"), 2);
+		m_wndListCtrl->SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
+// 		
+		m_wndListCtrl->InsertColumn(0, _T("Name"), LVCFMT_CENTER, -1, 0);
+		m_wndListCtrl->InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
+		m_wndListCtrl->InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
+m_wndListCtrl->InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
+// 	
+// m_wndListCtrl->InsertItem(0, _T("Martafoi"), 0);
+// m_wndListCtrl->SetItemText(0, 1, _T("8 months"));
+// m_wndListCtrl->SetItemText(0, 2, _T("John Doe"));
+// m_wndListCtrl->SetItemText(0, 3, _T("New York, USA"));
+// 
+// 	m_wndListCtrl->InsertItem(1, _T("Zdreanta"), 1);
+// 	m_wndListCtrl->SetItemText(1, 1, _T("7 years"));
+// 	m_wndListCtrl->SetItemText(1, 2, _T("Brigitte Bardot"));
+// 	m_wndListCtrl->SetItemText(1, 3, _T("Paris, France"));
+// 
+// 	m_wndListCtrl->InsertItem(2, _T("Jumbo"), 2);
+// 	m_wndListCtrl->SetItemText(2, 1, _T("35 years"));
+// 	m_wndListCtrl->SetItemText(2, 2, _T("Hannibal Barcas"));
+// 	m_wndListCtrl->SetItemText(2, 3, _T("Barcelona, Spain"));
+// 
+// 
+// 	/*m_wndListCtrl->InsertItem(3, _T("Jumbo"), 2);*/
+// 	//m_wndListCtrl->SetItemText(3, 1, _T("35 years"));
+// 	//m_wndListCtrl->SetItemText(3, 2, _T("Hannibal Barcas"));
+// 	//m_wndListCtrl->SetItemText(3, 3, _T("Barcelona, Spain"));
+// 	VERIFY(_SetTilesViewLinesCount(3));
+// 
+// 	UINT arrColumns[3] = { 1, 2, 3 };
+// 	VERIFY(_SetItemTileLines(0, arrColumns, 3));
+// 	VERIFY(_SetItemTileLines(1, arrColumns, 3));
+// 	VERIFY(_SetItemTileLines(2, arrColumns, 3));
+	//m_wndListCtrl->DeleteAllItems();
+	return m_wndListCtrl->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
+}
 
-	m_wndListCtrl.SetItemText(0, 1, _T("8 months"));
-	m_wndListCtrl.SetItemText(1, 1, _T("7 years"));
-	m_wndListCtrl.SetItemText(2, 1, _T("35 years"));
-
-	m_wndListCtrl.SetItemText(0, 2, _T("John Doe"));
-	m_wndListCtrl.SetItemText(1, 2, _T("Brigitte Bardot"));
-	m_wndListCtrl.SetItemText(2, 2, _T("Hannibal Barcas"));
-
-	m_wndListCtrl.SetItemText(0, 3, _T("New York, USA"));
-	m_wndListCtrl.SetItemText(1, 3, _T("Paris, France"));
-	m_wndListCtrl.SetItemText(2, 3, _T("Barcelona, Spain"));
-
-	VERIFY(_SetTilesViewLinesCount(3));
-
+int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
+{
+	CA2W ca2w(repoName.c_str());
+	std::wstring wide_str = ca2w;
+	auto itemNo = m_wndListCtrl->GetItemCount();
+	m_wndListCtrl->InsertItem(itemNo, wide_str.c_str(), 2);
+	m_wndListCtrl->SetItemText(itemNo, 1, _T("8 months"));
+	m_wndListCtrl->SetItemText(itemNo, 2, _T("John Doe"));
+	m_wndListCtrl->SetItemText(itemNo, 3, _T("New York, USA"));
+	//VERIFY(_SetTilesViewLinesCount(3));
 	UINT arrColumns[3] = { 1, 2, 3 };
 	VERIFY(_SetItemTileLines(0, arrColumns, 3));
-	VERIFY(_SetItemTileLines(1, arrColumns, 3));
-	VERIFY(_SetItemTileLines(2, arrColumns, 3));
-	
-	m_wndListCtrl.SetView(LV_VIEW_TILE);// LV_VIEW_TILE
+	return -1;
 }
 
 BOOL CWorkSpaceBar4::_SetTilesViewLinesCount(int nCount)
@@ -299,7 +294,7 @@ BOOL CWorkSpaceBar4::_SetTilesViewLinesCount(int nCount)
 	lvtvwi.dwMask = LVTVIM_COLUMNS;
 	lvtvwi.cLines = nCount;
 
-	return m_wndListCtrl.SetTileViewInfo(&lvtvwi);
+	return m_wndListCtrl->SetTileViewInfo(&lvtvwi);
 }
 BOOL CWorkSpaceBar4::_SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount)
 {
@@ -309,5 +304,5 @@ BOOL CWorkSpaceBar4::_SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount
 	lvti.iItem = nItem;
 	lvti.puColumns = parrColumns;
 
-	return m_wndListCtrl.SetTileInfo(&lvti);
+	return m_wndListCtrl->SetTileInfo(&lvti);
 }

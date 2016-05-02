@@ -6,6 +6,11 @@ class Git_05_ListCtr : public CListCtrl
 private:
 	int lastItem_;
 	COLORREF background_color_{ RGB(200, 200, 200) };
+	DWORD hover_time_{ 50 };
+
+	CBrush brush_highligth_;
+	LOGBRUSH logic_brush_;
+	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
 public:
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
@@ -46,7 +51,7 @@ public:
 protected:
 	//virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
-	//afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	//afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	//afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//afx_msg void OnSysColorChange();

@@ -15,7 +15,7 @@ IMPLEMENT_DYNAMIC(Git_05_ListCtr, CListCtrl)
 
 BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	//{{AFX_MSG_MAP(CBCGPListCtrl)
-	//ON_WM_CREATE()
+	ON_WM_CREATE()
 	//ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnColumnClick)
 	//ON_WM_ERASEBKGND()
 	//ON_WM_SYSCOLORCHANGE()
@@ -86,23 +86,31 @@ void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 		InvalidateRect(&prc);
 }
 
-//int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
-//{
-//	if (CListCtrl::OnCreate(lpCreateStruct) == -1)
-//		return -1;
-//
-//
-//	//renderer_ = std::make_unique<Direct2DRenderer>(m_hWnd);
-//	return 0;
-//}
+int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CListCtrl::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	ModifyStyle(LVS_TYPEMASK, LVS_REPORT);
+	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT);
+	SetBkColor(background_color_);
+	SetHoverTime(hover_time_);
+
+	
+
+	return 0;
+}
 
 Git_05_ListCtr::Git_05_ListCtr() 
 {
+	brush_highligth_.CreateSysColorBrush(2);
+	brush_highligth_.GetLogBrush(&logic_brush_);
 }
 
 
 Git_05_ListCtr::~Git_05_ListCtr()
 {
+	int a{ 0 };
 }
 
 // COLORREF Git_05_ListCtr::OnGetCellTextColor(int /*nRow*/, int /*nColum*/)
@@ -145,14 +153,14 @@ void Git_05_ListCtr::OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult)
 // 	ListView_GetItemRect(m_hWnd, lastItem_, &prc, LVIR_BOUNDS);
 // 	prc.right = rect.right;
 // 
-// 	CBrush brush_back_ground;
-// 	brush_back_ground.CreateSysColorBrush(2);
+// 	CBrush brush_highligth;
+// 	brush_highligth.CreateSysColorBrush(2);
 // 
-// 	LOGBRUSH br;
-// 	brush_back_ground.GetLogBrush(&br);
+// 	LOGBRUSH logic_brush_;
+// 	brush_highligth.GetLogBrush(&logic_brush_);
 // 	auto pDC = GetDC();
 // 
-// 	pDC->FillRect(&prc, &brush_back_ground);
+// 	pDC->FillRect(&prc, &brush_highligth);
 
 }
 
@@ -193,17 +201,20 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 				GetClientRect(&rect);
 				prc.right = rect.right;
 				
-				CBrush brush_back_ground;
-				brush_back_ground.CreateSysColorBrush(2);
+				//CBrush brush_highligth;
+				//brush_highligth.CreateSysColorBrush(2);
 
-				LOGBRUSH br;
-				brush_back_ground.GetLogBrush(&br);
-				pDC->FillRect(&prc, &brush_back_ground);
-				CBrush brush_frame;
-				brush_frame.CreateSysColorBrush(1);
+				LOGBRUSH logic_brush_;
+				brush_highligth_.GetLogBrush(&logic_brush_);
+				pDC->FillRect(&prc, &brush_highligth_);
+				if (0)
+				{//frame around selection
+					CBrush brush_frame;
+					brush_frame.CreateSysColorBrush(1);
 
-				pDC->FrameRect(&prc, &brush_frame);
-				COLORREF crText = br.lbColor;
+					pDC->FrameRect(&prc, &brush_frame);
+				}
+				COLORREF crText = logic_brush_.lbColor;
 				pLVCD->clrTextBk = crText;
 				pLVCD->clrFace = crText;
 				pLVCD->iIconEffect = 2;
