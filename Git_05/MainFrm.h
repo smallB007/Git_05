@@ -45,10 +45,11 @@ protected:  // control bar embedded members
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
+public:
+	void setup_git_branches_combo_(const std::vector<CString>& branches);
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
-	void setup_git_branches_combo_();
 	void setup_ribbon_background_();
 // Generated message map functions
 protected:

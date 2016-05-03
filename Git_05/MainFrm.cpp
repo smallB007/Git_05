@@ -54,15 +54,16 @@ CMainFrame::~CMainFrame()
 
 
 
-void CMainFrame::setup_git_branches_combo_()
+void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
 {
 	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	ASSERT_VALID(pRibbon);
 	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
 	ASSERT_VALID(branches_p);
-	branches_p->AddItem(L"Item 2");
-	branches_p->AddItem(L"Some really long text");
-	branches_p->AddItem(L"Item 1");
+	for (const auto & branch : branches)
+	{
+		branches_p->AddItem(branch);
+	}
 	branches_p->SelectItem(0);
 	if (0)
 	{//width of combobox can be calculated ;)
@@ -70,7 +71,7 @@ void CMainFrame::setup_git_branches_combo_()
 		CFont * pOldFont = dc.SelectObject(this->GetFont());
 		CSize len = dc.GetTextExtent(branches_p->GetItem(0));
 	}
-	branches_p->SetWidth(100);
+	//branches_p->SetWidth(100);
 }
 
 void CMainFrame::setup_ribbon_background_()
@@ -221,12 +222,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
 	//DockControlBar(&wnd_workspace_git_tree_2);
-
-	
-	//branches_p->InsertItem(0, L"Item 0");
-	//branches_p->SetText(L"Item 0");
-	
-	setup_git_branches_combo_();
 
 	setup_ribbon_background_();
 	return 0;

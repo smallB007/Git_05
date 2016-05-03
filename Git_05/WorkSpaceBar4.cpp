@@ -44,8 +44,20 @@ void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 {
 	eview_type_ = view_type;
 }
+#include "MainFrm.h"
+void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits)
+{
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	std::vector<CString> branches;
+	for (const auto& aPair: branch_commits)
+	{
+		CA2W ca2w(aPair.first.c_str());
+		std::wstring wide_str = ca2w;
+		branches.push_back(wide_str.c_str());
+	}
+	pMainWnd->setup_git_branches_combo_(branches);
 
-
+}
 
 void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
@@ -53,6 +65,7 @@ void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std:
 	repo_branches_ = repo_branches;
 	
 	add_repo_to_list_ctrl_((*cbegin(repo_branches)).first);
+	add_branches_to_combo_((*cbegin(repo_branches)).second);
 }
 
 CWorkSpaceBar4::~CWorkSpaceBar4()
@@ -237,7 +250,7 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_ELEPHANT));
 		m_wndListCtrl->SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 // 		
-		m_wndListCtrl->InsertColumn(0, _T("Name"), LVCFMT_CENTER, -1, 0);
+		m_wndListCtrl->InsertColumn(0, _T("Repo name"), LVCFMT_CENTER, -1, 0);
 		m_wndListCtrl->InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
 		m_wndListCtrl->InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
 m_wndListCtrl->InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
@@ -272,19 +285,21 @@ m_wndListCtrl->InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
 	return m_wndListCtrl->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
 
+
 int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
 {
 	CA2W ca2w(repoName.c_str());
 	std::wstring wide_str = ca2w;
 	auto itemNo = m_wndListCtrl->GetItemCount();
 	m_wndListCtrl->InsertItem(itemNo, wide_str.c_str(), 2);
-	m_wndListCtrl->SetItemText(itemNo, 1, _T("8 months"));
-	m_wndListCtrl->SetItemText(itemNo, 2, _T("John Doe"));
-	m_wndListCtrl->SetItemText(itemNo, 3, _T("New York, USA"));
-	//VERIFY(_SetTilesViewLinesCount(3));
+	m_wndListCtrl->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
+	m_wndListCtrl->SetItemText(itemNo, 2, _T("Changes: 20"));
+	m_wndListCtrl->SetItemText(itemNo, 3, _T("Untracked files: 17"));
+	VERIFY(_SetTilesViewLinesCount(3));
 	UINT arrColumns[3] = { 1, 2, 3 };
 	VERIFY(_SetItemTileLines(0, arrColumns, 3));
-	return -1;
+
+	return 0;
 }
 
 BOOL CWorkSpaceBar4::_SetTilesViewLinesCount(int nCount)

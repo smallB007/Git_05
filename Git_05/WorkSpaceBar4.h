@@ -27,6 +27,8 @@ private:
 	EVIEW_TYPE eview_type_{ REPOS };
 	int create_list_ctrl_();
 	int add_repo_to_list_ctrl_(repo_name_t repoName);
+	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
+
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
