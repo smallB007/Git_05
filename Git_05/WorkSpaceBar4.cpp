@@ -3,8 +3,10 @@
 
 #include "stdafx.h"
 #include "Git_05.h"
+#include "MainFrm.h"
 #include "WorkSpaceBar4.h"
 #include "GIT_Commit_Local.hpp"
+#include "Git_05_ListCtr.hpp"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -33,6 +35,10 @@ END_MESSAGE_MAP()
 // }
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
+CGit_05App* CWorkSpaceBar4::get_main_app_()const
+{
+	return static_cast<CGit_05App*>(AfxGetApp());
+};//copy from BackStagePageInfo.h
 
 CWorkSpaceBar4::CWorkSpaceBar4()
 {
@@ -44,10 +50,17 @@ void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 {
 	eview_type_ = view_type;
 }
-#include "MainFrm.h"
+
+void CWorkSpaceBar4::set_branches_for_repo(const CString & repoName)
+{
+	CT2CA ctstring(repoName);
+	std::string repo(ctstring);
+	auto branch_commits = repo_branches_[repo];
+	add_branches_to_combo_(branch_commits);
+}
+
 void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits)
 {
-	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
 	std::vector<CString> branches;
 	for (const auto& aPair: branch_commits)
 	{
@@ -55,6 +68,7 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 		std::wstring wide_str = ca2w;
 		branches.push_back(wide_str.c_str());
 	}
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
 	pMainWnd->setup_git_branches_combo_(branches);
 
 }
@@ -62,10 +76,12 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
 	//branch_commits_ = branchCommits;
-	repo_branches_ = repo_branches;
+	auto repo_name = (*cbegin(repo_branches)).first;
+	auto branches_with_commits = (*cbegin(repo_branches)).second;
+	repo_branches_[repo_name] = branches_with_commits;
 	
-	add_repo_to_list_ctrl_((*cbegin(repo_branches)).first);
-	add_branches_to_combo_((*cbegin(repo_branches)).second);
+	add_repo_to_list_ctrl_(repo_name);
+	add_branches_to_combo_(branches_with_commits);
 }
 
 CWorkSpaceBar4::~CWorkSpaceBar4()
@@ -242,7 +258,7 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		return -1;      // fail to create
 	}
 	
-
+	m_wndListCtrl->addParent(this);
 		CWinApp* pApp = AfxGetApp();
 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));
@@ -294,10 +310,11 @@ int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
 	m_wndListCtrl->InsertItem(itemNo, wide_str.c_str(), 2);
 	m_wndListCtrl->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
 	m_wndListCtrl->SetItemText(itemNo, 2, _T("Changes: 20"));
-	m_wndListCtrl->SetItemText(itemNo, 3, _T("Untracked files: 17"));
+	m_wndListCtrl->SetItemText(itemNo, 3, _T("Ahead of Master: 17"));
 	VERIFY(_SetTilesViewLinesCount(3));
 	UINT arrColumns[3] = { 1, 2, 3 };
-	VERIFY(_SetItemTileLines(0, arrColumns, 3));
+	for (auto item{0}, end {m_wndListCtrl->GetItemCount()}; item < end; ++item)
+	VERIFY(_SetItemTileLines(item, arrColumns, 3));
 
 	return 0;
 }

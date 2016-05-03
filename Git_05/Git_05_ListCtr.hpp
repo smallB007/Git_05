@@ -11,12 +11,18 @@ private:
 	CBrush brush_highligth_;
 	LOGBRUSH logic_brush_;
 	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
+private:
+	CWorkSpaceBar4* parent_;
 public:
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
 	virtual HFONT OnGetCellFont(int /*nRow*/, int /*nColum*/, DWORD /*dwData*/ = 0)
 	{
 		return NULL;
+	}
+	void addParent(CWorkSpaceBar4* parent)
+	{
+		parent_ = parent;
 	}
 // 	BOOL PreTranslateMessage(MSG* pMsg)
 // 	{

@@ -36,7 +36,7 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_RDBLCLK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
 END_MESSAGE_MAP()
 
-
+#include "WorkSpaceBar4.h"
 void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	
@@ -51,6 +51,8 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		if (item_number < GetItemCount())
 		{
 			SetItemState(item_number, LVIS_SELECTED, LVIS_SELECTED);
+			auto it = GetItemText(item_number, 0);
+			parent_->set_branches_for_repo(it);
 			return;
 		}
 		else
@@ -60,6 +62,8 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 			if (nm->iItem == -1)
 			{
 				SetItemState(lastItem_, LVIS_SELECTED, LVIS_SELECTED);
+				auto it = GetItemText(lastItem_, 0);
+				parent_->set_branches_for_repo(it);
 				return;
 			}
 		}

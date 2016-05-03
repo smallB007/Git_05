@@ -61,9 +61,6 @@
     <ClCompile Include="WorkSpaceBar4.cpp">
       <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="DemoListView.cpp">
-      <Filter>Git_05\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="GIT_Branch.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
     </ClInclude>
     <ClInclude Include="WorkSpaceBar4.h">
       <Filter>BCG\hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoListView.hpp">
-      <Filter>Git_05\hpp</Filter>
     </ClInclude>
     <ClInclude Include="User_Credentials.hpp">
       <Filter>Git_05\hpp</Filter>

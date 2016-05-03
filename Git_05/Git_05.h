@@ -35,7 +35,8 @@ public:
 	virtual int ExitInstance();
 // Implementation
 	afx_msg void OnAppAbout();
-	afx_msg void On_Add_Repo();
+	afx_msg
+	void On_Add_Repo();
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnCreateRepoButton();
 public:
@@ -47,6 +48,11 @@ public:
 	void read_credentials_from_file(std::string& username, std::string& password)const;
 	void write_visual_theme_to_file_()const;
 	void read_visual_theme_from_file_();
+private:
+	bool write_repo_path_to_file_(const std::string& repo_path);
+	void populate_UI_(const std::string & repo_path);
+	void load_repos_from_file_(const std::string & file_path);
+	const std::string repositories_file_ = "repositories_paths.txt";
 };
 
 extern CGit_05App theApp;

@@ -5,9 +5,10 @@
 #pragma once
 #include "DemoListView.hpp"
 #include "Direct2DRenderer.hpp"
-#include <memory>
-#include "Git_05_ListCtr.hpp"
+
 class GIT_Commit_Local;
+class Git_05_ListCtr;
+class CGit_05App;
 
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
 {
@@ -35,6 +36,7 @@ public:
 	CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
 	void git_tree(decltype(repo_branches_)&& repoBranches);
+	void set_branches_for_repo(const CString& repoName);
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;
@@ -64,7 +66,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	void fill_repositories_();
-	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
+	CGit_05App* get_main_app_()const;
 };
 
 /////////////////////////////////////////////////////////////////////////////

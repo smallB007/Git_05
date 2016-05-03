@@ -60,6 +60,7 @@ void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
 	ASSERT_VALID(pRibbon);
 	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
 	ASSERT_VALID(branches_p);
+	branches_p->RemoveAllItems();
 	for (const auto & branch : branches)
 	{
 		branches_p->AddItem(branch);
@@ -224,6 +225,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//DockControlBar(&wnd_workspace_git_tree_2);
 
 	setup_ribbon_background_();
+	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	ASSERT_VALID(pRibbon);
+	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
+	ASSERT_VALID(branches_p);
+	branches_p->EnableAutoComplete(TRUE);
 	return 0;
 }
 

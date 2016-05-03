@@ -2,6 +2,8 @@
 //
 // Author:   Ovidiu Cucu
 // Homepage: http://codexpert.ro/blog/
+#if 0
+
 
 #include "stdafx.h"
 #include "resource.h"
@@ -233,3 +235,4 @@ void CDemoListView::OnUpdateViewTile(CCmdUI *pCmdUI)
 	const DWORD dwView = listCtrl.GetView();
 	pCmdUI->SetCheck(LV_VIEW_TILE == dwView);
 }
+#endif

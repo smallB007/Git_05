@@ -4,6 +4,8 @@
 // Homepage: http://codexpert.ro/blog/
 
 #pragma once
+#if 0
+
 
 
 class CDemoListView : public CListView
@@ -54,4 +56,4 @@ protected:
 };
 
 
-
+#endif
