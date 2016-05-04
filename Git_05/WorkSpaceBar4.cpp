@@ -27,12 +27,14 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 	ON_WM_PAINT()
 #endif
 //	ON_WM_LBUTTONDOWN()
+
 END_MESSAGE_MAP()
 
 // void CWorkSpaceBar4::OnLButtonDown(UINT flag, CPoint point)
 // {
 // 	int a{ 0 };
 // }
+
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
 CGit_05App* CWorkSpaceBar4::get_main_app_()const
@@ -59,6 +61,38 @@ void CWorkSpaceBar4::set_branches_for_repo(const CString & repoName)
 	add_branches_to_combo_(branch_commits);
 }
 
+void CWorkSpaceBar4::write_repo_name_to_file_(const CString& repoName)
+{
+	std::ofstream f_out(file_with_repo_to_set_as_active_);
+	if (f_out)
+	{
+		CT2CA ctstring(repoName);
+		std::string repo(ctstring);
+		f_out << repo;
+	}
+}
+
+CWorkSpaceBar4::repo_name_t CWorkSpaceBar4::read_repo_name_from_file_()
+{
+	std::ifstream f_in(file_with_repo_to_set_as_active_);
+	repo_name_t active_repo;
+	if (f_in)
+	{
+		f_in >> active_repo;
+	}
+
+	return active_repo;
+}
+
+void CWorkSpaceBar4::select_repository_according_to_policy()
+{//for the moment last selected will be the one we will select at the start of our application
+	repo_name_t active_repo = read_repo_name_from_file_();
+	if (active_repo.size())
+	{
+		select_repo_(active_repo);
+	}
+}
+
 void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits)
 {
 	std::vector<CString> branches;
@@ -73,6 +107,14 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 
 }
 
+void CWorkSpaceBar4::select_repo_(const repo_name_t& repoName)
+{
+	m_wndListCtrl->selectItem(repoName);
+	auto branches_with_commits = repo_branches_[repoName];
+
+	add_branches_to_combo_(branches_with_commits);
+}
+
 void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
 	//branch_commits_ = branchCommits;
@@ -81,7 +123,7 @@ void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std:
 	repo_branches_[repo_name] = branches_with_commits;
 	
 	add_repo_to_list_ctrl_(repo_name);
-	add_branches_to_combo_(branches_with_commits);
+	
 }
 
 CWorkSpaceBar4::~CWorkSpaceBar4()

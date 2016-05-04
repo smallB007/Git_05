@@ -51,7 +51,10 @@ CMainFrame::~CMainFrame()
 {
 }
 
-
+void CMainFrame::selectRepository()
+{
+	m_wndWorkSpace_Repos_.select_repository_according_to_policy();
+}
 
 
 void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)

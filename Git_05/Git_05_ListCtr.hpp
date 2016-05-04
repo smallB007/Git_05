@@ -3,8 +3,12 @@ class Git_05_ListCtr : public CListCtrl
 {
 	DECLARE_DYNAMIC(Git_05_ListCtr)
 	friend class CWorkSpaceBar4;
+	//those typedefs taken from Workspacebar4
+	typedef std::string repo_name_t;
+	typedef std::string branch_name_t;
+
 private:
-	int lastItem_;
+	int lastItem_{0};
 	COLORREF background_color_{ RGB(200, 200, 200) };
 	DWORD hover_time_{ 50 };
 
@@ -13,6 +17,7 @@ private:
 	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
 private:
 	CWorkSpaceBar4* parent_;
+
 public:
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
@@ -72,6 +77,9 @@ protected:
 	afx_msg void OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnKillFocus(CWnd*);
+	afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+	void selectItem(const repo_name_t & repoName);
+	
 	void OnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 

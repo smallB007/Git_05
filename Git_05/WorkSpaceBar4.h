@@ -30,6 +30,8 @@ private:
 	int add_repo_to_list_ctrl_(repo_name_t repoName);
 	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
 
+	void select_repo_(const repo_name_t& repoName);
+
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
@@ -37,6 +39,11 @@ public:
 	void set_view_type(EVIEW_TYPE view_type);
 	void git_tree(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
+	void select_repository_according_to_policy();
+	void write_repo_name_to_file_(const CString & repoName);
+	repo_name_t read_repo_name_from_file_();
+private:
+	std::string file_with_repo_to_set_as_active_{ "repo_to_set_as_active.txt" };
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;
@@ -58,6 +65,7 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//afx_msg void OnLButtonDown(UINT, CPoint);
+	
 #ifdef MFC_DIRECT_2D
 	afx_msg LRESULT OnDrawDirect2D(WPARAM wParam, LPARAM lParam);
 #else

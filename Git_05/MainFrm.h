@@ -47,6 +47,7 @@ protected:  // control bar embedded members
 	CBCGPPropBar			m_wndPropGrid;
 public:
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
+	void selectRepository();
 private:
 	
 	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h

@@ -25,9 +25,11 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	//ON_MESSAGE(WM_PRINT, OnPrint)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
 	ON_NOTIFY_REFLECT(NM_HOVER, OnMouseHover)
+	
 	//ON_MESSAGE(WM_STYLECHANGED, OnStyleChanged)
 	//ON_REGISTERED_MESSAGE(BCGM_ONSETCONTROLVMMODE, OnBCGSetControlVMMode)
 	//ON_WM_LBUTTONUP()
+	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
 	ON_WM_KILLFOCUS()
 	ON_NOTIFY_REFLECT(NM_CLICK, OnClick)
@@ -35,6 +37,48 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_RCLICK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
 	ON_NOTIFY_REFLECT(NM_RDBLCLK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
 END_MESSAGE_MAP()
+
+LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
+{
+	/*This surprisingly prevents focus from current selection to be lost, yuppie ;)*/
+	//CRect rect;
+	//	GetClientRect(rect);
+	//	InvalidateRect(&rect);
+	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
+	{
+		SetItemState(i, 0, LVIS_SELECTED);
+		//SetHotItem(lastItem_);
+		//if (i == lastItem_)
+		//{
+		//}
+		//else
+		//{
+		//	SetItemState(i, ~LVIS_SELECTED, ~LVIS_SELECTED);
+		//
+		//}
+	}
+	return TRUE;
+}
+void Git_05_ListCtr::selectItem(const repo_name_t& repoName)
+{
+	CString c_repo_name(repoName.c_str());
+
+	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
+	{
+		auto c_txt = GetItemText(i,0);
+		if (c_txt == c_repo_name)
+		{
+			LVITEMW pitem;
+			ZeroMemory(&pitem, sizeof(pitem));
+			pitem.mask = LVIF_IMAGE;
+			pitem.iItem = i;
+			pitem.iSubItem = 0;
+			pitem.iImage = 1;
+			SetItem(&pitem);
+		}
+	}
+}
+
 
 #include "WorkSpaceBar4.h"
 void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
@@ -46,15 +90,17 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	RECT prc;
 	ListView_GetItemRect(m_hWnd, 0, &prc, LVIR_BOUNDS);//take item on 0 index just to get its height
 	auto item_number = pos.y / prc.bottom;
-
+	lastItem_ = item_number;
 	if (item_number > GetItemCount())
 	{
+		lastItem_ = GetItemCount();
 		item_number = lastItem_;
 	}
 
 	SetItemState(item_number, LVIS_SELECTED, LVIS_SELECTED);
-	auto it = GetItemText(item_number, 0);
-	parent_->set_branches_for_repo(it);
+	auto repo_name = GetItemText(item_number, 0);
+	parent_->set_branches_for_repo(repo_name);
+	parent_->write_repo_name_to_file_(repo_name);
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
 	{
@@ -67,6 +113,7 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		if (i == item_number)
 		{
 			pitem.iImage = 1;
+			//lastItem_ = i;
 		}
 		else
 		{
@@ -83,11 +130,13 @@ void Git_05_ListCtr::OnKillFocus(CWnd*)
 	//CRect rect;
 	//	GetClientRect(rect);
 	//	InvalidateRect(&rect);
+	//SetItemState(lastItem_, LVIS_SELECTED, LVIS_SELECTED);
 }
+
 void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW & nm = *(LPNMLISTVIEW)pNMHDR;  // (1)
-		lastItem_ = nm.iItem;//store the item so in case click outside of list items we can select it again
+		//lastItem_ = nm.iItem;//store the item so in case click outside of list items we can select it again
 		int item = nm.iItem; // idx of item that changed
 		//bool wasSelected = (nm.uOldState & LVIS_SELECTED) != 0;
 		//bool  isSelected = (nm.uNewState & LVIS_SELECTED) != 0;

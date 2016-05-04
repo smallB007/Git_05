@@ -150,6 +150,7 @@ BOOL CGit_05App::InitInstance()
 	
 	git_libgit2_init();
 	load_repos_from_file_(repositories_file_);
+	static_cast<CMainFrame*>(AfxGetMainWnd())->selectRepository();
 	return TRUE;
 }
 #include <fstream>
