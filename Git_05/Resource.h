@@ -36,6 +36,10 @@
 #define IDB_PNG5                        188
 #define IDB_PNG3                        189
 #define IDR_RIBBON_BACKGROUND1          189
+#define IDI_GIT_GREEN                   193
+#define IDI_GIT_BW                      194
+#define IDI_GREEN_RED                   195
+#define IDI_GIT_RED                     195
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -127,7 +131,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        190
+#define _APS_NEXT_RESOURCE_VALUE        196
 #define _APS_NEXT_COMMAND_VALUE         32868
 #define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           117

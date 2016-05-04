@@ -39,41 +39,50 @@ END_MESSAGE_MAP()
 #include "WorkSpaceBar4.h"
 void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	
 	CRect rect;
 	GetClientRect(rect);
 	CPoint pos(::GetMessagePos());
 	ScreenToClient(&pos);
-	//GetScrollInfo()
 	RECT prc;
- 		ListView_GetItemRect(m_hWnd, 0, &prc, LVIR_BOUNDS);//take item on 0 index just to get its height
-		auto item_number = pos.y / prc.bottom;
-		if (item_number < GetItemCount())
+	ListView_GetItemRect(m_hWnd, 0, &prc, LVIR_BOUNDS);//take item on 0 index just to get its height
+	auto item_number = pos.y / prc.bottom;
+
+	if (item_number > GetItemCount())
+	{
+		item_number = lastItem_;
+	}
+
+	SetItemState(item_number, LVIS_SELECTED, LVIS_SELECTED);
+	auto it = GetItemText(item_number, 0);
+	parent_->set_branches_for_repo(it);
+
+	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
+	{
+		LVITEMW pitem;
+		ZeroMemory(&pitem, sizeof(pitem));
+		pitem.mask = LVIF_IMAGE;
+		pitem.iItem = i;
+		pitem.iSubItem = 0;
+
+		if (i == item_number)
 		{
-			SetItemState(item_number, LVIS_SELECTED, LVIS_SELECTED);
-			auto it = GetItemText(item_number, 0);
-			parent_->set_branches_for_repo(it);
-			return;
+			pitem.iImage = 1;
 		}
 		else
 		{
-
-			LPNMLISTVIEW nm = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-			if (nm->iItem == -1)
-			{
-				SetItemState(lastItem_, LVIS_SELECTED, LVIS_SELECTED);
-				auto it = GetItemText(lastItem_, 0);
-				parent_->set_branches_for_repo(it);
-				return;
-			}
+			pitem.iImage = 2;
 		}
+		SetItem(&pitem);
+	}
+	return;
 }
+
 void Git_05_ListCtr::OnKillFocus(CWnd*)
 {
 	/*This surprisingly prevents focus from current selection to be lost, yuppie ;)*/
-	CRect rect;
-		GetClientRect(rect);
-		InvalidateRect(&rect);
+	//CRect rect;
+	//	GetClientRect(rect);
+	//	InvalidateRect(&rect);
 }
 void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {

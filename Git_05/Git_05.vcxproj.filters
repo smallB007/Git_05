@@ -259,6 +259,12 @@
       <Filter>Git_05\resources</Filter>
     </Image>
     <Image Include="res\Background1.png" />
+    <Image Include="Artwork\Git_Icon_BW.png" />
+    <Image Include="Artwork\Git_Icon_Green.png" />
+    <Image Include="Artwork\Git_Icon_Red.png" />
+    <Image Include="res\Git_Icon_Green.ico" />
+    <Image Include="res\Git_Icon_BW.ico" />
+    <Image Include="res\Git_Icon_Red.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BCGSoft_ribbon\Git_05.ribbon.rc2">

@@ -261,9 +261,9 @@ int CWorkSpaceBar4::create_list_ctrl_()
 	m_wndListCtrl->addParent(this);
 		CWinApp* pApp = AfxGetApp();
 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
-		m_cImageListNormal.Add(pApp->LoadIcon(IDI_CAT));
-		m_cImageListNormal.Add(pApp->LoadIcon(IDI_DOG));
-		m_cImageListNormal.Add(pApp->LoadIcon(IDI_ELEPHANT));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_GREEN));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_RED));
+		m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_BW));
 		m_wndListCtrl->SetImageList(&m_cImageListNormal, LVSIL_NORMAL);
 // 		
 		m_wndListCtrl->InsertColumn(0, _T("Repo name"), LVCFMT_CENTER, -1, 0);

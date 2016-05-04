@@ -283,6 +283,9 @@
     <Image Include="arrow.png" />
     <Image Include="Artwork\arrow.png" />
     <Image Include="Artwork\commit.png" />
+    <Image Include="Artwork\Git_Icon_BW.png" />
+    <Image Include="Artwork\Git_Icon_Green.png" />
+    <Image Include="Artwork\Git_Icon_Red.png" />
     <Image Include="Artwork\Head.png" />
     <Image Include="Artwork\tail.png" />
     <Image Include="res\Background1.png" />
@@ -299,6 +302,9 @@
     <Image Include="res\elephant.ico" />
     <Image Include="res\Git_05.ico" />
     <Image Include="res\Git_05Doc.ico" />
+    <Image Include="res\Git_Icon_BW.ico" />
+    <Image Include="res\Git_Icon_Green.ico" />
+    <Image Include="res\Git_Icon_Red.ico" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\images_n.bmp" />
     <Image Include="res\ribbonfilelarge.png" />
