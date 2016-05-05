@@ -269,7 +269,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 				LOGBRUSH logic_brush_;
 				brush_highligth_.GetLogBrush(&logic_brush_);
 				pDC->FillRect(&prc, &brush_highligth_);
-				if (0)
+				if (1)
 				{//frame around selection
 					CBrush brush_frame;
 					brush_frame.CreateSysColorBrush(1);
@@ -279,7 +279,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 				COLORREF crText = logic_brush_.lbColor;
 				pLVCD->clrTextBk = crText;
 				pLVCD->clrFace = crText;
-				pLVCD->iIconEffect = 2;
+				pLVCD->iIconEffect = 0;//no effect
 			}
 			else
 			{
@@ -291,6 +291,21 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 		break;
 		case CDDS_ITEMPOSTPAINT:
 		{
+			RECT prc;
+			ListView_GetItemRect(m_hWnd, pLVCD->nmcd.dwItemSpec, &prc, LVIR_BOUNDS);
+			CRect rect;
+			GetClientRect(&rect);
+			prc.right = rect.right;
+			//if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
+			//{
+			CDC dc;
+			CBrush br;
+			br.CreateSysColorBrush(20);
+			dc.Attach(pLVCD->nmcd.hdc);
+			dc.FrameRect(&prc, &br);
+			//dc.DrawEdge(&prc, 1, 1);
+			dc.Detach();
+			//}
 			*pResult = CDRF_DODEFAULT;
 		}
 		break;

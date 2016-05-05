@@ -386,9 +386,17 @@
 								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
 								<ID>
 									<NAME>ID_VIEW_WORKSPACE41</NAME>
-									<VALUE>32795</VALUE>
+									<VALUE>32796</VALUE>
 								</ID>
 								<TEXT>Git Tree</TEXT>
+							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>ID_VIEW_WORKSPACE42</NAME>
+									<VALUE>32869</VALUE>
+								</ID>
+								<TEXT>Commits</TEXT>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

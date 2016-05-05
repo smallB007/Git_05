@@ -22,8 +22,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	//ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE_GIT_TREE2, OnUpdateViewWorkspace_Git_Tree2)
 	ON_COMMAND(ID_VIEW_WORKSPACE3, OnViewWorkspace3)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE3, OnUpdateViewWorkspace3)
-	ON_COMMAND(ID_VIEW_WORKSPACE4, OnViewWorkspace4)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE4, OnUpdateViewWorkspace4)
+	ON_COMMAND(ID_VIEW_WORKSPACE4, OnViewWorkspaceRepos)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE4, OnUpdateViewWorkspaceRepos)
+	ON_COMMAND(ID_VIEW_WORKSPACE42, OnViewWorkspaceCommits)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE42, OnUpdateViewWorkspaceCommits)
 	ON_COMMAND(ID_VIEW_WORKSPACE41, OnViewWorkspace41)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE41, OnUpdateViewWorkspace41)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
@@ -165,7 +167,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	m_wndWorkSpace3.SetIcon (imagesWorkspace.ExtractIcon (1), FALSE);
-
+////////////////////
+	m_wndWorkSpace_Repos_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::REPOS);
 	if (!m_wndWorkSpace_Repos_.Create(_T("Repositories"), this, CRect(0, 0, 200, 200),
 		TRUE, ID_VIEW_WORKSPACE4,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
@@ -175,7 +178,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndWorkSpace_Repos_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 
-
+///////////////////////
+	m_wndWorkSpace_Commits_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::COMMITS);
+	if (!m_wndWorkSpace_Commits_.Create(_T("Commits"), this, CRect(0, 0, 200, 200),
+		TRUE, ID_VIEW_WORKSPACE42,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND NUMBER NOTHING ELSE WILL DO!
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("Failed to create Workspace bar 4\n");
+		return -1;      // fail to create
+	}
+	m_wndWorkSpace_Commits_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
+//////////////////////
 		m_wndWorkSpace_Git_Tree_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::GIT_TREE);
 
 		if (!m_wndWorkSpace_Git_Tree_.Create(_T("View 41"), this, CRect(0, 0, 200, 200),
@@ -186,8 +199,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			return -1;      // fail to create
 		}
 
-	m_wndWorkSpace_Git_Tree_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
-
+		m_wndWorkSpace_Git_Tree_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
+//////////////////////
 	if (!m_wndOutput.Create (_T("Output"), this, CSize (150, 150),
 		TRUE /* Has gripper */, ID_VIEW_OUTPUT,
 		WS_CHILD | WS_VISIBLE | CBRS_BOTTOM))
@@ -213,6 +226,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndWorkSpace2.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace3.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Repos_.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndWorkSpace_Commits_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Git_Tree_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndPropGrid.EnableDocking(CBRS_ALIGN_ANY);
@@ -222,6 +236,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndWorkSpace3);
 	DockControlBar(&m_wndWorkSpace_Repos_);
 	DockControlBar(&m_wndWorkSpace_Git_Tree_);
+	DockControlBar(&m_wndWorkSpace_Commits_);
 	//m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
 	DockControlBar(&m_wndPropGrid);
@@ -401,7 +416,7 @@ void CMainFrame::OnUpdateViewWorkspace3(CCmdUI* pCmdUI)
 	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
 }
 
-void CMainFrame::OnViewWorkspace4() 
+void CMainFrame::OnViewWorkspaceRepos() 
 {
 	ShowControlBar (&m_wndWorkSpace_Repos_,
 					!(m_wndWorkSpace_Repos_.IsVisible ()),
@@ -409,10 +424,24 @@ void CMainFrame::OnViewWorkspace4()
 	RecalcLayout ();
 }
 
-void CMainFrame::OnUpdateViewWorkspace4(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateViewWorkspaceRepos(CCmdUI* pCmdUI) 
 {
 	pCmdUI->SetCheck (m_wndWorkSpace_Repos_.IsVisible ());
 	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
+}
+
+void CMainFrame::OnViewWorkspaceCommits()
+{
+	ShowControlBar(&m_wndWorkSpace_Commits_,
+		!(m_wndWorkSpace_Commits_.IsVisible()),
+		FALSE, TRUE);
+	RecalcLayout();
+}
+
+void CMainFrame::OnUpdateViewWorkspaceCommits(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_wndWorkSpace_Commits_.IsVisible());
+	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
 }
 
 void CMainFrame::OnViewWorkspace41()

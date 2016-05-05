@@ -80,6 +80,7 @@
 #define IDC_USEREMAILLOGIN_EDIT         1082
 #define IDC_VIEW_1                      1085
 #define IDC_REPO_BRANCHES_COMBO         1087
+#define IDC_COMMITS                     1089
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -88,7 +89,7 @@
 #define ID_VIEW_WORKSPACE2              32792
 #define ID_VIEW_WORKSPACE3              32793
 #define ID_VIEW_WORKSPACE4              32794
-#define ID_VIEW_WORKSPACE41             32795
+#define ID_VIEW_WORKSPACE41             32796
 #define ID_VIEW_OUTPUT                  32803
 #define ID_VIEW_APPLOOK_2000            32826
 #define ID_VIEW_APPLOOK_XP              32827
@@ -126,14 +127,16 @@
 #define ID_SOME_OFFICE_THEME            32865
 #define ID_VIEW_WORKSPACE_GIT_TREE      32866
 #define ID_VIEW_WORKSPACE_GIT_TREE2     32867
+#define ID_VIEW_COMMIT                  32868
+#define ID_VIEW_WORKSPACE42             32869
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        196
-#define _APS_NEXT_COMMAND_VALUE         32868
-#define _APS_NEXT_CONTROL_VALUE         1088
+#define _APS_NEXT_COMMAND_VALUE         32870
+#define _APS_NEXT_CONTROL_VALUE         1090
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

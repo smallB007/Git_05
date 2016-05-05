@@ -42,6 +42,7 @@ protected:  // control bar embedded members
 	
 	CWorkSpaceBar3			m_wndWorkSpace3;
 	CWorkSpaceBar4			m_wndWorkSpace_Repos_;
+	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
 	CBCGPPropBar			m_wndPropGrid;
@@ -61,8 +62,10 @@ protected:
 	afx_msg void OnUpdateViewWorkspace_Git_Tree2(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace3();
 	afx_msg void OnUpdateViewWorkspace3(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace4();
-	afx_msg void OnUpdateViewWorkspace4(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspaceRepos();
+	afx_msg void OnUpdateViewWorkspaceRepos(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspaceCommits();
+	afx_msg void OnUpdateViewWorkspaceCommits(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspace41();
 	afx_msg void OnUpdateViewWorkspace41(CCmdUI* pCmdUI);
 	afx_msg void OnViewOutput();
