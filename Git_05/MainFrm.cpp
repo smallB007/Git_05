@@ -58,13 +58,22 @@ void CMainFrame::selectRepository()
 	m_wndWorkSpace_Repos_.select_repository_according_to_policy();
 }
 
-
-void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
+CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()
 {
 	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	ASSERT_VALID(pRibbon);
 	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
 	ASSERT_VALID(branches_p);
+	return branches_p;
+}
+
+void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
+{
+	//CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	//ASSERT_VALID(pRibbon);
+	//auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
+	//ASSERT_VALID(branches_p);
+	auto branches_p = get_branches_cmb_();
 	branches_p->RemoveAllItems();
 	for (const auto & branch : branches)
 	{
@@ -168,7 +177,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndWorkSpace3.SetIcon (imagesWorkspace.ExtractIcon (1), FALSE);
 ////////////////////
-	m_wndWorkSpace_Repos_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::REPOS);
+	m_wndWorkSpace_Repos_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
 	if (!m_wndWorkSpace_Repos_.Create(_T("Repositories"), this, CRect(0, 0, 200, 200),
 		TRUE, ID_VIEW_WORKSPACE4,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
@@ -176,20 +185,22 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create Workspace bar 4\n");
 		return -1;      // fail to create
 	}
+	m_wndWorkSpace_Repos_.set_type_list_ctrl_repos();
 	m_wndWorkSpace_Repos_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 
 ///////////////////////
-	m_wndWorkSpace_Commits_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::COMMITS);
+	m_wndWorkSpace_Commits_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
 	if (!m_wndWorkSpace_Commits_.Create(_T("Commits"), this, CRect(0, 0, 200, 200),
-		TRUE, ID_VIEW_WORKSPACE42,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND NUMBER NOTHING ELSE WILL DO!
+		TRUE, ID_VIEW_WORKSPACE42,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND A NUMBER, NOTHING ELSE WILL DO!
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("Failed to create Workspace bar 4\n");
 		return -1;      // fail to create
 	}
+	m_wndWorkSpace_Commits_.set_type_list_ctrl_commits();
 	m_wndWorkSpace_Commits_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 //////////////////////
-		m_wndWorkSpace_Git_Tree_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::GIT_TREE);
+		m_wndWorkSpace_Git_Tree_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::DX_RENDERER);
 
 		if (!m_wndWorkSpace_Git_Tree_.Create(_T("View 41"), this, CRect(0, 0, 200, 200),
 			TRUE, ID_VIEW_WORKSPACE41,
@@ -512,8 +523,13 @@ void CMainFrame::OnPaletteTheme()
 	//DDX_Control(pDX, IDC_REPO_BRANCHES_COMBO, git_tree_branches_);
 	
 //}
-
+#include "GIT_Commit_Local.hpp"
 void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
 {
-
+	auto branches_cmb_ = get_branches_cmb_();
+	auto ix = branches_cmb_->GetCurSel();
+	LPCTSTR branch_name = branches_cmb_->GetItem(ix);
+	CString repo_name = m_wndWorkSpace_Repos_.get_selection_repo_name();
+	std::vector<GIT_Commit_Local> commits =	m_wndWorkSpace_Repos_.get_commits_for_branch(repo_name, branch_name);
+	m_wndWorkSpace_Commits_.set_commits(commits);
 }

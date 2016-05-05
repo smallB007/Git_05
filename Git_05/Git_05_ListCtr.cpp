@@ -257,6 +257,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
 			{
 				pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
+				pLVCD->nmcd.lItemlParam = 1;
 
 				CDC*  pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
 				CRect rect;
@@ -269,13 +270,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 				LOGBRUSH logic_brush_;
 				brush_highligth_.GetLogBrush(&logic_brush_);
 				pDC->FillRect(&prc, &brush_highligth_);
-				if (1)
-				{//frame around selection
-					CBrush brush_frame;
-					brush_frame.CreateSysColorBrush(1);
-
-					pDC->FrameRect(&prc, &brush_frame);
-				}
+				
 				COLORREF crText = logic_brush_.lbColor;
 				pLVCD->clrTextBk = crText;
 				pLVCD->clrFace = crText;
@@ -296,15 +291,27 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			CRect rect;
 			GetClientRect(&rect);
 			prc.right = rect.right;
-			//if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
+
+
+			LVITEMW pitem;
+			ZeroMemory(&pitem, sizeof(pitem));
+			pitem.mask = LVIF_IMAGE;
+			GetItem(&pitem);
+			
+			//if (pitem.state == 1)
 			//{
-			CDC dc;
-			CBrush br;
-			br.CreateSysColorBrush(20);
-			dc.Attach(pLVCD->nmcd.hdc);
-			dc.FrameRect(&prc, &br);
-			//dc.DrawEdge(&prc, 1, 1);
-			dc.Detach();
+			
+				//if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
+					if (pLVCD->nmcd.lItemlParam == 1)
+				{
+				CDC dc;
+				CBrush br;
+				br.CreateSysColorBrush(COLOR_HIGHLIGHT);
+				dc.Attach(pLVCD->nmcd.hdc);
+				dc.FrameRect(&prc, &br);
+				//dc.DrawEdge(&prc, 1, 1);
+				dc.Detach();
+			}
 			//}
 			*pResult = CDRF_DODEFAULT;
 		}

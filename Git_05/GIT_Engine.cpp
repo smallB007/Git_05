@@ -102,7 +102,7 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 
 	const char *commit_message;
 	const git_signature *commit_author;
-
+	std::vector<const git_oid*> commits_oid;
 	while (git_revwalk_next(&oid, walker) == GIT_SUCCESS)
 	{
 		if (git_commit_lookup(&commit, repo, &oid)) 
@@ -113,6 +113,9 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 		GIT_Commit_Local local_commit;
 		commit_message = git_commit_message(commit);
 		commit_author = git_commit_committer(commit);
+		auto parents = git_commit_parentcount(commit);
+		//auto commit_id = git_commit_id(commit);
+		//commits_oid.emplace_back(commit_id);
 		local_commit.commit_message = std::string( commit_message);
 		local_commit.commit_author = *commit_author;
 		commitsForBranch.push_back(local_commit);
@@ -121,6 +124,14 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 
 		git_commit_free(commit);
 	}
+
+	//git_oid oid_out;
+	//
+	//git_merge_base(&oid_out, repo, commits_oid.front(), commits_oid.back());
+
+	/////////
+
+	////////
 
 	git_revwalk_free(walker);
 }
@@ -180,6 +191,7 @@ void GIT_Engine::get_commits_for_branches(const std::string & repo_path, std::ma
 
 	for (const auto& branch : local_branches)
 	{
+		local_commits.clear();
 		GIT_Engine::list_commits_for_branch(repo, repo_path, branch, local_commits);
 		branchCommits.insert(std::make_pair(branch, local_commits));
 	}

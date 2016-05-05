@@ -20,15 +20,16 @@ private:
 	std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>> repo_branches_;
 public:
 
-	enum EVIEW_TYPE{REPOS,GIT_TREE,COMMITS};
+	enum EVIEW_TYPE{LIST_CTRL,DX_RENDERER};
 private:
 	std::unique_ptr<Direct2DRenderer> renderer_;
 	HTREEITEM hRoot_;
 	CImageList m_cImageListNormal, m_cImageListSmall;
-	EVIEW_TYPE eview_type_{ REPOS };
-	int create_list_ctrl_repos();
-	int create_list_ctrl_commits();
+	EVIEW_TYPE eview_type_{ LIST_CTRL };
+	int create_list_ctrl_();
+	
 	int add_repo_to_list_ctrl_(repo_name_t repoName);
+	int add_commit_to_list_ctrl_(const GIT_Commit_Local& commit);
 	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
 
 	void select_repo_(const repo_name_t& repoName);
@@ -38,19 +39,24 @@ private:
 public:
 	CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
+	int set_type_list_ctrl_commits();
+	int set_type_list_ctrl_repos();
 	void git_tree(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
-	void set_commits_for_branch(const branch_name_t& branchName);
+	void set_commits_for_branch(const CString & repoName, const CString& branchName);
+	void set_commits(const std::vector<GIT_Commit_Local>& commits);
+	std::vector<GIT_Commit_Local> get_commits_for_branch(const CString & repoName, const CString& branchName);
 	void select_repository_according_to_policy();
 	void write_repo_name_to_file_(const CString & repoName);
 	repo_name_t read_repo_name_from_file_();
+	CString get_selection_repo_name();
 private:
 	std::string file_with_repo_to_set_as_active_{ "repo_to_set_as_active.txt" };
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;
 	//CListCtrl& listCtrl;
-	std::unique_ptr<Git_05_ListCtr> m_wndListCtrl_Repos{nullptr};
+	std::unique_ptr<Git_05_ListCtr> m_wndListCtrl_{nullptr};
 	//CDemoListView m_listView;
 	// Operations
 	//virtual void DoDataExchange(CDataExchange* pDX)override;

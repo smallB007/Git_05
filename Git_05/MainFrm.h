@@ -84,8 +84,8 @@ protected:
 	CBitmap m_bmpAppPreview;
 private:
 	//_ui_ CComboBox git_tree_branches_;
-
-
+	CBCGPRibbonComboBox* branches_cmb_{nullptr};
+	CBCGPRibbonComboBox* get_branches_cmb_();
 protected:
 	//void DoDataExchange(CDataExchange* pDX);
 	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();

@@ -398,6 +398,14 @@
 								</ID>
 								<TEXT>Commits</TEXT>
 							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>ID_VIEW_PROPERTIES</NAME>
+									<VALUE>32850</VALUE>
+								</ID>
+								<TEXT>Commit Info</TEXT>
+							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 				</PANELS>
