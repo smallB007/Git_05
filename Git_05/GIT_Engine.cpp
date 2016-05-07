@@ -11,11 +11,11 @@ GIT_Engine::~GIT_Engine()
 {
 }
 //#include <fstream>
-void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::string& repo_path, const std::string& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
+void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& repo_path, const CString& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
 {
 	
-// 	CT2CA c_str_path(repo_path);
- 	const char* REPO = repo_path.c_str();
+ 	CT2CA c_str_path(repo_path);
+ 	const char* REPO = c_str_path;
 // 
 	git_repository *repo;
 	if (git_repository_open(&repo, REPO) != GIT_SUCCESS) {
@@ -31,7 +31,7 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 // 	git_branch_iterator_new(&branch_iterator, repo, GIT_BRANCH_LOCAL);
 // 	git_reference* next_git_branch_ref;
 // 	git_branch_t* branch_type = new git_branch_t;
-// 	std::vector<std::string> local_branches;
+// 	std::vector<CString> local_branches;
 // 	while (git_branch_next(&next_git_branch_ref, branch_type, branch_iterator) != GIT_ITEROVER)
 // 	{
 // 		const char* out;
@@ -51,17 +51,25 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 
 	strcpy(head_filepath, REPO);
 
-	//std::string path_to_branch = "\\refs\\heads\\" + branch;
+	//CString path_to_branch = "\\refs\\heads\\" + branch;
 
 	if (strrchr(REPO, '/') != (REPO + strlen(REPO)))
 	{
-		std::string path_to_branch = "\\refs\\heads\\" + branch;
+		CString heads("\\refs\\heads\\");
+		CString c_path_to_branch = heads + branch;
+		CT2CA pszConvertedAnsiString_path_to_branch(c_path_to_branch);
+		// construct a std::string using the LPCSTR input
+		std::string path_to_branch(pszConvertedAnsiString_path_to_branch);
 		strcat(head_filepath, path_to_branch.c_str());
 		//strcat(head_filepath, "\\refs\\heads\\master");
 	}
 	else
 	{
-		std::string path_to_branch = "/refs/heads/" + branch;
+		CString heads("/refs/heads/");
+		CString c_path_to_branch = heads + branch;
+		CT2CA pszConvertedAnsiString_path_to_branch(c_path_to_branch);
+		// construct a std::string using the LPCSTR input
+		std::string path_to_branch(pszConvertedAnsiString_path_to_branch);
 		strcat(head_filepath, path_to_branch.c_str());
 		//strcat(head_filepath, "refs/heads/master");
 		
@@ -111,13 +119,19 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 			throw - 1;
 		}
 		GIT_Commit_Local local_commit;
-		commit_message = git_commit_message(commit);
 		commit_author = git_commit_committer(commit);
+		commit_message = git_commit_message(commit);
+		auto commit_body = git_commit_body(commit);
+		const git_oid* commit_id = git_commit_id(commit);
+		auto comment_summary = git_commit_summary(commit);
+		auto comment_tree_id = git_commit_tree_id(commit);
+
 		auto parents = git_commit_parentcount(commit);
 		//auto commit_id = git_commit_id(commit);
 		//commits_oid.emplace_back(commit_id);
 		local_commit.commit_message = std::string( commit_message);
 		local_commit.commit_author = *commit_author;
+		local_commit.commit_id = *commit_id;
 		commitsForBranch.push_back(local_commit);
 		// Don't print the \n in the commit_message 
 		//printf("'%.*s' by %s <%s>\n", strlen(commit_message) - 1, commit_message, commit_author->name, commit_author->email);
@@ -137,18 +151,21 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const std::strin
 }
 
 
-void GIT_Engine::list_local_branches(git_repository * repo, std::vector<std::string>& localBranches)
+void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>& localBranches)
 {
 		git_branch_iterator* branch_iterator;
 		git_branch_iterator_new(&branch_iterator, repo, GIT_BRANCH_LOCAL);
 		git_reference* next_git_branch_ref;
 		git_branch_t* branch_type = new git_branch_t;
-		std::vector<std::string> local_branches;
+		std::vector<CString> local_branches;
 		while (git_branch_next(&next_git_branch_ref, branch_type, branch_iterator) != GIT_ITEROVER)
 		{
 			const char* out;
 			git_branch_name(&out, next_git_branch_ref);
-			local_branches.push_back(out);
+			CA2CT ca2w(out);
+			std::wstring w_out = ca2w;
+			CString c_out = w_out.c_str();
+			local_branches.push_back(c_out);
 		}
 		localBranches = std::move(local_branches);
 		delete branch_type;
@@ -156,8 +173,11 @@ void GIT_Engine::list_local_branches(git_repository * repo, std::vector<std::str
 
 }
 
-void GIT_Engine::get_repo(const std::string & repo_path, git_repository** repo)
+void GIT_Engine::get_repo(const CString & c_repo_path, git_repository** repo)
 {
+	CT2CA pszConvertedAnsiString_repo_path(c_repo_path);
+	// construct a std::string using the LPCSTR input
+	std::string repo_path(pszConvertedAnsiString_repo_path);
 	if (git_repository_open(repo, repo_path.c_str()) != GIT_SUCCESS) 
 	{
 		throw - 1;
@@ -166,7 +186,7 @@ void GIT_Engine::get_repo(const std::string & repo_path, git_repository** repo)
 // 	git_branch_iterator_new(&branch_iterator, repo, GIT_BRANCH_LOCAL);
 // 	git_reference* next_git_branch_ref;
 // 	git_branch_t* branch_type = new git_branch_t;
-// 	std::vector<std::string> local_branches;
+// 	std::vector<CString> local_branches;
 // 	while (git_branch_next(&next_git_branch_ref, branch_type, branch_iterator) != GIT_ITEROVER)
 // 	{
 // 		const char* out;
@@ -179,15 +199,15 @@ void GIT_Engine::get_repo(const std::string & repo_path, git_repository** repo)
 }
 
 
-void GIT_Engine::get_commits_for_branches(const std::string & repo_path, std::map<std::string, std::vector<GIT_Commit_Local>>& branchCommits)
+void GIT_Engine::get_commits_for_branches(const CString & repo_path, std::map<CString, std::vector<GIT_Commit_Local>>& branchCommits)
 {
 	
 	git_repository* repo{ nullptr };
 	GIT_Engine::get_repo(repo_path, &repo);
-	std::vector<std::string> local_branches;
+	std::vector<CString> local_branches;
 	GIT_Engine::list_local_branches(repo, local_branches);
 	std::vector<GIT_Commit_Local> local_commits;
-	//std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits;
+	//std::map<CString, std::vector<GIT_Commit_Local>> branch_commits;
 
 	for (const auto& branch : local_branches)
 	{

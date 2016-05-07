@@ -16,7 +16,7 @@ static char THIS_FILE[]=__FILE__;
 
 CBCGPPropBar::CBCGPPropBar()
 {
-	m_BorderColor = CBCGPColor::Orange;
+	m_BorderColor = CBCGPColor::Red;
 	m_FillBrush.SetColors(CBCGPColor::LightSteelBlue, CBCGPColor::White, CBCGPBrush::BCGP_GRADIENT_RADIAL_TOP_LEFT, 0.75);
 	m_TextBrush.SetColor(CBCGPColor::SteelBlue);
 }

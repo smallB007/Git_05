@@ -61,13 +61,15 @@ LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
 }
 void Git_05_ListCtr::selectItem(const repo_name_t& repoName)
 {
-	CString c_repo_name(repoName.c_str());
+	//CString c_repo_name(repoName.c_str());
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
 	{
 		auto c_txt = GetItemText(i,0);
-		if (c_txt == c_repo_name)
+		if (c_txt == repoName)
 		{
+			lastItem_ = i;
+
 			LVITEMW pitem;
 			ZeroMemory(&pitem, sizeof(pitem));
 			pitem.mask = LVIF_IMAGE;
@@ -79,7 +81,7 @@ void Git_05_ListCtr::selectItem(const repo_name_t& repoName)
 	}
 }
 
-
+#include "MainFrm.h"
 #include "WorkSpaceBar4.h"
 void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -93,14 +95,28 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	lastItem_ = item_number;
 	if (item_number > GetItemCount())
 	{
-		lastItem_ = GetItemCount();
+		lastItem_ = GetItemCount() - 1;
 		item_number = lastItem_;
 	}
 
 	SetItemState(item_number, LVIS_SELECTED, LVIS_SELECTED);
-	auto repo_name = GetItemText(item_number, 0);
-	parent_->set_branches_for_repo(repo_name);
-	parent_->write_repo_name_to_file_(repo_name);
+	auto git_entity_name = GetItemText(item_number, 0);
+	
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+
+	if (git_entity_type_ == GIT_ENTITY_TYPE::REPO)
+	{
+		pMainWnd->set_branches_for_repo(git_entity_name);
+		pMainWnd->write_repo_name_to_file_(git_entity_name);
+	}
+	else
+	{
+		
+		auto commit_id = GetItemText(item_number, 3);//3 because it is a third column set in CWorkSpaceBar4::set_type_list_ctrl_commits()
+		auto repo_name = parent_->get_current_repo();
+		auto branch_name = parent_->get_current_branch();
+		pMainWnd->set_commit_info(repo_name,branch_name,commit_id);
+	}
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
 	{
@@ -257,7 +273,7 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
 			{
 				pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
-				pLVCD->nmcd.lItemlParam = 1;
+				pLVCD->nmcd.lItemlParam = 1;//set it here so it can communicate with postpaint
 
 				CDC*  pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
 				CRect rect;

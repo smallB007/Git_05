@@ -53,27 +53,54 @@ void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 	eview_type_ = view_type;
 }
 
-CString CWorkSpaceBar4::get_selection_repo_name()
+CString CWorkSpaceBar4::get_current_item()const
+{
+	CString current_item = m_wndListCtrl_->get_active_item();
+	return current_item;
+}
+
+CString CWorkSpaceBar4::get_current_branch()const
+{
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	CString current_branch = pMainWnd->get_current_branch();
+	return current_branch;
+}
+
+
+CString CWorkSpaceBar4::get_current_repo()const
 {
 	
-	int sel = m_wndListCtrl_->GetSelectionMark();
-	CString repo_name =	m_wndListCtrl_->GetItemText(sel, 0);
-	return repo_name;
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	CString current_repo = pMainWnd->get_current_repo();
+	return current_repo;
+}
+
+CString CWorkSpaceBar4::get_current_commit()const
+{
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	CString current_commit = pMainWnd->get_current_commit();
+	return current_commit;
+}
+
+void CWorkSpaceBar4::set_commit_info(CString repo, CString branch ,CString commitId)
+{
+	auto branch_commits = repo_branches_[repo];
+	auto commits = branch_commits[branch];
 }
 
 void CWorkSpaceBar4::set_branches_for_repo(const CString & repoName)
 {
-	CT2CA ctstring(repoName);
-	std::string repo(ctstring);
-	auto branch_commits = repo_branches_[repo];
+	//CT2CA ctstring(repoName);
+	//std::string repo(ctstring);
+	auto branch_commits = repo_branches_[repoName];
 	add_branches_to_combo_(branch_commits);
 }
 
 void CWorkSpaceBar4::set_commits_for_branch(const CString & repoName, const CString & branchName)
 {
-	CT2CA ctstring(repoName);
-	std::string repo(ctstring);
-	auto branch_commits = repo_branches_[repo];
+	//CT2CA ctstring(repoName);
+	//std::string repo(ctstring);
+	auto branch_commits = repo_branches_[repoName];
 	
 	//add_commit_to_list_ctrl_()
 }
@@ -91,14 +118,14 @@ std::vector<GIT_Commit_Local> CWorkSpaceBar4::get_commits_for_branch(const CStri
 {
 	std::vector<GIT_Commit_Local> commits_for_branch;
 
-	CT2CA c_repo_name(repoName);
-	std::string repo(c_repo_name);
-	auto branch_commits = repo_branches_[repo];
+	//CT2CA c_repo_name(repoName);
+	//std::string repo(c_repo_name);
+	auto branch_commits = repo_branches_[repoName];
 
-	CT2CA c_branch_name(branchName);
-	std::string branch(c_branch_name);
+	//CT2CA c_branch_name(branchName);
+	//std::string branch(c_branch_name);
 
-	commits_for_branch = branch_commits[branch];
+	commits_for_branch = branch_commits[branchName];
 	return commits_for_branch;
 }
 
@@ -113,22 +140,23 @@ void CWorkSpaceBar4::write_repo_name_to_file_(const CString& repoName)
 	}
 }
 
-CWorkSpaceBar4::repo_name_t CWorkSpaceBar4::read_repo_name_from_file_()
+CString CWorkSpaceBar4::read_repo_name_from_file_()
 {
 	std::ifstream f_in(file_with_repo_to_set_as_active_);
-	repo_name_t active_repo;
+	std::string active_repo;
 	if (f_in)
 	{
 		f_in >> active_repo;
 	}
-
-	return active_repo;
+	CA2W ca2w(active_repo.c_str());
+	std::wstring wide_str = ca2w;
+	return wide_str.c_str();
 }
 
 void CWorkSpaceBar4::select_repository_according_to_policy()
 {//for the moment last selected will be the one we will select at the start of our application
-	repo_name_t active_repo = read_repo_name_from_file_();
-	if (active_repo.size())
+	CString active_repo = read_repo_name_from_file_();
+	if (!active_repo.IsEmpty())
 	{
 		select_repo_(active_repo);
 	}
@@ -139,9 +167,8 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 	std::vector<CString> branches;
 	for (const auto& aPair: branch_commits)
 	{
-		CA2W ca2w(aPair.first.c_str());
-		std::wstring wide_str = ca2w;
-		branches.push_back(wide_str.c_str());
+		
+		branches.push_back(aPair.first);
 	}
 	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
 	pMainWnd->setup_git_branches_combo_(branches);
@@ -348,7 +375,8 @@ int CWorkSpaceBar4::set_type_list_ctrl_commits()
 	m_wndListCtrl_->InsertColumn(0, _T("Author"), LVCFMT_CENTER, -1, 0);
 	m_wndListCtrl_->InsertColumn(1, _T("Date"), LVCFMT_RIGHT, -1, 1);
 	m_wndListCtrl_->InsertColumn(2, _T("Short info"), LVCFMT_CENTER, -1, 2);
-	
+	m_wndListCtrl_->InsertColumn(3, _T("INVISIBLE_SHA"), LVCFMT_CENTER, -1, 2);//this column will not be visible
+	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::COMMIT);
 	return m_wndListCtrl_->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
 int CWorkSpaceBar4::set_type_list_ctrl_repos()
@@ -364,6 +392,7 @@ int CWorkSpaceBar4::set_type_list_ctrl_repos()
 	m_wndListCtrl_->InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
 	m_wndListCtrl_->InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
 	m_wndListCtrl_->InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
+	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::REPO);
 	return m_wndListCtrl_->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
 int CWorkSpaceBar4::create_list_ctrl_()
@@ -432,14 +461,23 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	auto email = commit.commit_author.email;
 	auto when = commit.commit_author.when;
 	auto msg = commit.commit_message;
+ 	const git_oid commit_id = commit.commit_id;
+	
 	CA2W ca2w(name);
 	std::wstring c_name = ca2w;
+	
 	CA2W ca2msg(msg.c_str());
 	std::wstring c_msg = ca2msg;
+
+	std::string str_commit(commit_id.id, std::cend(commit_id.id));
+	CA2W ca2commit_id(str_commit.c_str());//correct this and select first commit
+
+	std::wstring c_commit_id = ca2commit_id;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
 	m_wndListCtrl_->InsertItem(itemNo, c_name.c_str(), 2);
 	m_wndListCtrl_->SetItemText(itemNo, 1, c_msg.c_str());
 	m_wndListCtrl_->SetItemText(itemNo, 2, _T("Changes: 20"));
+	m_wndListCtrl_->SetItemText(itemNo, 3, c_commit_id.c_str());
 	VERIFY(_SetTilesViewLinesCount(2));
 	UINT arrColumns[2] = { 1, 2};
 	for (auto item{ 0 }, end{ m_wndListCtrl_->GetItemCount() }; item < end; ++item)
@@ -452,10 +490,10 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 }
 int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
 {
-	CA2W ca2w(repoName.c_str());
-	std::wstring wide_str = ca2w;
+	//CA2W ca2w(repoName.c_str());
+	//std::wstring wide_str = ca2w;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
-	m_wndListCtrl_->InsertItem(itemNo, wide_str.c_str(), 2);
+	m_wndListCtrl_->InsertItem(itemNo, repoName, 2);
 	m_wndListCtrl_->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
 	m_wndListCtrl_->SetItemText(itemNo, 2, _T("Changes: 20"));
 	m_wndListCtrl_->SetItemText(itemNo, 3, _T("Ahead of Master: 17"));

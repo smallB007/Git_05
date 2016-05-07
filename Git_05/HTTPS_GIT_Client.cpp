@@ -57,7 +57,7 @@ void HTTPS_GIT_Client::fill_json_data_(const Poco::JSON::Object::Ptr& json_objec
 void HTTPS_GIT_Client::get_user_credentials_(std::pair<userName, userPass>& userCredentials)
 {
 	CGit_05App* git_app_p = get_app_();
-	std::string u, p;
+	CString u, p;
 	git_app_p->read_credentials_from_file(u, p);
 
 }

@@ -181,7 +181,7 @@ static bool is_empty(std::ifstream& pFile)
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
-void CGit_05App::load_repos_from_file_(const std::string& file_path)
+void CGit_05App::load_repos_from_file_(const CString& file_path)
 {
 	std::ifstream f_in(file_path);
 	if (!is_empty(f_in))
@@ -195,7 +195,9 @@ void CGit_05App::load_repos_from_file_(const std::string& file_path)
 				git_repository* out{nullptr};
 				if (git_repository_open(&out, repo_path.c_str()) == 0)
 				{
-					populate_UI_(repo_path);
+					CA2W w_str(repo_path.c_str());
+					CString w_repo_path(w_str);
+					populate_UI_(w_repo_path);
 				}
 			}
 		}
@@ -206,7 +208,7 @@ void CGit_05App::load_repos_from_file_(const std::string& file_path)
 // 	}
 }
 
-bool CGit_05App::write_repo_path_to_file_(const std::string& repo_path)
+bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 {
 	//load first what's in file and see if this repo is already there
 	std::ifstream f_in(repositories_file_);
@@ -219,6 +221,8 @@ bool CGit_05App::write_repo_path_to_file_(const std::string& repo_path)
 		{
 			paths.push_back(path);
 		}
+		CT2CA ct2a(c_repo_path);
+		std::string repo_path(ct2a);
 
 		auto iter = std::find(cbegin(paths),cend(paths),repo_path);
 		
@@ -305,10 +309,12 @@ const HTTPS_GIT_Client* const CGit_05App::get_https_git_client_p()
 	return https_GIT_client_ptr_.get();
 }
 #include <algorithm>
-static std::string get_repo_name(std::string repo_path)
+static const CString get_repo_name(CString c_repo_path)
 {
 	std::string repo_name;
-	
+	CT2CA ct_repo_path(c_repo_path);
+	std::string repo_path(ct_repo_path);
+
 	char path_separator{ '\\' };
 	if (repo_path.find('/') != std::string::npos)
 	{
@@ -339,10 +345,17 @@ static std::string get_repo_name(std::string repo_path)
 // 			}
 // 		}
 	}
-	return repo_name;
+	CA2W w_str(repo_name.c_str());
+	return w_str;
 }
-static void convert_to_dot_git_path(std::string & repo_path)
+static void convert_to_dot_git_path(CString & c_repo_path)
 {
+	
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(c_repo_path);
+	// construct a std::string using the LPCSTR input
+	std::string repo_path(pszConvertedAnsiString);
+
 	size_t position = repo_path.find(".git");
 	if (position == std::string::npos)
 	{
@@ -355,19 +368,25 @@ static void convert_to_dot_git_path(std::string & repo_path)
 			repo_path += "/.git";
 		}
 	}
+	CA2W w_str(repo_path.c_str());
+	c_repo_path = w_str;
 }
 #include "GIT_Engine.hpp"
 #include "GIT_Commit_Local.hpp"
-void CGit_05App::populate_UI_(const std::string& repo_path)
+void CGit_05App::populate_UI_(const CString& repo_path)
 {
-	typedef std::string branch_name_t;
+	typedef CString branch_name_t;
 	std::map<branch_name_t, std::vector<GIT_Commit_Local>> branch_commits;
 	GIT_Engine::get_commits_for_branches(repo_path, branch_commits);
 
-	typedef std::string repo_name_t;
+	typedef CString repo_name_t;
 	std::map<repo_name_t, decltype(branch_commits)> repo_branches;
 
-	repo_name_t repo_name = get_repo_name(repo_path);
+	CString repo_name = get_repo_name(repo_path);
+	
+	//CA2W ca2w(repo_name.c_str());
+	//std::wstring w_repo_name = ca2w;
+	//CString c_repo_name = w_repo_name.c_str();
 	repo_branches[repo_name] = branch_commits;
 	get_main_frame()->m_wndWorkSpace_Repos_.git_tree(std::move(repo_branches));
 }
@@ -388,13 +407,13 @@ void CGit_05App::On_Add_Repo()
 	if (IDOK == dlgFile.DoModal())
 	{
 		auto path_name = dlgFile.GetPathName();
-		CT2CA c_str_path(path_name);
- 		std::string repo_path(c_str_path);
-		convert_to_dot_git_path(repo_path);
-		bool existed = write_repo_path_to_file_(repo_path);
+		//CT2CA c_str_path(path_name);
+ 		//std::string repo_path(c_str_path);
+		convert_to_dot_git_path(path_name);
+		bool existed = write_repo_path_to_file_(path_name);
 		if (!existed)
 		{
-			populate_UI_(repo_path);
+			populate_UI_(path_name);
 		}
 	}
 }
@@ -433,23 +452,34 @@ CMainFrame* CGit_05App::get_main_frame() const
 }
 
 #include <fstream>
-void CGit_05App::write_credentials_to_file(const char* username, const char* password)const
+void CGit_05App::write_credentials_to_file(const CString& c_username, const CString& c_password)const
 {
 	std::ofstream f_out("credentials.txt");
+	CT2CA pszConvertedAnsiString_username(c_username);
+	CT2CA pszConvertedAnsiString_password(c_password);
+	// construct a std::string using the LPCSTR input
+	std::string username(pszConvertedAnsiString_username);
+	std::string password(pszConvertedAnsiString_password);
+	
 	if (f_out)
 	{
 		f_out << username << '\n';
 		f_out << password << '\n';
 	}
 }
-void CGit_05App::read_credentials_from_file(std::string& username, std::string& password)const
+void CGit_05App::read_credentials_from_file(CString& c_username, CString& c_password)const
 {
 	std::ifstream f_in("credentials.txt");
+	std::string username, password;
 	if (f_in)
 	{
 		f_in >> username;
 		f_in >> password;
 	}
+	CA2W w_username(username.c_str());
+	CA2W w_password(password.c_str());
+	c_username = w_username;
+	c_password = w_password;
 }
 
 

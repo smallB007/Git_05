@@ -58,7 +58,29 @@ void CMainFrame::selectRepository()
 	m_wndWorkSpace_Repos_.select_repository_according_to_policy();
 }
 
-CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()
+CString CMainFrame::get_current_branch()const
+{
+	CBCGPRibbonComboBox* branches_cmb = get_branches_cmb_();
+	auto inx = branches_cmb->GetCurSel();
+	CString branch = branches_cmb->GetItem(inx);
+	return branch;
+}
+
+CString CMainFrame::get_current_repo()const
+{
+	CString current_repo = m_wndWorkSpace_Repos_.get_current_item();
+
+	return current_repo;
+}
+
+CString CMainFrame::get_current_commit()const
+{
+	CString current_commit = m_wndWorkSpace_Commits_.get_current_item();
+
+	return current_commit;
+}
+
+CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()const
 {
 	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	ASSERT_VALID(pRibbon);
@@ -80,6 +102,7 @@ void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
 		branches_p->AddItem(branch);
 	}
 	branches_p->SelectItem(0);
+	OnCbn_Git_Tree_Branches_SelchangeCombo();
 	if (0)
 	{//width of combobox can be calculated ;)
 		CClientDC dc(this);
@@ -221,7 +244,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndOutput.SetIcon (imagesWorkspace.ExtractIcon (2), FALSE);
 
-	if (!m_wndPropGrid.Create (_T("Properties"), this, CRect (0, 0, 200, 200),
+	if (!m_wndPropGrid.Create (_T("Commit Details"), this, CRect (0, 0, 200, 200),
 		TRUE, 
 		ID_VIEW_PROPERTIES,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -529,7 +552,7 @@ void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
 	auto branches_cmb_ = get_branches_cmb_();
 	auto ix = branches_cmb_->GetCurSel();
 	LPCTSTR branch_name = branches_cmb_->GetItem(ix);
-	CString repo_name = m_wndWorkSpace_Repos_.get_selection_repo_name();
+	CString repo_name = m_wndWorkSpace_Repos_.get_current_repo();
 	std::vector<GIT_Commit_Local> commits =	m_wndWorkSpace_Repos_.get_commits_for_branch(repo_name, branch_name);
 	m_wndWorkSpace_Commits_.set_commits(commits);
 }

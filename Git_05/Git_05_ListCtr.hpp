@@ -4,8 +4,8 @@ class Git_05_ListCtr : public CListCtrl
 	DECLARE_DYNAMIC(Git_05_ListCtr)
 	friend class CWorkSpaceBar4;
 	//those typedefs taken from Workspacebar4
-	typedef std::string repo_name_t;
-	typedef std::string branch_name_t;
+	typedef CString repo_name_t;
+	typedef CString branch_name_t;
 
 private:
 	int lastItem_{0};
@@ -19,6 +19,8 @@ private:
 	CWorkSpaceBar4* parent_;
 
 public:
+	enum GIT_ENTITY_TYPE { REPO, COMMIT, UNSPECIFIED };
+	GIT_ENTITY_TYPE git_entity_type_{ UNSPECIFIED };
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
 	virtual HFONT OnGetCellFont(int /*nRow*/, int /*nColum*/, DWORD /*dwData*/ = 0)
@@ -28,6 +30,14 @@ public:
 	void addParent(CWorkSpaceBar4* parent)
 	{
 		parent_ = parent;
+	}
+	void  set_git_entity_type(GIT_ENTITY_TYPE gitEntityType)
+	{
+		git_entity_type_ = gitEntityType;
+	}
+	CString get_active_item()
+	{
+		return GetItemText(lastItem_, 0);
 	}
 // 	BOOL PreTranslateMessage(MSG* pMsg)
 // 	{

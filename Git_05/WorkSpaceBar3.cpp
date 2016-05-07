@@ -113,7 +113,7 @@ void CWorkSpaceBar3::OnPaint()
 
 void CWorkSpaceBar3::fill_repositories_()
 {
-	CGit_05App* main_app_p = get_main_app_();
+	CGit_05App* main_app_p = static_cast<CGit_05App*>(AfxGetApp());
 	const HTTPS_GIT_Client* https_git_client_p = main_app_p->get_https_git_client_p();
 	std::set<Git_Repository, Less<Git_Repository>> repos = https_git_client_p->current_user_repositories();
 

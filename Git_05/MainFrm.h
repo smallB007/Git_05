@@ -6,7 +6,7 @@
 #include "WorkSpaceBar3.h"
 #include "WorkSpaceBar4.h"
 #include "OutputBar.h"
-#include "PropertiesViewBar.h"
+#include "Git_05_PropertiesViewBar.h"
 
 class CMainFrame : public CBCGPFrameWnd
 {
@@ -45,13 +45,16 @@ protected:  // control bar embedded members
 	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
-	CBCGPPropBar			m_wndPropGrid;
+	Git05_CBCGPPropBar			m_wndPropGrid;
 public:
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
 	void selectRepository();
+	CString get_current_repo()const;
+	CString get_current_branch()const;
+	CString get_current_commit()const;
 private:
 	
-	CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
+	//CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
 	void setup_ribbon_background_();
 // Generated message map functions
 protected:
@@ -85,7 +88,7 @@ protected:
 private:
 	//_ui_ CComboBox git_tree_branches_;
 	CBCGPRibbonComboBox* branches_cmb_{nullptr};
-	CBCGPRibbonComboBox* get_branches_cmb_();
+	CBCGPRibbonComboBox* get_branches_cmb_()const;
 protected:
 	//void DoDataExchange(CDataExchange* pDX);
 	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();

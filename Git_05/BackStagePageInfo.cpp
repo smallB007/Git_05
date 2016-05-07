@@ -390,7 +390,7 @@ void CBackStagePageInfo::get_login_credentials_()
 	if (!failure)
 	{
 		CGit_05App* app_p = get_main_app_();
-		app_p->write_credentials_to_file(c_str_username, c_str_password);
+		app_p->write_credentials_to_file(user_name, password);
 	}
 }
 

@@ -13,19 +13,21 @@ class CGit_05App;
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
 {
 public:
-	typedef std::string repo_name_t;
-	typedef std::string branch_name_t;
+	typedef CString repo_name_t;
+	typedef CString branch_name_t;
 private:
 	//std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits_;
 	std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>> repo_branches_;
 public:
 
 	enum EVIEW_TYPE{LIST_CTRL,DX_RENDERER};
+	
 private:
 	std::unique_ptr<Direct2DRenderer> renderer_;
 	HTREEITEM hRoot_;
 	CImageList m_cImageListNormal, m_cImageListSmall;
 	EVIEW_TYPE eview_type_{ LIST_CTRL };
+	
 	int create_list_ctrl_();
 	
 	int add_repo_to_list_ctrl_(repo_name_t repoName);
@@ -43,13 +45,18 @@ public:
 	int set_type_list_ctrl_repos();
 	void git_tree(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
+	void set_commit_info(CString repo, CString branch, CString commitId);
 	void set_commits_for_branch(const CString & repoName, const CString& branchName);
 	void set_commits(const std::vector<GIT_Commit_Local>& commits);
 	std::vector<GIT_Commit_Local> get_commits_for_branch(const CString & repoName, const CString& branchName);
 	void select_repository_according_to_policy();
 	void write_repo_name_to_file_(const CString & repoName);
-	repo_name_t read_repo_name_from_file_();
-	CString get_selection_repo_name();
+	CString read_repo_name_from_file_();
+	CString get_current_item()const;
+	CString get_current_repo()const;
+	CString get_current_branch()const;
+	CString get_current_commit()const;
+
 private:
 	std::string file_with_repo_to_set_as_active_{ "repo_to_set_as_active.txt" };
 	// Attributes
