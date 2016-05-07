@@ -16,7 +16,7 @@ private:
 	LOGBRUSH logic_brush_;
 	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
 private:
-	CWorkSpaceBar4* parent_;
+	//CWorkSpaceBar4* parent_;
 
 public:
 	enum GIT_ENTITY_TYPE { REPO, COMMIT, UNSPECIFIED };
@@ -27,10 +27,10 @@ public:
 	{
 		return NULL;
 	}
-	void addParent(CWorkSpaceBar4* parent)
-	{
-		parent_ = parent;
-	}
+	//void addParent(CWorkSpaceBar4* parent)
+	//{
+	//	parent_ = parent;
+	//}
 	void  set_git_entity_type(GIT_ENTITY_TYPE gitEntityType)
 	{
 		git_entity_type_ = gitEntityType;

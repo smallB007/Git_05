@@ -89,7 +89,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	void fill_repositories_();
-	CGit_05App* get_main_app_()const;
+	//CGit_05App* get_main_app_()const;
 };
 
 /////////////////////////////////////////////////////////////////////////////

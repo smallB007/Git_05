@@ -79,11 +79,12 @@
     <ClCompile Include="GIT_Engine.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Git_05_ListCtr.cpp" />
     <ClCompile Include="Git_05_PropertiesViewBar.cpp">
       <Filter>BCG\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Git_05_CBCGPPropList.cpp" />
+    <ClCompile Include="Git_05_ListCtr.cpp">
+      <Filter>Git_05\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -179,11 +180,12 @@
     <ClInclude Include="GIT_Commit_Local.hpp">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="Git_05_ListCtr.hpp" />
     <ClInclude Include="Git_05_PropertiesViewBar.h">
       <Filter>BCG\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="Git_05_CBCGPPropList.hpp" />
+    <ClInclude Include="Git_05_ListCtr.hpp">
+      <Filter>Git_05\hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">

@@ -213,7 +213,6 @@
     <ClInclude Include="Git_05.h" />
     <ClInclude Include="Git_05Doc.h" />
     <ClInclude Include="Git_05View.h" />
-    <ClInclude Include="Git_05_CBCGPPropList.hpp" />
     <ClInclude Include="Git_05_ListCtr.hpp" />
     <ClInclude Include="Git_05_PropertiesViewBar.h" />
     <ClInclude Include="Git_05_Utils.h" />
@@ -246,7 +245,6 @@
     <ClCompile Include="Git_05.cpp" />
     <ClCompile Include="Git_05Doc.cpp" />
     <ClCompile Include="Git_05View.cpp" />
-    <ClCompile Include="Git_05_CBCGPPropList.cpp" />
     <ClCompile Include="Git_05_ListCtr.cpp" />
     <ClCompile Include="Git_05_PropertiesViewBar.cpp" />
     <ClCompile Include="GIT_Branch.cpp" />

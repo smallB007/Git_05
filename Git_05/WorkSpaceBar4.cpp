@@ -37,10 +37,10 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 construction/destruction
-CGit_05App* CWorkSpaceBar4::get_main_app_()const
-{
-	return static_cast<CGit_05App*>(AfxGetApp());
-};//copy from BackStagePageInfo.h
+// CGit_05App* CWorkSpaceBar4::get_main_app_()const
+// {
+// 	return static_cast<CGit_05App*>(AfxGetApp());
+// };//copy from BackStagePageInfo.h
 
 CWorkSpaceBar4::CWorkSpaceBar4()
 {
@@ -350,7 +350,7 @@ void CWorkSpaceBar4::OnPaint()
 
 void CWorkSpaceBar4::fill_repositories_()
 {
-	CGit_05App* main_app_p = get_main_app_();
+	CGit_05App* main_app_p = static_cast<CGit_05App*>(AfxGetApp());
 	const HTTPS_GIT_Client* https_git_client_p = main_app_p->get_https_git_client_p();
 	std::set<Git_Repository, Less<Git_Repository>> repos = https_git_client_p->current_user_repositories();
 
@@ -411,7 +411,7 @@ int CWorkSpaceBar4::create_list_ctrl_()
 		return -1;      // fail to create
 	}
 	
-	m_wndListCtrl_->addParent(this);
+	//m_wndListCtrl_->addParent(this);
 // 		CWinApp* pApp = AfxGetApp();
 // 		VERIFY(m_cImageListNormal.Create(64, 64, ILC_COLOR32, 0, 0));
 // 		m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_GREEN));

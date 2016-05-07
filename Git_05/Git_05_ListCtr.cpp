@@ -106,16 +106,16 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
 	if (git_entity_type_ == GIT_ENTITY_TYPE::REPO)
 	{
-		pMainWnd->set_branches_for_repo(git_entity_name);
-		pMainWnd->write_repo_name_to_file_(git_entity_name);
+		//pMainWnd->set_branches_for_repo(git_entity_name);
+		//pMainWnd->write_repo_name_to_file_(git_entity_name);
 	}
 	else
 	{
 		
 		auto commit_id = GetItemText(item_number, 3);//3 because it is a third column set in CWorkSpaceBar4::set_type_list_ctrl_commits()
-		auto repo_name = parent_->get_current_repo();
-		auto branch_name = parent_->get_current_branch();
-		pMainWnd->set_commit_info(repo_name,branch_name,commit_id);
+		//auto repo_name = parent_->get_current_repo();
+		//auto branch_name = parent_->get_current_branch();
+		//pMainWnd->set_commit_info(repo_name,branch_name,commit_id);
 	}
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
@@ -174,7 +174,7 @@ int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetBkColor(background_color_);
 	SetHoverTime(hover_time_);
 
-	
+	SendMessage(WM_CHANGEUISTATE, MAKEWPARAM(UIS_INITIALIZE, 0), 0);//to remove dotted focus rectangle
 
 	return 0;
 }
@@ -252,6 +252,12 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// First thing - check the draw stage. If it's the control's prepaint
 	// stage, then tell Windows we want messages for every item.
 	
+		RECT prc;
+		ListView_GetItemRect(m_hWnd, pLVCD->nmcd.dwItemSpec, &prc, LVIR_BOUNDS);
+		CRect rect;
+		GetClientRect(&rect);
+		prc.right = rect.right;
+
 		switch (pLVCD->nmcd.dwDrawStage)
 		{
 		case CDDS_PREPAINT:
@@ -268,8 +274,8 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			break;
 		case CDDS_ITEMPREPAINT:
 		{
-			RECT prc;
-			ListView_GetItemRect(m_hWnd, pLVCD->nmcd.dwItemSpec, &prc, LVIR_BOUNDS);
+			//RECT prc;
+			//ListView_GetItemRect(m_hWnd, pLVCD->nmcd.dwItemSpec, &prc, LVIR_BOUNDS);
 			if (pLVCD->nmcd.uItemState & CDIS_SELECTED)
 			{
 				pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
@@ -302,17 +308,12 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 		break;
 		case CDDS_ITEMPOSTPAINT:
 		{
-			RECT prc;
-			ListView_GetItemRect(m_hWnd, pLVCD->nmcd.dwItemSpec, &prc, LVIR_BOUNDS);
-			CRect rect;
-			GetClientRect(&rect);
-			prc.right = rect.right;
 
 
-			LVITEMW pitem;
-			ZeroMemory(&pitem, sizeof(pitem));
-			pitem.mask = LVIF_IMAGE;
-			GetItem(&pitem);
+			//LVITEMW pitem;
+			//ZeroMemory(&pitem, sizeof(pitem));
+			//pitem.mask = LVIF_IMAGE;
+			//GetItem(&pitem);
 			
 			//if (pitem.state == 1)
 			//{
