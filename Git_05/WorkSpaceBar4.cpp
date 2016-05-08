@@ -94,11 +94,25 @@ CString CWorkSpaceBar4::get_current_commit()const
 	return current_commit;
 }
 
-void CWorkSpaceBar4::set_commit_info(CString repo, CString branch ,CString commitId)
+GIT_Commit_Local CWorkSpaceBar4::get_commit(const CString & repoName, const CString & branchName, const CString& commitId) 
 {
-	auto branch_commits = repo_branches_[repo];
-	auto commits = branch_commits[branch];
+	CT2CA pszConvertedAnsiString(commitId);
+	// construct a std::string using the LPCSTR input
+	std::string strStd_commit_id(pszConvertedAnsiString);
+	auto branches_commit = repo_branches_[repoName];
+	auto commits = branches_commit[branchName];
+	
+ 	for (GIT_Commit_Local& commit : commits)
+ 	{
+		if (commit.commit_id == strStd_commit_id)
+		{
+			return commit;
+		}
+ 	}
+	return GIT_Commit_Local();
 }
+
+
 
 void CWorkSpaceBar4::set_branches_for_repo(const CString & repoName)
 {
@@ -450,7 +464,8 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	auto email = commit.commit_author.email;
 	auto when = commit.commit_author.when;
 	auto msg = commit.commit_message;
- 	const git_oid commit_id = commit.commit_id;
+	auto commit_id = commit.commit_id;
+ 	//const git_oid commit_id = commit.commit_id;
 	
 	CA2W ca2w(name);
 	std::wstring c_name = ca2w;
@@ -458,10 +473,12 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	CA2W ca2msg(msg.c_str());
 	std::wstring c_msg = ca2msg;
 
-	std::string str_commit(commit_id.id, std::cend(commit_id.id));
-	CA2W ca2commit_id(str_commit.c_str());//correct this and select first commit
+	CA2W ca2commit(commit_id.c_str());
+	std::wstring c_commit_id = ca2commit;
+	//std::string str_commit(commit_id.id, std::cend(commit_id.id));
+	//CA2W ca2commit_id(str_commit.c_str());//correct this and select first commit
 
-	std::wstring c_commit_id = ca2commit_id;
+	//std::wstring c_commit_id = ca2commit_id;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
 	m_wndListCtrl_->InsertItem(itemNo, c_name.c_str(), 2);
 	m_wndListCtrl_->SetItemText(itemNo, 1, c_msg.c_str());

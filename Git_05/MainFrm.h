@@ -45,7 +45,7 @@ protected:  // control bar embedded members
 	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
-	Git05_CBCGPPropBar			m_wndPropGrid;
+	Git05_CBCGPPropBar			m_wndCommitPropertiesGrid;
 public:
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
 	//void selectRepository();
@@ -54,6 +54,7 @@ public:
 	CString get_current_repo()const;
 	CString get_current_branch()const;
 	CString get_current_commit()const;
+	void set_info_for_commit(const CString& commit_id);
 	void set_branches_for_repo(const CString& repoName);
 private:
 	

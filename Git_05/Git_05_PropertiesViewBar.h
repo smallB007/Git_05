@@ -4,6 +4,7 @@
 
 #pragma once
 #include "BCGPPropList.h"
+class GIT_Commit_Local;
 class Git05_CBCGPPropBar : public CBCGPDockingControlBar  
 {
 // Construction
@@ -19,7 +20,7 @@ public:
 		m_wndPropList.SetVSDotNetLook (bSet);
 		m_wndPropList.SetGroupNameFullWidth (bSet);
 	}
-
+	void set_commit_info(const GIT_Commit_Local& commitInfo);
 protected:
 	CBCGPPropList	m_wndPropList;
 

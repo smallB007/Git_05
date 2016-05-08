@@ -76,6 +76,12 @@ void Git05_CBCGPPropBar::OnSize(UINT nType, int cx, int cy)
 	AdjustLayout ();
 }
 
+#include "GIT_Commit_Local.hpp"
+void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
+{
+
+}
+
 void Git05_CBCGPPropBar::InitPropList ()
 {
 	// Add commands:

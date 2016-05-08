@@ -60,7 +60,8 @@ LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
 	}
 	return TRUE;
 }
-
+#include "MainFrm.h"
+#include "WorkSpaceBar4.h"
 void Git_05_ListCtr::selectItem(const int inx)
 {
 	LVITEMW pitem;
@@ -70,6 +71,9 @@ void Git_05_ListCtr::selectItem(const int inx)
 	pitem.iSubItem = 0;
 	pitem.iImage = 1;
 	SetItem(&pitem);
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	CString commit_id = GetItemText(inx, 3);
+	pMainWnd->set_info_for_commit(commit_id);
 }
 void Git_05_ListCtr::selectItem(const repo_name_t& itemName)
 {
@@ -93,8 +97,7 @@ void Git_05_ListCtr::selectItem(const repo_name_t& itemName)
 	}
 }
 
-#include "MainFrm.h"
-#include "WorkSpaceBar4.h"
+
 void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	CRect rect;

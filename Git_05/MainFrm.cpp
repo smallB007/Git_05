@@ -89,6 +89,14 @@ CString CMainFrame::get_current_commit()const
 
 	return current_commit;
 }
+#include "GIT_Commit_Local.hpp"
+void CMainFrame::set_info_for_commit(const CString & commit_id)
+{
+	CString current_repo = m_wndWorkSpace_Repos_.get_current_repo();
+	CString current_branch = get_current_branch();//we could find commit by just having repo name but this will speed up our search
+	GIT_Commit_Local commit_info = m_wndWorkSpace_Repos_.get_commit(current_repo, current_branch, commit_id);
+	m_wndCommitPropertiesGrid.set_commit_info(commit_info);
+}
 
 void CMainFrame::set_branches_for_repo(const CString & repoName)
 {
@@ -259,7 +267,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndOutput.SetIcon (imagesWorkspace.ExtractIcon (2), FALSE);
 
-	if (!m_wndPropGrid.Create (_T("Commit Details"), this, CRect (0, 0, 200, 200),
+	if (!m_wndCommitPropertiesGrid.Create (_T("Commit Details"), this, CRect (0, 0, 200, 200),
 		TRUE, 
 		ID_VIEW_PROPERTIES,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -268,7 +276,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return FALSE;		// fail to create
 	}
 
-	m_wndPropGrid.SetIcon (imagesWorkspace.ExtractIcon (3), FALSE);
+	m_wndCommitPropertiesGrid.SetIcon (imagesWorkspace.ExtractIcon (3), FALSE);
 
 	//wnd_workspace_git_tree_2.EnableDocking(CBRS_ALIGN_ANY);
 	//m_wndWorkSpace.EnableDocking(CBRS_ALIGN_ANY);
@@ -278,7 +286,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndWorkSpace_Commits_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Git_Tree_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndPropGrid.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndCommitPropertiesGrid.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	EnableAutoHideBars(CBRS_ALIGN_ANY);
 	//DockControlBar(&m_wndWorkSpace);
@@ -288,7 +296,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndWorkSpace_Commits_);
 	//m_wndWorkSpace2.AttachToTabWnd (&m_wndWorkSpace, BCGP_DM_STANDARD, FALSE, NULL);
 	DockControlBar(&m_wndOutput);
-	DockControlBar(&m_wndPropGrid);
+	DockControlBar(&m_wndCommitPropertiesGrid);
 	//DockControlBar(&wnd_workspace_git_tree_2);
 
 	setup_ribbon_background_();
@@ -525,15 +533,15 @@ void CMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)
 
 void CMainFrame::OnViewPropGrid() 
 {
-	ShowControlBar (&m_wndPropGrid,
-					!(m_wndPropGrid.IsVisible ()),
+	ShowControlBar (&m_wndCommitPropertiesGrid,
+					!(m_wndCommitPropertiesGrid.IsVisible ()),
 					FALSE, TRUE);
 	RecalcLayout ();
 }
 
 void CMainFrame::OnUpdateViewPropGrid(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck (m_wndPropGrid.IsVisible ());
+	pCmdUI->SetCheck (m_wndCommitPropertiesGrid.IsVisible ());
 	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
 }
  // PROPERTYBAR

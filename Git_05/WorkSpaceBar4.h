@@ -46,7 +46,7 @@ public:
 	void git_tree(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
 	std::vector<branch_name_t> get_branches_for_repo(const CString& repoName);
-	void set_commit_info(CString repo, CString branch, CString commitId);
+	
 	void set_commits_for_branch(const CString & repoName, const CString& branchName);
 	void set_commits(const std::vector<GIT_Commit_Local>& commits);
 	std::vector<GIT_Commit_Local> get_commits_for_branch(const CString & repoName, const CString& branchName);
@@ -57,7 +57,7 @@ public:
 	CString get_current_repo()const;
 	CString get_current_branch()const;
 	CString get_current_commit()const;
-
+	GIT_Commit_Local get_commit(const CString & repoName, const CString & branchName, const CString& commitId);
 private:
 	
 	// Attributes
