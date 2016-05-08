@@ -28,6 +28,8 @@ BEGIN_MESSAGE_MAP(CWorkSpaceBar4, CBCGPDockingControlBar)
 #endif
 //	ON_WM_LBUTTONDOWN()
 
+ON_WM_CLOSE()
+ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // void CWorkSpaceBar4::OnLButtonDown(UINT flag, CPoint point)
@@ -48,6 +50,11 @@ CWorkSpaceBar4::CWorkSpaceBar4()
 	//EnableD2DSupport();
 }
 
+CWorkSpaceBar4::~CWorkSpaceBar4()
+{
+	
+}
+
 void CWorkSpaceBar4::set_view_type(EVIEW_TYPE view_type)
 {
 	eview_type_ = view_type;
@@ -57,6 +64,11 @@ CString CWorkSpaceBar4::get_current_item()const
 {
 	CString current_item = m_wndListCtrl_->get_active_item();
 	return current_item;
+}
+
+void CWorkSpaceBar4::set_active_repo()
+{
+	m_wndListCtrl_->set_active_repo();
 }
 
 CString CWorkSpaceBar4::get_current_branch()const
@@ -96,6 +108,17 @@ void CWorkSpaceBar4::set_branches_for_repo(const CString & repoName)
 	add_branches_to_combo_(branch_commits);
 }
 
+std::vector<CString> CWorkSpaceBar4::get_branches_for_repo(const CString & repoName)
+{
+	auto branch_commits = repo_branches_[repoName];
+	std::vector<branch_name_t> branches;
+	for (const auto& aPair : branch_commits)
+	{
+		branches.push_back(aPair.first);
+	}
+	return branches;
+}
+
 void CWorkSpaceBar4::set_commits_for_branch(const CString & repoName, const CString & branchName)
 {
 	//CT2CA ctstring(repoName);
@@ -112,6 +135,7 @@ void CWorkSpaceBar4::set_commits(const std::vector<GIT_Commit_Local>& commits)
 	{
 		add_commit_to_list_ctrl_(commit);
 	}
+	m_wndListCtrl_->set_active_commit();
 }
 
 std::vector<GIT_Commit_Local> CWorkSpaceBar4::get_commits_for_branch(const CString & repoName, const CString & branchName)
@@ -129,38 +153,11 @@ std::vector<GIT_Commit_Local> CWorkSpaceBar4::get_commits_for_branch(const CStri
 	return commits_for_branch;
 }
 
-void CWorkSpaceBar4::write_repo_name_to_file_(const CString& repoName)
-{
-	std::ofstream f_out(file_with_repo_to_set_as_active_);
-	if (f_out)
-	{
-		CT2CA ctstring(repoName);
-		std::string repo(ctstring);
-		f_out << repo;
-	}
-}
 
-CString CWorkSpaceBar4::read_repo_name_from_file_()
-{
-	std::ifstream f_in(file_with_repo_to_set_as_active_);
-	std::string active_repo;
-	if (f_in)
-	{
-		f_in >> active_repo;
-	}
-	CA2W ca2w(active_repo.c_str());
-	std::wstring wide_str = ca2w;
-	return wide_str.c_str();
-}
 
-void CWorkSpaceBar4::select_repository_according_to_policy()
-{//for the moment last selected will be the one we will select at the start of our application
-	CString active_repo = read_repo_name_from_file_();
-	if (!active_repo.IsEmpty())
-	{
-		select_repo_(active_repo);
-	}
-}
+
+
+
 
 void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits)
 {
@@ -175,7 +172,7 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 
 }
 
-void CWorkSpaceBar4::select_repo_(const repo_name_t& repoName)
+void CWorkSpaceBar4::set_current_repo(const repo_name_t& repoName)
 {
 	m_wndListCtrl_->selectItem(repoName);
 	auto branches_with_commits = repo_branches_[repoName];
@@ -194,15 +191,7 @@ void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std:
 	
 }
 
-CWorkSpaceBar4::~CWorkSpaceBar4()
-{
-// 	if (m_wndListCtrl_)
-// 	{
-// 		auto i = m_wndListCtrl_->GetNextItem(-1, LVNI_SELECTED);
-// 		auto repo_name = m_wndListCtrl_->GetItemText(i, 0);
-// 		write_repo_name_to_file_(repo_name);
-// 	}
-}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CWorkSpaceBar4 message handlers
@@ -525,4 +514,25 @@ BOOL CWorkSpaceBar4::_SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount
 	lvti.puColumns = parrColumns;
 
 	return m_wndListCtrl_->SetTileInfo(&lvti);
+}
+
+void CWorkSpaceBar4::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CBCGPDockingControlBar::OnClose();
+	
+}
+
+
+void CWorkSpaceBar4::OnDestroy()
+{
+	CBCGPDockingControlBar::OnDestroy();
+
+// 	if (m_wndListCtrl_->get_git_entity_type() == Git_05_ListCtr::GIT_ENTITY_TYPE::REPO)
+// 	{
+// 		CString repo_name = get_current_repo();
+// 		CGit_05App* app_p = static_cast<CGit_05App*>(AfxGetApp());
+// 		app_p->write_repo_name_to_file_(repo_name);
+// 	}
 }

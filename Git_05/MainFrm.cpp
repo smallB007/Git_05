@@ -53,9 +53,19 @@ CMainFrame::~CMainFrame()
 {
 }
 
-void CMainFrame::selectRepository()
+// void CMainFrame::selectRepository()
+// {
+// 	m_wndWorkSpace_Repos_.select_repository_according_to_policy();
+// }
+
+void CMainFrame::select_active_repo()
 {
-	m_wndWorkSpace_Repos_.select_repository_according_to_policy();
+	m_wndWorkSpace_Repos_.set_active_repo();
+}
+
+void CMainFrame::set_current_repo(const CString & repoName)
+{
+	m_wndWorkSpace_Repos_.set_current_repo(repoName);
 }
 
 CString CMainFrame::get_current_branch()const
@@ -78,6 +88,11 @@ CString CMainFrame::get_current_commit()const
 	CString current_commit = m_wndWorkSpace_Commits_.get_current_item();
 
 	return current_commit;
+}
+
+void CMainFrame::set_branches_for_repo(const CString & repoName)
+{
+	m_wndWorkSpace_Repos_.set_branches_for_repo(repoName);
 }
 
 CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()const

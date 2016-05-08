@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
 	ON_NOTIFY_REFLECT(NM_RCLICK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
 	ON_NOTIFY_REFLECT(NM_RDBLCLK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
@@ -59,14 +60,25 @@ LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
 	}
 	return TRUE;
 }
-void Git_05_ListCtr::selectItem(const repo_name_t& repoName)
+
+void Git_05_ListCtr::selectItem(const int inx)
 {
-	//CString c_repo_name(repoName.c_str());
+	LVITEMW pitem;
+	ZeroMemory(&pitem, sizeof(pitem));
+	pitem.mask = LVIF_IMAGE;
+	pitem.iItem = inx;
+	pitem.iSubItem = 0;
+	pitem.iImage = 1;
+	SetItem(&pitem);
+}
+void Git_05_ListCtr::selectItem(const repo_name_t& itemName)
+{
+	//CString c_repo_name(itemName.c_str());
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
 	{
 		auto c_txt = GetItemText(i,0);
-		if (c_txt == repoName)
+		if (c_txt == itemName)
 		{
 			lastItem_ = i;
 
@@ -106,8 +118,9 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
 	if (git_entity_type_ == GIT_ENTITY_TYPE::REPO)
 	{
-		//pMainWnd->set_branches_for_repo(git_entity_name);
-		//pMainWnd->write_repo_name_to_file_(git_entity_name);
+		//1. Populate combo box with branch names
+		pMainWnd->set_branches_for_repo(git_entity_name);
+		
 	}
 	else
 	{
@@ -188,7 +201,10 @@ Git_05_ListCtr::Git_05_ListCtr()
 
 Git_05_ListCtr::~Git_05_ListCtr()
 {
-	int a{ 0 };
+	
+	//auto app = static_cast<CGit_05App*>(AfxGetApp());
+	//CString current_repo = GetItemText(lastItem_, 0);
+	//app->write_repo_name_to_file_(current_repo);
 }
 
 // COLORREF Git_05_ListCtr::OnGetCellTextColor(int /*nRow*/, int /*nColum*/)
@@ -350,3 +366,56 @@ void Git_05_ListCtr::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 // // 	dc.FillSolidRect(rect, crText);
 // }
 
+
+
+void Git_05_ListCtr::OnDestroy()
+{
+	if (GIT_ENTITY_TYPE::REPO == git_entity_type_)
+	{
+		CString repo_name = GetItemText(lastItem_, 0);
+		write_repo_name_to_file_(repo_name);
+	}
+	CListCtrl::OnDestroy();
+	// TODO: Add your message handler code here
+}
+
+void Git_05_ListCtr::write_repo_name_to_file_(const CString& repoName)const
+{
+	ASSERT(!repoName.IsEmpty());
+
+	std::ofstream f_out(file_with_repo_to_set_as_active_);
+	if (f_out)
+	{
+		CT2CA ctstring(repoName);
+		std::string repo(ctstring);
+		f_out << repo;
+	}
+}
+
+void Git_05_ListCtr::read_repo_name_from_file_()
+{
+	std::ifstream f_in(file_with_repo_to_set_as_active_);
+	std::string active_repo;
+	if (f_in)
+	{
+		f_in >> active_repo;
+	}
+	if (GIT_ENTITY_TYPE::REPO == git_entity_type_)
+	{
+
+		CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+		CA2W w_str(active_repo.c_str());
+		CString current_repo(w_str);
+		pMainWnd->set_current_repo(current_repo);
+	}
+}
+
+void Git_05_ListCtr::set_active_repo()
+{
+	read_repo_name_from_file_();
+}
+
+void Git_05_ListCtr::set_active_commit()
+{
+	selectItem(0);
+}

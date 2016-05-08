@@ -35,24 +35,26 @@ public:
 	virtual int ExitInstance();
 // Implementation
 	afx_msg void OnAppAbout();
-	afx_msg
-	void On_Add_Repo();
-	DECLARE_MESSAGE_MAP()
+	afx_msg	void On_Add_Repo();
 	afx_msg void OnCreateRepoButton();
+	DECLARE_MESSAGE_MAP()
 public:
 	//inner app workings
 
 	CMainFrame* get_main_frame()const;
 
 	void write_credentials_to_file(const CString&, const CString&)const;
-	void read_credentials_from_file(CString& username, CString& password)const;
+	void read_credentials_from_file(CString& username, CString& password)const;//change this so credentials are simply retrieved
 	void write_visual_theme_to_file_()const;
 	void read_visual_theme_from_file_();
+	
+	//cS read_repo_name_from_file_();
 private:
 	bool write_repo_path_to_file_(const CString& repo_path);
 	void populate_UI_(const CString & repo_path);
 	void load_repos_from_file_(const CString & file_path);
 	const CString repositories_file_ = L"repositories_paths.txt";
+	
 };
 
 extern CGit_05App theApp;

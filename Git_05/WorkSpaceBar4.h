@@ -34,31 +34,32 @@ private:
 	int add_commit_to_list_ctrl_(const GIT_Commit_Local& commit);
 	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
 
-	void select_repo_(const repo_name_t& repoName);
 
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
 	CWorkSpaceBar4();
+	virtual ~CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
 	int set_type_list_ctrl_commits();
 	int set_type_list_ctrl_repos();
 	void git_tree(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
+	std::vector<branch_name_t> get_branches_for_repo(const CString& repoName);
 	void set_commit_info(CString repo, CString branch, CString commitId);
 	void set_commits_for_branch(const CString & repoName, const CString& branchName);
 	void set_commits(const std::vector<GIT_Commit_Local>& commits);
 	std::vector<GIT_Commit_Local> get_commits_for_branch(const CString & repoName, const CString& branchName);
-	void select_repository_according_to_policy();
-	void write_repo_name_to_file_(const CString & repoName);
-	CString read_repo_name_from_file_();
+		
 	CString get_current_item()const;
+	void set_active_repo();
+	void set_current_repo(const repo_name_t& repoName);
 	CString get_current_repo()const;
 	CString get_current_branch()const;
 	CString get_current_commit()const;
 
 private:
-	std::string file_with_repo_to_set_as_active_{ "repo_to_set_as_active.txt" };
+	
 	// Attributes
 protected:
 	//CBCGPTreeCtrl m_wndTree;
@@ -73,7 +74,7 @@ public:
 
 	// Implementation
 public:
-	virtual ~CWorkSpaceBar4();
+	
 
 	// Generated message map functions
 protected:
@@ -90,6 +91,9 @@ protected:
 private:
 	void fill_repositories_();
 	//CGit_05App* get_main_app_()const;
+public:
+	afx_msg void OnClose();
+	afx_msg void OnDestroy();
 };
 
 /////////////////////////////////////////////////////////////////////////////

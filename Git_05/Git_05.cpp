@@ -78,6 +78,8 @@ CGit_05App theApp;
 
 // CGit_05App initialization
 
+
+
 BOOL CGit_05App::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
@@ -150,7 +152,7 @@ BOOL CGit_05App::InitInstance()
 	
 	git_libgit2_init();
 	load_repos_from_file_(repositories_file_);
-	static_cast<CMainFrame*>(AfxGetMainWnd())->selectRepository();
+	//static_cast<CMainFrame*>(AfxGetMainWnd())->selectRepository();
 	return TRUE;
 }
 #include <fstream>
@@ -202,11 +204,14 @@ void CGit_05App::load_repos_from_file_(const CString& file_path)
 			}
 		}
 	}
+	CMainFrame* main_frm_p = static_cast<CMainFrame*>(AfxGetMainWnd());
+	main_frm_p->select_active_repo();
 // 	else
 // 	{
 // 		throw std::logic_error("Couldn't read from file");
 // 	}
 }
+
 
 bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 {
@@ -391,6 +396,21 @@ void CGit_05App::populate_UI_(const CString& repo_path)
 	get_main_frame()->m_wndWorkSpace_Repos_.git_tree(std::move(repo_branches));
 }
 
+
+
+
+// CString CGit_05App::read_repo_name_from_file_()
+// {
+// 	std::ifstream f_in(file_with_repo_to_set_as_active_);
+// 	std::string active_repo;
+// 	if (f_in)
+// 	{
+// 		f_in >> active_repo;
+// 	}
+// 	CA2W ca2w(active_repo.c_str());
+// 	std::wstring wide_str = ca2w;
+// 	return wide_str.c_str();
+// }
 
 void CGit_05App::On_Add_Repo()
 {

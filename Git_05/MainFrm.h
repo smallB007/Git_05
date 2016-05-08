@@ -48,10 +48,13 @@ protected:  // control bar embedded members
 	Git05_CBCGPPropBar			m_wndPropGrid;
 public:
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
-	void selectRepository();
+	//void selectRepository();
+	void set_current_repo(const CString& repoName);
+	void select_active_repo();
 	CString get_current_repo()const;
 	CString get_current_branch()const;
 	CString get_current_commit()const;
+	void set_branches_for_repo(const CString& repoName);
 private:
 	
 	//CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h

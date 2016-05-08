@@ -17,8 +17,8 @@ private:
 	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
 private:
 	//CWorkSpaceBar4* parent_;
-
 public:
+	const CString file_with_repo_to_set_as_active_ = L"repo_to_set_as_active.txt";
 	enum GIT_ENTITY_TYPE { REPO, COMMIT, UNSPECIFIED };
 	GIT_ENTITY_TYPE git_entity_type_{ UNSPECIFIED };
 	Git_05_ListCtr();
@@ -31,14 +31,24 @@ public:
 	//{
 	//	parent_ = parent;
 	//}
-	void  set_git_entity_type(GIT_ENTITY_TYPE gitEntityType)
+	void set_git_entity_type(GIT_ENTITY_TYPE gitEntityType)
 	{
 		git_entity_type_ = gitEntityType;
 	}
+	
+	GIT_ENTITY_TYPE get_git_entity_type()
+	{
+		return git_entity_type_;
+	}
+
 	CString get_active_item()
 	{
 		return GetItemText(lastItem_, 0);
 	}
+	void write_repo_name_to_file_(const CString& repoName)const;
+	void read_repo_name_from_file_();
+	void set_active_repo();
+	void set_active_commit();
 // 	BOOL PreTranslateMessage(MSG* pMsg)
 // 	{
 // 		
@@ -89,6 +99,7 @@ protected:
 	afx_msg void OnKillFocus(CWnd*);
 	afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
 	void selectItem(const repo_name_t & repoName);
+	void selectItem(const int inx);
 	
 	void OnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
@@ -99,5 +110,7 @@ protected:
 
 	//COLORREF GetDefaultBkColor();
 	//COLORREF GetMarkedColor();
+public:
+	afx_msg void OnDestroy();
 };
 
