@@ -131,7 +131,8 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		auto commit_id = GetItemText(item_number, 3);//3 because it is a third column set in CWorkSpaceBar4::set_type_list_ctrl_commits()
 		//auto repo_name = parent_->get_current_repo();
 		//auto branch_name = parent_->get_current_branch();
-		//pMainWnd->set_commit_info(repo_name,branch_name,commit_id);
+		//pMainWnd->set_current_repo(commit_id);
+		pMainWnd->set_info_for_commit(commit_id);
 	}
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)

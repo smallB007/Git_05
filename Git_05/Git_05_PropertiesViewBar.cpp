@@ -79,6 +79,28 @@ void Git05_CBCGPPropBar::OnSize(UINT nType, int cx, int cy)
 #include "GIT_Commit_Local.hpp"
 void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 {
+	commiter_group_uptr_->RemoveAllSubItems();
+	auto name = commitInfo.commit_author.name;
+	CA2W ca2w(name);
+	std::wstring c_name = ca2w;
+	CBCGPProp* pProp = new CBCGPProp(_T("Name"), c_name.c_str(), _T("Commiter's name"));
+	pProp->AllowEdit(FALSE);
+	commiter_group_uptr_->AddSubItem(pProp);
+	auto email = commitInfo.commit_author.email;
+	CA2W ca2email(email);
+	std::wstring c_email = ca2email;
+	pProp = new CBCGPProp(_T("Name"), c_email.c_str(), _T("Commiter's email"));
+	pProp->AllowEdit(FALSE);
+	commiter_group_uptr_->AddSubItem(pProp);
+
+	auto message = commitInfo.commit_message;
+	CA2W ca2message(message.c_str());
+	std::wstring c_message = ca2message;
+	pProp = new CBCGPProp(_T("Message"), c_message.c_str(),	_T("Long description of a commit"));
+	pProp->AllowEdit(FALSE);
+	commiter_group_uptr_->AddSubItem(pProp);
+
+	m_wndPropList.AdjustLayout();
 
 }
 
@@ -109,35 +131,36 @@ void Git05_CBCGPPropBar::InitPropList ()
 	m_wndPropList.EnableContextMenu();
 
 	// Add properties:
-	CBCGPProp* pCommiterGroup = new CBCGPProp (_T("Commiter"));
-	CBCGPProp* pProp = new CBCGPProp(_T("Name"), _T("artie_fuffkin"),
-					_T("Commiter's name"));
-	pProp->AllowEdit(FALSE);
+	commiter_group_uptr_ = std::make_unique<CBCGPProp> (_T("Commiter"));
+	m_wndPropList.AddProperty(commiter_group_uptr_.get());
+	//CBCGPProp* pProp = new CBCGPProp(_T("Name"), _T("artie_fuffkin"),
+	//				_T("Commiter's name"));
+	//pProp->AllowEdit(FALSE);
+	//
+	//pCommiterGroup->AddSubItem(pProp);
 
-	pCommiterGroup->AddSubItem(pProp);
-
-	pProp = new CBCGPProp (_T("Email"), _T("email@emaill"),
-		_T("Commiter's email"));
+	////pProp = new CBCGPProp (_T("Email"), _T("email@emaill"),
+		//_T("Commiter's email"));
 	//pProp->AddOption (_T("None"));
 	//pProp->AddOption (_T("Thin"));
 	//pProp->AddOption (_T("Resizable"));
 	//pProp->AddOption (_T("Dialog Frame"));
-	pProp->AllowEdit (FALSE);
+	//pProp->AllowEdit (FALSE);
 
-	pCommiterGroup->AddSubItem (pProp);
+	//pCommiterGroup->AddSubItem (pProp);
 	
-	pProp = new CBCGPProp(_T("Message"), (_variant_t)_T("Initial commit"),
-		_T("Long description of a commit"));
-	pProp->AllowEdit(FALSE);
-	pCommiterGroup->AddSubItem(pProp);
-
-	COleDateTime date = COleDateTime::GetCurrentTime();
-	pProp = new CBCGPProp(_T("Date"),(_variant_t)date,
-			_T("Commit's date"));
-	pProp->AllowEdit(FALSE);
-	pCommiterGroup->AddSubItem(pProp);
-	
-	m_wndPropList.AddProperty (pCommiterGroup);
+	//pProp = new CBCGPProp(_T("Message"), (_variant_t)_T("Initial commit"),
+	//	_T("Long description of a commit"));
+	//pProp->AllowEdit(FALSE);
+	//pCommiterGroup->AddSubItem(pProp);
+	//
+	//COleDateTime date = COleDateTime::GetCurrentTime();
+	//pProp = new CBCGPProp(_T("Date"),(_variant_t)date,
+	//		_T("Commit's date"));
+	//pProp->AllowEdit(FALSE);
+	//pCommiterGroup->AddSubItem(pProp);
+	//
+	//m_wndPropList.AddProperty (pCommiterGroup);
 
 
 	//////Commit's stats////

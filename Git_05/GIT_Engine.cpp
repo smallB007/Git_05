@@ -135,7 +135,8 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 		char* c_str_git_commit_oid = git_oid_tostr_s(commit_id);
 		std::string _commit_id(c_str_git_commit_oid);
 		local_commit.commit_id = std::move(_commit_id);
-		
+		git_tree* tree_out;
+		//git_commit_tree(&tree_out, commit);564
 		commitsForBranch.push_back(local_commit);
 		// Don't print the \n in the commit_message 
 		//printf("'%.*s' by %s <%s>\n", strlen(commit_message) - 1, commit_message, commit_author->name, commit_author->email);

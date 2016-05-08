@@ -4,9 +4,12 @@
 
 #pragma once
 #include "BCGPPropList.h"
+#include <memory>
 class GIT_Commit_Local;
 class Git05_CBCGPPropBar : public CBCGPDockingControlBar  
 {
+private:
+	std::unique_ptr<CBCGPProp> commiter_group_uptr_;
 // Construction
 public:
 	Git05_CBCGPPropBar();
