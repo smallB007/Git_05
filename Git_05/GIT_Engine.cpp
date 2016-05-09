@@ -135,8 +135,23 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 		char* c_str_git_commit_oid = git_oid_tostr_s(commit_id);
 		std::string _commit_id(c_str_git_commit_oid);
 		local_commit.commit_id = std::move(_commit_id);
-		git_tree* tree_out;
-		//git_commit_tree(&tree_out, commit);564
+		git_tree* tree_right;
+		git_commit_tree(&tree_right, commit);
+		
+		git_commit *commit_parent;
+		git_commit_parent(&commit_parent,commit,0);
+		git_tree* tree_left;
+		git_commit_tree(&tree_left, commit_parent);
+		git_diff* diff;
+		git_diff_tree_to_tree(&diff, repo, tree_left, tree_right, nullptr);
+		
+		git_diff_stats *stats_out;
+		git_diff_get_stats(&stats_out, diff);
+		
+		auto deletions = git_diff_stats_deletions(stats_out);
+		auto modifications = git_diff_stats_files_changed(stats_out);
+		auto additions = git_diff_stats_insertions(stats_out);
+
 		commitsForBranch.push_back(local_commit);
 		// Don't print the \n in the commit_message 
 		//printf("'%.*s' by %s <%s>\n", strlen(commit_message) - 1, commit_message, commit_author->name, commit_author->email);
@@ -221,4 +236,24 @@ void GIT_Engine::get_commits_for_branches(const CString & repo_path, std::map<CS
 		branchCommits.insert(std::make_pair(branch, local_commits));
 	}
 	git_repository_free(repo);
+}
+
+bool GIT_Engine::check_if_repo(const CString & pathName)
+{
+	bool result;
+	CT2CA pszConvertedAnsiString(pathName);
+	// construct a std::string using the LPCSTR input
+	std::string strStd(pszConvertedAnsiString);
+	git_repository* repo{ nullptr };
+	if (git_repository_open(&repo, strStd.c_str()) != GIT_SUCCESS)
+	{
+		result = false;
+	}
+	else
+	{
+		result = true;
+	}
+	
+	git_repository_free(repo);
+	return result;
 }

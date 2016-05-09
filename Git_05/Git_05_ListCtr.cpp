@@ -404,13 +404,16 @@ void Git_05_ListCtr::read_repo_name_from_file_()
 	{
 		f_in >> active_repo;
 	}
-	if (GIT_ENTITY_TYPE::REPO == git_entity_type_)
+	if (active_repo.size())
 	{
+		if (GIT_ENTITY_TYPE::REPO == git_entity_type_)
+		{
 
-		CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
-		CA2W w_str(active_repo.c_str());
-		CString current_repo(w_str);
-		pMainWnd->set_current_repo(current_repo);
+			CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+			CA2W w_str(active_repo.c_str());
+			CString current_repo(w_str);
+			pMainWnd->set_current_repo(current_repo);
+		}
 	}
 }
 

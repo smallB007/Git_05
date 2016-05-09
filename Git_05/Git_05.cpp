@@ -430,10 +430,17 @@ void CGit_05App::On_Add_Repo()
 		//CT2CA c_str_path(path_name);
  		//std::string repo_path(c_str_path);
 		convert_to_dot_git_path(path_name);
-		bool existed = write_repo_path_to_file_(path_name);
-		if (!existed)
+		if (GIT_Engine::check_if_repo(path_name))
 		{
-			populate_UI_(path_name);
+			bool existed = write_repo_path_to_file_(path_name);
+			if (!existed)
+			{
+				populate_UI_(path_name);
+			}
+		}
+		else
+		{//display msg
+			AfxMessageBox(L"Selected folder is not a valid git repository");
 		}
 	}
 }
