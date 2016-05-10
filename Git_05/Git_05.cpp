@@ -182,7 +182,7 @@ static bool is_empty(std::ifstream& pFile)
 {//http://stackoverflow.com/questions/2390912/checking-for-an-empty-file-in-c
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
-
+#include "GIT_Engine.hpp"
 void CGit_05App::load_repos_from_file_(const CString& file_path)
 {
 	std::ifstream f_in(file_path);
@@ -194,8 +194,10 @@ void CGit_05App::load_repos_from_file_(const CString& file_path)
 			while (std::getline(f_in, repo_path))
 			{
 				//In order to test if path is really a repo path we simply try to open it
-				git_repository* out{nullptr};
-				if (git_repository_open(&out, repo_path.c_str()) == 0)
+				//git_repository* out{nullptr};
+				CA2W w_str(repo_path.c_str());
+				CString c_repo_path(w_str);
+				if (GIT_Engine::check_if_repo(c_repo_path))
 				{
 					CA2W w_str(repo_path.c_str());
 					CString w_repo_path(w_str);
@@ -226,6 +228,7 @@ bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 		{
 			paths.push_back(path);
 		}
+		f_in.close();
 		CT2CA ct2a(c_repo_path);
 		std::string repo_path(ct2a);
 
@@ -241,7 +244,7 @@ bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 			}
 			else
 			{
-				throw std::logic_error("Couldn't write to a file");
+				AfxMessageBox(L"Couldn't write to a file");
 			}
 		}
 	}

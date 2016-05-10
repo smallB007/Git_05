@@ -307,6 +307,9 @@
       <Filter>Git_05</Filter>
     </Text>
     <Text Include="ToDo_Git_05_App.txt" />
+    <Text Include="ToDo_Git_05.txt">
+      <Filter>Git_05</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="BCG">

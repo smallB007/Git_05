@@ -2,6 +2,11 @@
 #include "GIT_Engine.hpp"
 #include "GIT_Commit_Local.hpp"
 
+//statics
+std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> GIT_Engine::modified_files_;
+std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> GIT_Engine::added_files_;
+std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> GIT_Engine::deleted_files_;
+
 GIT_Engine::GIT_Engine()
 {
 }
@@ -10,17 +15,66 @@ GIT_Engine::GIT_Engine()
 GIT_Engine::~GIT_Engine()
 {
 }
-//#include <fstream>
+
+int GIT_Engine::get_files_from_git_diff(const git_diff_delta *delta, std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>>& files, const git_delta_t delta_t)
+{
+	switch (delta_t)
+	{
+	case GIT_DELTA_MODIFIED:
+		if (GIT_DELTA_MODIFIED == delta->status)
+		{
+			files.insert(delta->new_file);
+		}
+	break;
+	case GIT_DELTA_ADDED:
+		if (GIT_DELTA_ADDED == delta->status)
+		{
+			files.insert(delta->new_file);
+		}
+	break;
+	case GIT_DELTA_DELETED:
+		if (GIT_DELTA_DELETED == delta->status)
+		{
+			files.insert(delta->new_file);
+		}
+	break;
+	}
+	
+	return 0;//must return zero otherwise execution of file_cb will be terminated
+}
+
+int GIT_Engine::file_cb(const git_diff_delta *delta, float progress, void *payload)
+{
+	modified_files_.clear();
+	added_files_.clear();
+	deleted_files_.clear();
+
+	get_files_from_git_diff(delta, modified_files_, git_delta_t::GIT_DELTA_MODIFIED);
+	
+	get_files_from_git_diff(delta, added_files_, git_delta_t::GIT_DELTA_ADDED);
+	
+	get_files_from_git_diff(delta, deleted_files_, git_delta_t::GIT_DELTA_DELETED);
+	
+	return 0;
+}
+
+int GIT_Engine::payload_fn(const git_diff_delta *delta)
+{
+	
+	
+	int a{ 0 };
+	return a;
+}
+
 void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& repo_path, const CString& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
 {
 	
  	CT2CA c_str_path(repo_path);
  	const char* REPO = c_str_path;
-// 
 	git_repository *repo;
 	if (git_repository_open(&repo, REPO) != GIT_SUCCESS) {
-		//fprintf(stderr, "Failed opening repository: '%s'\n", REPO);
-		throw - 1;
+		AfxMessageBox(L"Cannot open repository:\n" + repo_path);
+		return;
 	}
 	//////////////////////////////////////////////////////////////////////////
 // 	if (git_repository_open(&repo, repo_path.c_str()) != GIT_SUCCESS)
@@ -138,20 +192,27 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 		git_tree* tree_right;
 		git_commit_tree(&tree_right, commit);
 		
-		git_commit *commit_parent;
+		git_commit *commit_parent{nullptr};
 		git_commit_parent(&commit_parent,commit,0);
-		git_tree* tree_left;
-		git_commit_tree(&tree_left, commit_parent);
-		git_diff* diff;
-		git_diff_tree_to_tree(&diff, repo, tree_left, tree_right, nullptr);
-		
-		git_diff_stats *stats_out;
-		git_diff_get_stats(&stats_out, diff);
-		
-		auto deletions = git_diff_stats_deletions(stats_out);
-		auto modifications = git_diff_stats_files_changed(stats_out);
-		auto additions = git_diff_stats_insertions(stats_out);
+		if (commit_parent)
+		{
+			git_tree* tree_left;
+			git_commit_tree(&tree_left, commit_parent);
+			git_diff* diff;
+			git_diff_tree_to_tree(&diff, repo, tree_left, tree_right, nullptr);
 
+			git_diff_foreach(diff, &file_cb, nullptr, nullptr, nullptr, payload_fn);
+			local_commit.files_added = std::move(added_files_);
+			local_commit.files_modified = std::move(modified_files_);
+			local_commit.files_deleted = std::move(deleted_files_);
+			//git_diff_stats *stats_out;
+			//git_diff_get_stats(&stats_out, diff);
+			//
+			//auto deletions = git_diff_stats_deletions(stats_out);
+			//auto modifications = git_diff_stats_files_changed(stats_out);
+			//auto additions = git_diff_stats_insertions(stats_out);//how many lines were added
+			//int a{ 0 };
+		}
 		commitsForBranch.push_back(local_commit);
 		// Don't print the \n in the commit_message 
 		//printf("'%.*s' by %s <%s>\n", strlen(commit_message) - 1, commit_message, commit_author->name, commit_author->email);
@@ -177,7 +238,24 @@ void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>
 		git_branch_iterator_new(&branch_iterator, repo, GIT_BRANCH_LOCAL);
 		git_reference* next_git_branch_ref;
 		git_branch_t* branch_type = new git_branch_t;
+		
 		std::vector<CString> local_branches;
+		git_reference *out;
+		
+		
+		if (git_repository_head(&out, repo) == GIT_EUNBORNBRANCH)
+		{//branch without commits on it^^^
+			if (git_repository_head_unborn(repo) == 1)
+			{
+				int a{ 0 };//read what is in HEAD file and set it as a branch name
+			}
+		}
+		//auto nms = git_repository_get_namespace(repo);
+		//git_branch_lookup(&out, repo, "master", *branch_type);
+		//if (git_branch_is_head(out) == 1)
+		//{
+		//	int a{ 0 };
+		//}
 		while (git_branch_next(&next_git_branch_ref, branch_type, branch_iterator) != GIT_ITEROVER)
 		{
 			const char* out;
@@ -200,7 +278,7 @@ void GIT_Engine::get_repo(const CString & c_repo_path, git_repository** repo)
 	std::string repo_path(pszConvertedAnsiString_repo_path);
 	if (git_repository_open(repo, repo_path.c_str()) != GIT_SUCCESS) 
 	{
-		throw - 1;
+		AfxMessageBox(L"Could not open selected repository");
 	}
 // 	git_branch_iterator* branch_iterator;
 // 	git_branch_iterator_new(&branch_iterator, repo, GIT_BRANCH_LOCAL);

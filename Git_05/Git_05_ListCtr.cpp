@@ -385,14 +385,15 @@ void Git_05_ListCtr::OnDestroy()
 
 void Git_05_ListCtr::write_repo_name_to_file_(const CString& repoName)const
 {
-	ASSERT(!repoName.IsEmpty());
-
-	std::ofstream f_out(file_with_repo_to_set_as_active_);
-	if (f_out)
+	if (!repoName.IsEmpty())
 	{
-		CT2CA ctstring(repoName);
-		std::string repo(ctstring);
-		f_out << repo;
+		std::ofstream f_out(file_with_repo_to_set_as_active_);
+		if (f_out)
+		{
+			CT2CA ctstring(repoName);
+			std::string repo(ctstring);
+			f_out << repo;
+		}
 	}
 }
 

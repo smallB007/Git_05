@@ -79,6 +79,7 @@ void Git05_CBCGPPropBar::OnSize(UINT nType, int cx, int cy)
 #include "GIT_Commit_Local.hpp"
 void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 {
+	//m_wndPropList.RemoveAll();
 	commiter_group_uptr_->RemoveAllSubItems();
 	auto name = commitInfo.commit_author.name;
 	CA2W ca2w(name);
@@ -89,7 +90,7 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	auto email = commitInfo.commit_author.email;
 	CA2W ca2email(email);
 	std::wstring c_email = ca2email;
-	pProp = new CBCGPProp(_T("Name"), c_email.c_str(), _T("Commiter's email"));
+	pProp = new CBCGPProp(_T("Email"), c_email.c_str(), _T("Commiter's email"));
 	pProp->AllowEdit(FALSE);
 	commiter_group_uptr_->AddSubItem(pProp);
 
@@ -100,7 +101,67 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	pProp->AllowEdit(FALSE);
 	commiter_group_uptr_->AddSubItem(pProp);
 
+	//STATS//
+	pModificationsGroup->RemoveAllSubItems();
+	CBCGPProp* pStatsModificationProp;
+	for (const auto& modified_file : commitInfo.files_modified)
+	{
+		CA2W w_str_modified_path(modified_file.path);
+		CString modified_file_path = w_str_modified_path;
+			pStatsModificationProp = new CBCGPProp(modified_file_path, (_variant_t)0,
+			_T("Modified file"));
+		pStatsModificationProp->AllowEdit(FALSE);
+		pModificationsGroup->AddSubItem(pStatsModificationProp);
+
+		
+	}
+	pAdditionsGroup->RemoveAllSubItems();
+	CBCGPProp* pStatsAdditionProp;
+	for (const auto& added_file : commitInfo.files_added)
+	{
+		CA2W w_str_added_path(added_file.path);
+		CString added_file_path = w_str_added_path;
+		pStatsAdditionProp = new CBCGPProp(added_file_path, (_variant_t)0,
+			_T("Added file"));
+		pStatsAdditionProp->AllowEdit(FALSE);
+		pAdditionsGroup->AddSubItem(pStatsAdditionProp);
+	}
+
+	pDeletionsGroup->RemoveAllSubItems();
+	CBCGPProp* pStatsDeletionProp;
+	for (const auto& deleted_file : commitInfo.files_deleted)
+	{
+		CA2W w_str_deleted_path(deleted_file.path);
+		CString deleted_file_path = w_str_deleted_path;
+		pStatsDeletionProp = new CBCGPProp(deleted_file_path, (_variant_t)0,
+			_T("Deleted file"));
+		pStatsDeletionProp->AllowEdit(FALSE);
+		pDeletionsGroup->AddSubItem(pStatsDeletionProp);
+	}
+
+	pSHAGroup->RemoveAllSubItems();
+	CBCGPProp* pSHAProp;
+	
+	CString w_str_sha_short(commitInfo.commit_id.substr(0, 7).c_str());
+	CString w_str_sha_long(commitInfo.commit_id.c_str());
+
+
+	pSHAProp = new CBCGPProp(_T("Short version"), w_str_sha_short.GetString(),
+		_T("Short version of SHA"));
+	pSHAProp->AllowEdit(FALSE);
+
+	pSHAGroup->AddSubItem(pSHAProp);
+	pSHAProp = new CBCGPProp(_T("Long version"), w_str_sha_long.GetString(),
+		_T("Long version of SHA"));
+	pSHAProp->AllowEdit(FALSE);
+
+	pSHAGroup->AddSubItem(pSHAProp);
+	////
+	////////////SHA//////////////////////////////////////////////////////////////
+	
+		////	
 	m_wndPropList.AdjustLayout();
+
 
 }
 
@@ -133,167 +194,19 @@ void Git05_CBCGPPropBar::InitPropList ()
 	// Add properties:
 	commiter_group_uptr_ = std::make_unique<CBCGPProp> (_T("Commiter"));
 	m_wndPropList.AddProperty(commiter_group_uptr_.get());
-	//CBCGPProp* pProp = new CBCGPProp(_T("Name"), _T("artie_fuffkin"),
-	//				_T("Commiter's name"));
-	//pProp->AllowEdit(FALSE);
-	//
-	//pCommiterGroup->AddSubItem(pProp);
-
-	////pProp = new CBCGPProp (_T("Email"), _T("email@emaill"),
-		//_T("Commiter's email"));
-	//pProp->AddOption (_T("None"));
-	//pProp->AddOption (_T("Thin"));
-	//pProp->AddOption (_T("Resizable"));
-	//pProp->AddOption (_T("Dialog Frame"));
-	//pProp->AllowEdit (FALSE);
-
-	//pCommiterGroup->AddSubItem (pProp);
-	
-	//pProp = new CBCGPProp(_T("Message"), (_variant_t)_T("Initial commit"),
-	//	_T("Long description of a commit"));
-	//pProp->AllowEdit(FALSE);
-	//pCommiterGroup->AddSubItem(pProp);
-	//
-	//COleDateTime date = COleDateTime::GetCurrentTime();
-	//pProp = new CBCGPProp(_T("Date"),(_variant_t)date,
-	//		_T("Commit's date"));
-	//pProp->AllowEdit(FALSE);
-	//pCommiterGroup->AddSubItem(pProp);
-	//
-	//m_wndPropList.AddProperty (pCommiterGroup);
-
-
-	//////Commit's stats////
-	CBCGPProp* pStatsGroup = new CBCGPProp(_T("Statistics"));
-	CBCGPProp* pModificationsGroup = new CBCGPProp(_T("Modifications"), 0, TRUE);
+	pStatsGroup = std::make_unique<CBCGPProp>(_T("Statistics"));
+	pModificationsGroup = std::make_unique<CBCGPProp>(_T("Modifications"), 0, TRUE);
 	pModificationsGroup->AllowEdit(FALSE);
-	std::vector<CBCGPProp*> vecModifications;
-	CBCGPProp* pStatsModificationProp;
-	std::vector<CBCGPProp*> vec;
-	for (int i{0}; i < 14; ++i)
-	{
- 		pStatsModificationProp = new CBCGPProp(_T("File"), (_variant_t)i,
-			_T("Modified file"));
-		pStatsModificationProp->AllowEdit(FALSE);
-		vec.push_back(pStatsModificationProp);
-		pModificationsGroup->AddSubItem(pStatsModificationProp);
+	pStatsGroup->AddSubItem(pModificationsGroup.get());
+	pAdditionsGroup = std::make_unique<CBCGPProp>(_T("Additions"), 0, TRUE);
+	pStatsGroup->AddSubItem(pAdditionsGroup.get());
+	pDeletionsGroup = std::make_unique<CBCGPProp>(_T("Deletions"), 0, TRUE);
+	pStatsGroup->AddSubItem(pDeletionsGroup.get());
+	m_wndPropList.AddProperty(pStatsGroup.get());
 
-		//vecModifications.push_back(pStatsModificationProp);
-	}
-	//m_wndPropList.insertGroup(pModificationsGroup,vec);
-	//pModificationsGroup->add_real_list(list);
-	//pModificationsGroup->SetData(14);
-	//for (const auto prop : vecModifications)
-	//{
-	//	pModificationsGroup->AddSubItem(pStatsModificationProp);
-	//}
-
-
-	pStatsGroup->AddSubItem(pModificationsGroup);
-
-// 	CBCGPProp* pStatsProp = new CBCGPProp(_T("Additions"), _T("201"),
-// 		_T("Added files in this commit"));
-// 	pStatsProp->AllowEdit(FALSE);
-// 
-// 	pStatsGroup->AddSubItem(pStatsProp);
-// 	pStatsProp = new CBCGPProp(_T("Deletions"), _T("7"),
-// 		_T("Deleted files in this commit"));
-// 	pStatsProp->AllowEdit(FALSE);
-// 	
-// 	pStatsGroup->AddSubItem(pStatsProp);
-// 	
-	m_wndPropList.AddProperty(pStatsGroup);
 	///////SHA///////////
-	CBCGPProp* pSHAGroup = new CBCGPProp(_T("SHA"));
-	CBCGPProp* pSHAProp = new CBCGPProp(_T("Short version"), _T("d58654a"),
-		_T("Short version of SHA"));
-	pSHAProp->AllowEdit(FALSE);
-
-	pSHAGroup->AddSubItem(pSHAProp);
-	pSHAProp = new CBCGPProp(_T("Long version"), _T("65a6s5df65654asd6f6465a6s5df65654asd6f64"),
-		_T("Long version of SHA"));
-	pSHAProp->AllowEdit(FALSE);
-
-	pSHAGroup->AddSubItem(pSHAProp);
-	m_wndPropList.AddProperty(pSHAGroup);
-// 	CBCGPProp* pSize = new CBCGPProp (_T("Window Size"), 0, TRUE);
-// 
-// 	pProp = new CBCGPProp (_T("Height"), (_variant_t) 250l,
-// 							_T("Specifies the dialog's height"));
-// 	pProp->EnableSpinControl (TRUE, 0, 1000);
-// 	pSize->AddSubItem (pProp);
-// 
-// 	pProp = new CBCGPProp (	_T("Width"), (_variant_t) 150l,
-// 							_T("Specifies the dialog's width"));
-// 	pProp->EnableSpinControl (TRUE, 0, 1000);
-// 	pSize->AddSubItem (pProp);
-// 
-// 	m_wndPropList.AddProperty (pSize);
-// 
-// 	CBCGPProp* pGroup2 = new CBCGPProp (_T("Font"));
-// 
-// 	LOGFONT lf;
-// 	CFont* font = CFont::FromHandle ((HFONT) GetStockObject (DEFAULT_GUI_FONT));
-// 	font->GetLogFont (&lf);
-// 
-// 	lstrcpy (lf.lfFaceName, _T("Arial"));
-// 
-// 	pGroup2->AddSubItem (new CBCGPFontProp (_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the dialog")));
-// 	pGroup2->AddSubItem (new CBCGPProp (_T("Use System Font"), (_variant_t) true, _T("Specifies that the dialog uses MS Shell Dlg font")));
-// 
-// 	m_wndPropList.AddProperty (pGroup2);
-// 
-// 	CBCGPProp* pGroup3 = new CBCGPProp (_T("Brushes"));
-// 
-// 	CBCGPColorProp* pColorProp = new CBCGPColorProp (_T("Border Color"), m_BorderColor, NULL, _T("Specifies the default dialog border color"));
-// 	pColorProp->EnableOtherButton (_T("Other..."));
-// 	pColorProp->EnableAutomaticButton (_T("Default"), globalData.clrBarShadow);
-// 	pGroup3->AddSubItem (pColorProp);
-// 
-// 	pGroup3->AddSubItem (new CBCGPBrushProp (_T("Background"), m_FillBrush, NULL,
-// 		_T("Specifies the default background")));
-// 
-// 	pGroup3->AddSubItem (new CBCGPBrushProp (_T("Foreground"), m_TextBrush, NULL,
-// 		_T("Specifies the default foreground")));
-// 
-// 	m_wndPropList.AddProperty (pGroup3);
-// 
-// 	CBCGPProp* pGroup4 = new CBCGPProp (_T("Misc"));
-// 	pProp = new CBCGPProp (_T("(Name)"), _T("IDD_ABOUT_BOX (dialog)"));
-// 	pProp->Enable (FALSE);
-// 	pGroup4->AddSubItem (pProp);
-// 
-// 	static TCHAR BASED_CODE szFilter[] = _T("Icon Files (*.ico)|*.ico|All Files (*.*)|*.*||");
-// 	pGroup4->AddSubItem (new CBCGPFileProp (_T("Icon"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("Specifies the dialog icon")));
-// 
-// 	pGroup4->AddSubItem (new CBCGPFileProp (_T("Folder"), _T("c:\\")));
-// 
-// // 	COleDateTime date = COleDateTime::GetCurrentTime ();
-// // 	pGroup4->AddSubItem (new CBCGPDateTimeProp (_T("Date"), date,
-// // 		_T("Set a date"), 0, CBCGPDateTimeCtrl::DTM_DATE));
-// 
-// 	pGroup4->AddSubItem (new CBCGPDateTimeProp (_T("Time"), date,
-// 		_T("Set a time"), 0, CBCGPDateTimeCtrl::DTM_TIME));
-// 
-// 	m_wndPropList.AddProperty (pGroup4);
-// 
-// 	CBCGPProp* pGroup5 = new CBCGPProp (_T("Hierarchy"));
-// 
-// 	CBCGPProp* pGroup51 = new CBCGPProp (_T("First sub-level"));
-// 	pGroup5->AddSubItem (pGroup51);
-// 
-// 	CBCGPProp* pGroup511 = new CBCGPProp (_T("Second sub-level"));
-// 	pGroup51->AddSubItem (pGroup511);
-// 
-// 	pGroup511->AddSubItem (new CBCGPProp (_T("Item 1"), (_variant_t) _T("Value 1"),
-// 		_T("This is a description")));
-// 	pGroup511->AddSubItem (new CBCGPProp (_T("Item 2"), (_variant_t) _T("Value 2"),
-// 		_T("This is a description")));
-// 	pGroup511->AddSubItem (new CBCGPProp (_T("Item 3"), (_variant_t) _T("Value 3"),
-// 		_T("This is a description")));
-// 
-// 	pGroup5->Expand (FALSE);
-// 	m_wndPropList.AddProperty (pGroup5);
+	pSHAGroup = std::make_unique<CBCGPProp>(_T("SHA"));
+	m_wndPropList.AddProperty(pSHAGroup.get());
 }
 
 void Git05_CBCGPPropBar::OnSetFocus(CWnd* pOldWnd) 

@@ -10,6 +10,12 @@ class Git05_CBCGPPropBar : public CBCGPDockingControlBar
 {
 private:
 	std::unique_ptr<CBCGPProp> commiter_group_uptr_;
+	//std::unique_ptr<CBCGPProp> stats_group_uptr_;//cause of crash
+	std::unique_ptr<CBCGPProp> pStatsGroup;
+	std::unique_ptr<CBCGPProp> pModificationsGroup;
+	std::unique_ptr<CBCGPProp> pAdditionsGroup;
+	std::unique_ptr<CBCGPProp> pDeletionsGroup;
+	std::unique_ptr<CBCGPProp> pSHAGroup;
 // Construction
 public:
 	Git05_CBCGPPropBar();

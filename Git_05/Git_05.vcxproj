@@ -198,6 +198,7 @@
     <Text Include="KB.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="ToDo.txt" />
+    <Text Include="ToDo_Git_05.txt" />
     <Text Include="ToDo_Git_05_App.txt" />
     <Text Include="ToDo_Repos_List.txt" />
   </ItemGroup>
