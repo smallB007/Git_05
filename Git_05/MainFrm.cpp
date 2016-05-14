@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "Git_05.h"
-
+#include "GIT_Commit_Local.hpp"
 #include "MainFrm.h"
 #include "BackStagePageInfo.h"
 
@@ -89,7 +89,7 @@ CString CMainFrame::get_current_commit()const
 
 	return current_commit;
 }
-#include "GIT_Commit_Local.hpp"
+
 void CMainFrame::set_info_for_commit(const CString & commit_id)
 {
 	CString current_repo = m_wndWorkSpace_Repos_.get_current_repo();

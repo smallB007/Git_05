@@ -477,12 +477,14 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	std::wstring c_commit_id = ca2commit;
 	//std::string str_commit(commit_id.id, std::cend(commit_id.id));
 	//CA2W ca2commit_id(str_commit.c_str());//correct this and select first commit
-
+	int diffed_files = commit.diffed_files.size();
+	CString changes;
+	changes.Format(_T("Files affected: %d"), diffed_files);
 	//std::wstring c_commit_id = ca2commit_id;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
 	m_wndListCtrl_->InsertItem(itemNo, c_name.c_str(), 2);
 	m_wndListCtrl_->SetItemText(itemNo, 1, c_msg.c_str());
-	m_wndListCtrl_->SetItemText(itemNo, 2, _T("Changes: 20"));
+	m_wndListCtrl_->SetItemText(itemNo, 2, changes);
 	m_wndListCtrl_->SetItemText(itemNo, 3, c_commit_id.c_str());
 	VERIFY(_SetTilesViewLinesCount(2));
 	UINT arrColumns[2] = { 1, 2};
