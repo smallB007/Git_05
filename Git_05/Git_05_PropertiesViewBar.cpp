@@ -31,6 +31,10 @@ BEGIN_MESSAGE_MAP(Git05_CBCGPPropBar, CBCGPDockingControlBar)
 	ON_WM_SETFOCUS()
 	ON_REGISTERED_MESSAGE(BCGM_PROPERTY_COMMAND_CLICKED, OnCommandClicked)
 	ON_REGISTERED_MESSAGE(BCGM_PROPERTY_MENU_ITEM_SELECTED, OnMenuItemSelected)
+	ON_REGISTERED_MESSAGE(BCGM_PROPERTY_GET_MENU_ITEM_STATE, OnPropertyGetMenuItemState)
+	ON_REGISTERED_MESSAGE(BCGM_PROPERTYLIST_PROPERTY_SELECTED, OnPropertySelected)
+
+	//ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -207,12 +211,13 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	pSHAProp->AllowEdit(FALSE);
 
 	pSHAGroup->AddSubItem(pSHAProp);
+	//pSHAProp->Expand(FALSE);
 	////
 	////////////SHA//////////////////////////////////////////////////////////////
 	
 		////	
 	m_wndPropList.AdjustLayout();
-
+	
 
 }
 
@@ -286,3 +291,37 @@ LRESULT Git05_CBCGPPropBar::OnMenuItemSelected(WPARAM /*wp*/, LPARAM /*lp*/)
 
 	return 0;
 }
+
+LRESULT Git05_CBCGPPropBar::OnPropertyGetMenuItemState(WPARAM /*wp*/, LPARAM /*lp*/)
+{
+	//	int nMenuIndex = (int)wp;
+
+	//	CBCGPProp* pProp = (CBCGPProp*)lp;
+	//	ASSERT_VALID(pProp);
+
+	// TODO: Add your menu item processing code here
+
+	return 0;
+}
+
+
+LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
+{
+	//	int nMenuIndex = (int)wp;
+
+		CBCGPProp* pProp = (CBCGPProp*)lp;
+	//	ASSERT_VALID(pProp);
+
+	// TODO: Add your menu item processing code here
+
+	return 0;
+}
+
+
+// void Git05_CBCGPPropBar::OnLButtonUp(UINT nFlags, CPoint point)
+// {
+// 	// TODO: Add your message handler code here and/or call default
+// 
+// 	CBCGPDockingControlBar::OnLButtonUp(nFlags, point);
+// 	auto prop = m_wndPropList.GetCurSel();
+// }
