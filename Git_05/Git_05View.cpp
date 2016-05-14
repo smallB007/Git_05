@@ -32,6 +32,11 @@ END_MESSAGE_MAP()
 
 // CGit_05View construction/destruction
 
+void CGit_05View::add_diff_line(CString diffLine)
+{
+	m_pRender->add_diff_line(diffLine);
+}
+
 CGit_05View::CGit_05View()
 {
 	// TODO: add construction code here
@@ -41,7 +46,23 @@ CGit_05View::CGit_05View()
 CGit_05View::~CGit_05View()
 {
 }
+CGit_05View* CGit_05View::GetView()
+{
+	CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
 
+	CView * pView = pFrame->GetActiveView();
+
+	if (!pView)
+		return NULL;
+
+	// Fail if view is of wrong kind
+	// (this could occur with splitter windows, or additional
+	// views on a single document
+	if (!pView->IsKindOf(RUNTIME_CLASS(CGit_05View)))
+		return NULL;
+
+	return (CGit_05View *)pView;
+}
 BOOL CGit_05View::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
@@ -58,15 +79,17 @@ void CGit_05View::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 
 	// TODO: add draw code for native data here
-// 	if (m_pRender)
-// 		m_pRender->OnRender();
+	if (m_pRender)
+	{
+		m_pRender->OnRender();
+	}
 }
 
-#ifdef MFC_DIRECT_2D
+#ifdef VIEW_MFC_DIRECT_2D
 LRESULT CGit_05View::OnDrawDirect2D(WPARAM wParam, LPARAM lParam)
 {
 	CHwndRenderTarget* pRenderTarget = (CHwndRenderTarget*)lParam;
-	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Aquamarine, 1.0f));
+	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::AntiqueWhite, 1.0f));
 	return LRESULT();
 }
 #endif
@@ -140,7 +163,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::DarkBlue);//make it shared
+	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::LightGray);//make it shared
 	//m_pRender->Initialize();
 	
 
@@ -151,7 +174,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CGit_05View::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
-// 	CRect rect;
-// 	GetWindowRect(rect);
-// 	m_pRender->OnResize(rect.Width(), rect.Height());
+ 	CRect rect;
+ 	GetWindowRect(rect);
+ 	m_pRender->OnResize(rect.Width(), rect.Height());
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <set>
+#include <string>
 #include "GIT_Commit_Local.hpp"
 
 
@@ -12,10 +13,15 @@ public:
 	~GIT_Engine();
 
 private:
-	static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> modified_files_;
-	static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> added_files_;
-	static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> deleted_files_;
-	static int file_cb(const git_diff_delta *delta, float progress, void *payload);
+	static diffed_file a_file;
+	static std::set<diffed_file, Less_Diff_File> diffed_files_;
+	//static std::map<git_diff_hunk, std::vector<git_diff_line>,Less_hunk> hunk_lines_;
+	//static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> modified_files_;
+	//static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> added_files_;
+	//static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> deleted_files_;
+	static int git_diff_line_cb(const git_diff_delta *delta, const git_diff_hunk *hunk, const git_diff_line *line, void *payload);
+	static int git_diff_file_cb(const git_diff_delta *delta, float progress, void *payload);
+	static int git_diff_hunk_cb(const git_diff_delta *delta, const git_diff_hunk *hunk, void *payload);
 	static int payload_fn(const git_diff_delta *delta);
 	static int get_files_from_git_diff(const git_diff_delta *delta, std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>>& files,  const git_delta_t delta_t);
 	

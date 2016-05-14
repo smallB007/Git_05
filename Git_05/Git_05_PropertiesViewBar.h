@@ -12,10 +12,11 @@ private:
 	std::unique_ptr<CBCGPProp> commiter_group_uptr_;
 	//std::unique_ptr<CBCGPProp> stats_group_uptr_;//cause of crash
 	std::unique_ptr<CBCGPProp> pStatsGroup;
-	std::unique_ptr<CBCGPProp> pModificationsGroup;
-	std::unique_ptr<CBCGPProp> pAdditionsGroup;
-	std::unique_ptr<CBCGPProp> pDeletionsGroup;
+	std::shared_ptr<CBCGPProp> pModificationsGroup;
+	std::shared_ptr<CBCGPProp> pAdditionsGroup;
+	std::shared_ptr<CBCGPProp> pDeletionsGroup;
 	std::unique_ptr<CBCGPProp> pSHAGroup;
+	void assign_diffed_files_(const const GIT_Commit_Local& commitInfo);
 // Construction
 public:
 	Git05_CBCGPPropBar();

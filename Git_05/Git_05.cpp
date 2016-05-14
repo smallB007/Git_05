@@ -8,6 +8,10 @@
 #include "Git_05Doc.h"
 #include "Git_05View.h"
 
+
+#include "GIT_Engine.hpp"
+#include "GIT_Commit_Local.hpp"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -39,9 +43,6 @@ UINT ThreadFunc(LPVOID pParam)
 	client->connect();
 	return 0;
 }
-
-
-
 
 CGit_05App::CGit_05App()
 {
@@ -182,7 +183,7 @@ static bool is_empty(std::ifstream& pFile)
 {//http://stackoverflow.com/questions/2390912/checking-for-an-empty-file-in-c
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
-#include "GIT_Engine.hpp"
+
 void CGit_05App::load_repos_from_file_(const CString& file_path)
 {
 	std::ifstream f_in(file_path);
@@ -379,8 +380,7 @@ static void convert_to_dot_git_path(CString & c_repo_path)
 	CA2W w_str(repo_path.c_str());
 	c_repo_path = w_str;
 }
-#include "GIT_Engine.hpp"
-#include "GIT_Commit_Local.hpp"
+
 void CGit_05App::populate_UI_(const CString& repo_path)
 {
 	typedef CString branch_name_t;

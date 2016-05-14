@@ -5,10 +5,12 @@
 #pragma once
 #include "Direct2Handler.hpp"
 #include <memory>
-
+#define aVIEW_MFC_DIRECT_2D 1
 class CGit_05View : public CView
 {
-	//std::unique_ptr<Direct2DHandler> m_pRender;
+	std::unique_ptr<Direct2DHandler> m_pRender;
+public:
+	void add_diff_line(CString diffLine);
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)
@@ -19,11 +21,11 @@ public:
 
 // Operations
 public:
-
+	static CGit_05View* GetView();
 // Overrides
 	public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-#ifdef MFC_DIRECT_2D
+#ifdef VIEW_MFC_DIRECT_2D
 	afx_msg LRESULT OnDrawDirect2D(WPARAM wParam, LPARAM lParam);
 #endif // MFC_DIRECT_2D
 

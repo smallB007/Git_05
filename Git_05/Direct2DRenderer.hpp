@@ -1,5 +1,6 @@
 #pragma once
 #include "ComPtr.hpp"
+//https://msdn.microsoft.com/en-us/library/windows/desktop/ff934857.aspx?f=255&MSPPError=-2147217396
 
 class GIT_Commit_Local;
 class Direct2DRenderer

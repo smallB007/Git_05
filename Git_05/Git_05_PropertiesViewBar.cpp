@@ -77,6 +77,56 @@ void Git05_CBCGPPropBar::OnSize(UINT nType, int cx, int cy)
 }
 
 #include "GIT_Commit_Local.hpp"
+
+void Git05_CBCGPPropBar::assign_diffed_files_(const const GIT_Commit_Local& commitInfo)
+{
+
+	CBCGPProp* pStatsModificationProp;
+	CBCGPProp* pStatsAdditionProp;
+	CBCGPProp* pStatsDeletionProp;
+
+	for (const auto& file : commitInfo.diffed_files)
+	{
+		//
+		std::string afile = file.diff_delta.new_file.path;
+		CA2W w_str_path(afile.c_str());
+		CString file_path = w_str_path;
+
+		switch (file.diff_delta.status)
+		{
+		case GIT_DELTA_MODIFIED:
+		{
+			pStatsModificationProp = new CBCGPProp(file_path, (_variant_t)0,
+				_T("Modified file"));
+			pStatsModificationProp->AllowEdit(FALSE);
+			pModificationsGroup->AddSubItem(pStatsModificationProp);
+		}
+		break;
+		
+		case GIT_DELTA_ADDED:
+		{
+			pStatsAdditionProp = new CBCGPProp(file_path, (_variant_t)0,
+						_T("Added file"));
+					pStatsAdditionProp->AllowEdit(FALSE);
+					pAdditionsGroup->AddSubItem(pStatsAdditionProp);
+		}
+		break;
+
+		case GIT_DELTA_DELETED:
+		{
+			pStatsDeletionProp = new CBCGPProp(file_path, (_variant_t)0,
+						_T("Deleted file"));
+					pStatsDeletionProp->AllowEdit(FALSE);
+					pDeletionsGroup->AddSubItem(pStatsDeletionProp);
+		}
+		break;
+
+		}
+		
+	}
+
+}
+
 void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 {
 	//m_wndPropList.RemoveAll();
@@ -103,41 +153,42 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 
 	//STATS//
 	pModificationsGroup->RemoveAllSubItems();
-	CBCGPProp* pStatsModificationProp;
-	for (const auto& modified_file : commitInfo.files_modified)
-	{
-		CA2W w_str_modified_path(modified_file.path);
-		CString modified_file_path = w_str_modified_path;
-			pStatsModificationProp = new CBCGPProp(modified_file_path, (_variant_t)0,
-			_T("Modified file"));
-		pStatsModificationProp->AllowEdit(FALSE);
-		pModificationsGroup->AddSubItem(pStatsModificationProp);
-
-		
-	}
 	pAdditionsGroup->RemoveAllSubItems();
-	CBCGPProp* pStatsAdditionProp;
-	for (const auto& added_file : commitInfo.files_added)
-	{
-		CA2W w_str_added_path(added_file.path);
-		CString added_file_path = w_str_added_path;
-		pStatsAdditionProp = new CBCGPProp(added_file_path, (_variant_t)0,
-			_T("Added file"));
-		pStatsAdditionProp->AllowEdit(FALSE);
-		pAdditionsGroup->AddSubItem(pStatsAdditionProp);
-	}
-
 	pDeletionsGroup->RemoveAllSubItems();
-	CBCGPProp* pStatsDeletionProp;
-	for (const auto& deleted_file : commitInfo.files_deleted)
-	{
-		CA2W w_str_deleted_path(deleted_file.path);
-		CString deleted_file_path = w_str_deleted_path;
-		pStatsDeletionProp = new CBCGPProp(deleted_file_path, (_variant_t)0,
-			_T("Deleted file"));
-		pStatsDeletionProp->AllowEdit(FALSE);
-		pDeletionsGroup->AddSubItem(pStatsDeletionProp);
-	}
+	assign_diffed_files_(commitInfo);
+	//CBCGPProp* pStatsModificationProp;
+	//for (const auto& modified_file : commitInfo.files_modified)
+	//{
+	//	CA2W w_str_modified_path(modified_file.path);
+	//	CString modified_file_path = w_str_modified_path;
+	//		pStatsModificationProp = new CBCGPProp(modified_file_path, (_variant_t)0,
+	//		_T("Modified file"));
+	//	pStatsModificationProp->AllowEdit(FALSE);
+	//	pModificationsGroup->AddSubItem(pStatsModificationProp);
+	//
+	//	
+	//}
+	//CBCGPProp* pStatsAdditionProp;
+	//for (const auto& added_file : commitInfo.files_added)
+	//{
+	//	CA2W w_str_added_path(added_file.path);
+	//	CString added_file_path = w_str_added_path;
+	//	pStatsAdditionProp = new CBCGPProp(added_file_path, (_variant_t)0,
+	//		_T("Added file"));
+	//	pStatsAdditionProp->AllowEdit(FALSE);
+	//	pAdditionsGroup->AddSubItem(pStatsAdditionProp);
+	//}
+
+	//CBCGPProp* pStatsDeletionProp;
+	//for (const auto& deleted_file : commitInfo.files_deleted)
+	//{
+	//	CA2W w_str_deleted_path(deleted_file.path);
+	//	CString deleted_file_path = w_str_deleted_path;
+	//	pStatsDeletionProp = new CBCGPProp(deleted_file_path, (_variant_t)0,
+	//		_T("Deleted file"));
+	//	pStatsDeletionProp->AllowEdit(FALSE);
+	//	pDeletionsGroup->AddSubItem(pStatsDeletionProp);
+	//}
 
 	pSHAGroup->RemoveAllSubItems();
 	CBCGPProp* pSHAProp;
@@ -195,12 +246,12 @@ void Git05_CBCGPPropBar::InitPropList ()
 	commiter_group_uptr_ = std::make_unique<CBCGPProp> (_T("Commiter"));
 	m_wndPropList.AddProperty(commiter_group_uptr_.get());
 	pStatsGroup = std::make_unique<CBCGPProp>(_T("Statistics"));
-	pModificationsGroup = std::make_unique<CBCGPProp>(_T("Modifications"), 0, TRUE);
+	pModificationsGroup = std::make_shared<CBCGPProp>(_T("Modifications"), 0, TRUE); 
 	pModificationsGroup->AllowEdit(FALSE);
 	pStatsGroup->AddSubItem(pModificationsGroup.get());
-	pAdditionsGroup = std::make_unique<CBCGPProp>(_T("Additions"), 0, TRUE);
+	pAdditionsGroup = std::make_shared<CBCGPProp>(_T("Additions"), 0, TRUE);
 	pStatsGroup->AddSubItem(pAdditionsGroup.get());
-	pDeletionsGroup = std::make_unique<CBCGPProp>(_T("Deletions"), 0, TRUE);
+	pDeletionsGroup = std::make_shared<CBCGPProp>(_T("Deletions"), 0, TRUE);
 	pStatsGroup->AddSubItem(pDeletionsGroup.get());
 	m_wndPropList.AddProperty(pStatsGroup.get());
 
