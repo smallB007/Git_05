@@ -211,13 +211,13 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	pSHAProp->AllowEdit(FALSE);
 
 	pSHAGroup->AddSubItem(pSHAProp);
+	pSHAGroup->Expand(FALSE);
 	//pSHAProp->Expand(FALSE);
 	////
 	////////////SHA//////////////////////////////////////////////////////////////
 	
 		////	
 	m_wndPropList.AdjustLayout();
-	
 
 }
 
@@ -304,17 +304,25 @@ LRESULT Git05_CBCGPPropBar::OnPropertyGetMenuItemState(WPARAM /*wp*/, LPARAM /*l
 	return 0;
 }
 
-
+#include "MainFrm.h"
 LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
 {
-	//	int nMenuIndex = (int)wp;
-
 		CBCGPProp* pProp = (CBCGPProp*)lp;
-	//	ASSERT_VALID(pProp);
+		ASSERT_VALID(pProp);
+		CBCGPProp* group = pProp->GetParent()->GetParent();
+		CString group_name = group->GetName();
+		
+		if (group && (group_name == L"Statistics"))
+		{
+			CBCGPProp* shaGroup = m_wndPropList.GetProperty(2);
+			CBCGPProp* shaProp = shaGroup->GetSubItem(1);
+			CString sha = shaProp->GetValue();
+			CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+			CString file = pProp->GetName();
+			pMainWnd->display_info_for_diffed_file(sha, file);
+		}
 
-	// TODO: Add your menu item processing code here
-
-	return 0;
+		return 0;
 }
 
 

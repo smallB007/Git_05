@@ -73,15 +73,74 @@ BOOL CGit_05View::PreCreateWindow(CREATESTRUCT& cs)
 
 // CGit_05View drawing
 
-void CGit_05View::OnDraw(CDC* /*pDC*/)
+void CGit_05View::OnDraw(CDC* pDC)
 {
 	CGit_05Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
+	CRect rect;
+	GetClientRect(&rect);
+	rect.DeflateRect(2, 2, 2, 2);
+	CBrush brush_highligth_; 
+	brush_highligth_.CreateSysColorBrush(2);
+	pDC->FrameRect(&rect, &brush_highligth_);
+	//pDC->DrawText(L"Hello Git_05", rect,0);
+	render_diffed_file_(pDC,pDoc->get_diffed_file());
 
+
+	///////////////
+	
 	// TODO: add draw code for native data here
-	if (m_pRender)
+	//if (m_pRender)
+	//{
+	//	m_pRender->OnRender();
+	//}
+}
+
+void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
+{
+
+	CRect rect;
+	GetClientRect(&rect);
+	rect.DeflateRect(5, 5);
+
+	COLORREF color_red(RGB(255, 0, 0));
+	COLORREF color_green(RGB(0, 255, 0));
+	COLORREF color_black(RGB(0, 0, 0));
+
+	//https://msdn.microsoft.com/en-us/library/windows/desktop/dd183499%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+	CFont font;
+	font.CreateFont(20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("Tahoma"));
+
+	for (const auto& hunk : diffedFile.hunk_lines)
 	{
-		m_pRender->OnRender();
+		for (const git_o5_diff_line_t& diffed_line : hunk.second)
+		{
+			COLORREF line_color;
+			char origin = diffed_line.origin;
+			switch (origin)
+			{
+			case '+':
+				line_color = color_green;
+				break;
+			case '-':
+				line_color = color_red;
+				break;
+			default:
+				line_color = color_black;
+				break;
+			}
+			CString sign(origin);
+			CA2W w_str(diffed_line.content.c_str());
+			CString line(sign + L"  " + w_str);
+			//pDC->SelectObject(&myPen2);
+			if (pDC)
+			{
+				pDC->SetTextColor(line_color);
+				pDC->SelectObject(&font);
+				auto height = pDC->DrawText(line, rect, DT_END_ELLIPSIS);
+				rect.top += 20;
+			}
+		}
 	}
 }
 
@@ -163,7 +222,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::LightGray);//make it shared
+	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::LightGray);//make it shared
 	//m_pRender->Initialize();
 	
 
@@ -171,10 +230,25 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+
+void CGit_05View::InvalidateRect_()
+{
+	CRect rect;
+	GetWindowRect(rect);
+	InvalidateRect(&rect);
+}
+
 void CGit_05View::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
  	CRect rect;
  	GetWindowRect(rect);
- 	m_pRender->OnResize(rect.Width(), rect.Height());
+	InvalidateRect(&rect);
+ 	//m_pRender->OnResize(rect.Width(), rect.Height());
 }
+
+
+// void CGit_05View::display_diffed_file(const diffed_file_t& diffedFile)
+// {
+//
+//}

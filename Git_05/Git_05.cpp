@@ -215,7 +215,12 @@ void CGit_05App::load_repos_from_file_(const CString& file_path)
 // 	}
 }
 
-
+void CGit_05App::set_file_for_display(const diffed_file_t& diffedFile)
+{
+	CGit_05Doc::GetDoc()->set_file_for_display(diffedFile);
+	//CGit_05View::GetView()->InvalidateRect_();
+	
+}
 bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 {
 	//load first what's in file and see if this repo is already there

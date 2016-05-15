@@ -13,8 +13,8 @@ public:
 	~GIT_Engine();
 
 private:
-	static diffed_file a_file;
-	static std::set<diffed_file, Less_Diff_File> diffed_files_;
+	static diffed_file_t a_file;
+	static std::set<diffed_file_t, Less_Diff_File> diffed_files_;
 	//static std::map<git_diff_hunk, std::vector<git_diff_line>,Less_hunk> hunk_lines_;
 	//static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> modified_files_;
 	//static std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> added_files_;

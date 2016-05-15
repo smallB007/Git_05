@@ -23,7 +23,7 @@ struct Less_hunk
 	}
 };
 
-class git_o5_diff_line
+struct git_o5_diff_line_t
 {
 	char   origin;       /**< A git_diff_line_t value */
 	int    old_lineno;   /**< Line number in old file or -1 for added line */
@@ -33,7 +33,7 @@ class git_o5_diff_line
 	git_off_t content_offset; /**< Offset in the original file to the content */
 	std::string content; /**<diff text*/
 public:
-	git_o5_diff_line(const git_diff_line& diffLine) : origin{ diffLine.origin },
+	git_o5_diff_line_t(const git_diff_line& diffLine) : origin{ diffLine.origin },
 		old_lineno{ diffLine.old_lineno },
 		new_lineno{ diffLine.new_lineno },
 		num_lines{ diffLine.num_lines },
@@ -53,16 +53,16 @@ public:
 	}
 };
 
-struct diffed_file
+struct diffed_file_t
 {
 	git_diff_delta diff_delta;
 	//git_diff_file diff_file;
-	std::map<git_diff_hunk, std::vector<git_o5_diff_line>, Less_hunk> hunk_lines;
+	std::map<git_diff_hunk, std::vector<git_o5_diff_line_t>, Less_hunk> hunk_lines;
 };
 
 struct Less_Diff_File
 {
-	bool operator()(const diffed_file& left, const diffed_file& right)
+	bool operator()(const diffed_file_t& left, const diffed_file_t& right)
 	{
 		return strcmp(left.diff_delta.new_file.path, right.diff_delta.new_file.path);
 	}
@@ -78,7 +78,7 @@ public:
 	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_modified;
 	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_added;
 	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_deleted;
-	std::set<diffed_file, Less_Diff_File> diffed_files;
-
+	std::set<diffed_file_t, Less_Diff_File> diffed_files;
+	diffed_file_t get_diffed_file(const CString& fileName)const;
 };
 

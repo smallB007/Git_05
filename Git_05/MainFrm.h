@@ -45,7 +45,7 @@ protected:  // control bar embedded members
 	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
-	Git05_CBCGPPropBar			m_wndCommitPropertiesGrid;
+	Git05_CBCGPPropBar		m_wndCommitPropertiesGrid;
 public:
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
 	//void selectRepository();
@@ -54,8 +54,11 @@ public:
 	CString get_current_repo()const;
 	CString get_current_branch()const;
 	CString get_current_commit()const;
-	void set_info_for_commit(const CString& commit_id);
+	GIT_Commit_Local get_commit(const CString& currentRepo, const CString& currentBranch, const CString& sha);
+	void set_info_for_commit(const CString& commitId);
 	void set_branches_for_repo(const CString& repoName);
+	void display_info_for_diffed_file(const CString& sha, const CString& fileName);
+	
 private:
 	
 	//CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
@@ -82,7 +85,6 @@ protected:
 	afx_msg LRESULT OnBeforeShowRibbonBackstageView(WPARAM wp, LPARAM lp);
 	afx_msg void OnProgressBar();
 	afx_msg void OnPaletteTheme();
-	
 	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateRibbonBar ();

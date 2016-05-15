@@ -3,8 +3,8 @@
 #include "GIT_Commit_Local.hpp"
 
 //statics
-diffed_file GIT_Engine::a_file;
-std::set<diffed_file, Less_Diff_File> GIT_Engine::diffed_files_;
+diffed_file_t GIT_Engine::a_file;
+std::set<diffed_file_t, Less_Diff_File> GIT_Engine::diffed_files_;
 
 //std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> GIT_Engine::modified_files_;
 //std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> GIT_Engine::added_files_;
@@ -62,7 +62,7 @@ int GIT_Engine::git_diff_line_cb(const git_diff_delta * delta, const git_diff_hu
 	
 	//a_file.diff_file = delta->new_file;
 	a_file.diff_delta = *delta;
-	git_o5_diff_line a_git_05_line(*line);
+	git_o5_diff_line_t a_git_05_line(*line);
 	
 
 	a_file.hunk_lines[*hunk].push_back(a_git_05_line);

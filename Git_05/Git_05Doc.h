@@ -7,13 +7,20 @@
 
 class CGit_05Doc : public CDocument
 {
+private:
+	diffed_file_t diffed_file_;
 protected: // create from serialization only
 	CGit_05Doc();
 	DECLARE_DYNCREATE(CGit_05Doc)
-
+public:
+	void set_file_for_display(const diffed_file_t& diffedFile);
+	diffed_file_t get_diffed_file()const
+	{
+		return diffed_file_;
+	}
 // Attributes
 public:
-
+	static CGit_05Doc* GetDoc();
 // Operations
 public:
 

@@ -487,7 +487,7 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	m_wndListCtrl_->SetItemText(itemNo, 2, changes);
 	m_wndListCtrl_->SetItemText(itemNo, 3, c_commit_id.c_str());
 	VERIFY(_SetTilesViewLinesCount(2));
-	UINT arrColumns[2] = { 1, 2};
+	UINT arrColumns[2] = { 1, 2 };
 	for (auto item{ 0 }, end{ m_wndListCtrl_->GetItemCount() }; item < end; ++item)
 	{
 		VERIFY(_SetItemTileLines(item, arrColumns, 2));

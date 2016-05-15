@@ -8,6 +8,7 @@
 
 #include "resource.h"       // main symbols
 #include "HTTPS_GIT_Client.h"
+#include "GIT_Commit_Local.hpp"
 //#include "MainFrm.h"
 // CGit_05App:
 // See Git_05.cpp for the implementation of this class
@@ -28,7 +29,7 @@ public:
 	// Override from CBCGPWorkspace
 	virtual void PreLoadState ();
 	const HTTPS_GIT_Client* const get_https_git_client_p();
-
+	void set_file_for_display(const diffed_file_t& diffedFile);
 // Overrides
 public:
 	virtual BOOL InitInstance();

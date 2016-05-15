@@ -90,6 +90,23 @@ CString CMainFrame::get_current_commit()const
 	return current_commit;
 }
 
+GIT_Commit_Local CMainFrame::get_commit(const CString & currentRepo, const CString & currentBranch, const CString & sha)
+{
+	return m_wndWorkSpace_Repos_.get_commit(currentRepo, currentBranch, sha);
+}
+//#include "Git_05View.h"
+void CMainFrame::display_info_for_diffed_file(const CString& sha, const CString& fileName)
+{
+	CString current_repo = get_current_repo();
+	CString current_branch =  get_current_branch();
+	GIT_Commit_Local current_commit = get_commit(current_repo,current_branch,sha);
+	diffed_file_t diffed_file = current_commit.get_diffed_file(fileName);
+	//CGit_05View::GetView()->display_diffed_file_(diffed_file);
+	static_cast<CGit_05App*>(AfxGetApp())->set_file_for_display(diffed_file);
+}
+
+
+
 void CMainFrame::set_info_for_commit(const CString & commit_id)
 {
 	CString current_repo = m_wndWorkSpace_Repos_.get_current_repo();
@@ -579,3 +596,4 @@ void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
 	std::vector<GIT_Commit_Local> commits =	m_wndWorkSpace_Repos_.get_commits_for_branch(repo_name, branch_name);
 	m_wndWorkSpace_Commits_.set_commits(commits);
 }
+

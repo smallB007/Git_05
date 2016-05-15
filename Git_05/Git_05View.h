@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Direct2Handler.hpp"
+#include "GIT_Commit_Local.hpp"
 #include <memory>
 #define aVIEW_MFC_DIRECT_2D 1
 class CGit_05View : public CView
@@ -11,6 +12,9 @@ class CGit_05View : public CView
 	std::unique_ptr<Direct2DHandler> m_pRender;
 public:
 	void add_diff_line(CString diffLine);
+	//void display_diffed_file(const diffed_file_t& diffedFile);
+	void render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile);
+	void InvalidateRect_();
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)
