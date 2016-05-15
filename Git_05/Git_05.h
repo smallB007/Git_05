@@ -30,6 +30,8 @@ public:
 	virtual void PreLoadState ();
 	const HTTPS_GIT_Client* const get_https_git_client_p();
 	void set_file_for_display(const diffed_file_t& diffedFile);
+	void reset_view() const;
+	void invalidate_view();
 // Overrides
 public:
 	virtual BOOL InitInstance();

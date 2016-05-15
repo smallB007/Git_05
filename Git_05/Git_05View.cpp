@@ -77,11 +77,17 @@ void CGit_05View::OnDraw(CDC* pDC)
 {
 	CGit_05Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
+	
 	CRect rect;
 	GetClientRect(&rect);
+	
+	CBrush brush;
+	brush.CreateSysColorBrush(COLOR_3DFACE);
+	pDC->FillRect(&rect, &brush);
+
 	rect.DeflateRect(2, 2, 2, 2);
 	CBrush brush_highligth_; 
-	brush_highligth_.CreateSysColorBrush(2);
+	brush_highligth_.CreateSysColorBrush(COLOR_ACTIVECAPTION);
 	pDC->FrameRect(&rect, &brush_highligth_);
 	//pDC->DrawText(L"Hello Git_05", rect,0);
 	render_diffed_file_(pDC,pDoc->get_diffed_file());
@@ -98,12 +104,18 @@ void CGit_05View::OnDraw(CDC* pDC)
 
 void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
 {
+	////
+	/*CClientDC dc(this);
+	HFONT hfontOld = SetCurrFont(&dc);
 
+	TEXTMETRIC tm;
+	dc.GetTextMetrics(&tm);*/
+	/////
 	CRect rect;
 	GetClientRect(&rect);
 	rect.DeflateRect(5, 5);
-
-	COLORREF color_red(RGB(255, 0, 0));
+	
+	COLORREF color_red(RGB(150, 0, 0));
 	COLORREF color_green(RGB(0, 255, 0));
 	COLORREF color_black(RGB(0, 0, 0));
 
@@ -129,14 +141,23 @@ void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
 				line_color = color_black;
 				break;
 			}
+			
+			CString line_no;
+			line_no.Format(_T("%d"), diffed_line.new_lineno);
 			CString sign(origin);
 			CA2W w_str(diffed_line.content.c_str());
-			CString line(sign + L"  " + w_str);
+			CString line(line_no + L"  " + sign + L"  " + w_str);
 			//pDC->SelectObject(&myPen2);
 			if (pDC)
 			{
-				pDC->SetTextColor(line_color);
+				//pDC->SetTextColor(line_color);
+				//pDC->SetBkColor(line_color);a
+ 				CBrush brush;
+ 				brush.CreateSolidBrush(color_red);
+				rect.bottom = 100;
+ 				pDC->FillRect(&rect, &brush);
 				pDC->SelectObject(&font);
+				pDC->SetBkMode(TRANSPARENT);
 				auto height = pDC->DrawText(line, rect, DT_END_ELLIPSIS);
 				rect.top += 20;
 			}
@@ -234,7 +255,7 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CGit_05View::InvalidateRect_()
 {
 	CRect rect;
-	GetWindowRect(rect);
+	GetClientRect(rect);
 	InvalidateRect(&rect);
 }
 
@@ -242,7 +263,7 @@ void CGit_05View::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
  	CRect rect;
- 	GetWindowRect(rect);
+	GetClientRect(rect);
 	InvalidateRect(&rect);
  	//m_pRender->OnResize(rect.Width(), rect.Height());
 }

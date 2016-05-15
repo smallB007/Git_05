@@ -9,10 +9,11 @@ class Git_05_ListCtr : public CListCtrl
 
 private:
 	int lastItem_{0};
-	COLORREF background_color_{ RGB(200, 200, 200) };
+	COLORREF background_color_;// { RGB(200, 200, 200) };
 	DWORD hover_time_{ 50 };
 
 	CBrush brush_highligth_;
+	CBrush brush_background_;
 	LOGBRUSH logic_brush_;
 	//CImageList m_cImageListNormal, m_cImageListSmall;//:AC: refactoring to move the process of creating list from Workspace to here
 private:

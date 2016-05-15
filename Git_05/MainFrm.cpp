@@ -115,6 +115,11 @@ void CMainFrame::set_info_for_commit(const CString & commit_id)
 	m_wndCommitPropertiesGrid.set_commit_info(commit_info);
 }
 
+void CMainFrame::reset_view()const
+{
+	static_cast<CGit_05App*>(AfxGetApp())->reset_view();
+}
+
 void CMainFrame::set_branches_for_repo(const CString & repoName)
 {
 	m_wndWorkSpace_Repos_.set_branches_for_repo(repoName);

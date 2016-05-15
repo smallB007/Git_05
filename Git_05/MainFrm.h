@@ -58,7 +58,7 @@ public:
 	void set_info_for_commit(const CString& commitId);
 	void set_branches_for_repo(const CString& repoName);
 	void display_info_for_diffed_file(const CString& sha, const CString& fileName);
-	
+	void reset_view()const;
 private:
 	
 	//CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h

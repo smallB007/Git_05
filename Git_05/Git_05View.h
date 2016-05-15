@@ -15,6 +15,7 @@ public:
 	//void display_diffed_file(const diffed_file_t& diffedFile);
 	void render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile);
 	void InvalidateRect_();
+	void invalidate_view();
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)

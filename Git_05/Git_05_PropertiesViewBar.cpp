@@ -309,19 +309,26 @@ LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
 {
 		CBCGPProp* pProp = (CBCGPProp*)lp;
 		ASSERT_VALID(pProp);
-		CBCGPProp* group = pProp->GetParent()->GetParent();
-		CString group_name = group->GetName();
-		
-		if (group && (group_name == L"Statistics"))
+		auto parent = pProp->GetParent();
+		if (parent)
 		{
-			CBCGPProp* shaGroup = m_wndPropList.GetProperty(2);
-			CBCGPProp* shaProp = shaGroup->GetSubItem(1);
-			CString sha = shaProp->GetValue();
-			CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
-			CString file = pProp->GetName();
-			pMainWnd->display_info_for_diffed_file(sha, file);
-		}
+			CBCGPProp* group = parent->GetParent();
 
+			if (group)
+			{
+				CString group_name = group->GetName();
+
+				if (group_name == L"Statistics")
+				{
+					CBCGPProp* shaGroup = m_wndPropList.GetProperty(2);
+					CBCGPProp* shaProp = shaGroup->GetSubItem(1);
+					CString sha = shaProp->GetValue();
+					CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+					CString file = pProp->GetName();
+					pMainWnd->display_info_for_diffed_file(sha, file);
+				}
+			}
+		}
 		return 0;
 }
 

@@ -132,6 +132,7 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		//auto repo_name = parent_->get_current_repo();
 		//auto branch_name = parent_->get_current_branch();
 		//pMainWnd->set_current_repo(commit_id);
+		pMainWnd->reset_view();
 		pMainWnd->set_info_for_commit(commit_id);
 	}
 
@@ -188,6 +189,7 @@ int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	ModifyStyle(LVS_TYPEMASK, LVS_REPORT);
 	SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT);
+	 //GetSysColor(COLOR_3DFACE);
 	SetBkColor(background_color_);
 	SetHoverTime(hover_time_);
 
@@ -198,8 +200,12 @@ int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 Git_05_ListCtr::Git_05_ListCtr() 
 {
-	brush_highligth_.CreateSysColorBrush(2);
+	brush_highligth_.CreateSysColorBrush(COLOR_ACTIVECAPTION);
 	brush_highligth_.GetLogBrush(&logic_brush_);
+	brush_background_.CreateSysColorBrush(COLOR_3DFACE);
+	LOGBRUSH logic_brush;
+	brush_background_.GetLogBrush(&logic_brush);
+	background_color_ = logic_brush.lbColor;
 }
 
 
