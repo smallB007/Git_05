@@ -114,6 +114,11 @@ void CMainFrame::set_info_for_commit(const CString & commit_id)
 	GIT_Commit_Local commit_info = m_wndWorkSpace_Repos_.get_commit(current_repo, current_branch, commit_id);
 	m_wndCommitPropertiesGrid.set_commit_info(commit_info);
 }
+ 
+void CMainFrame::deselect_file_from_commit_detail_window()
+{
+	m_wndCommitPropertiesGrid.deselect_file_from_commit_detail_window();
+}
 
 void CMainFrame::reset_view()const
 {

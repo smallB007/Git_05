@@ -33,6 +33,7 @@ public:
 	void render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile);
 	void InvalidateRect_();
 	void invalidate_view();
+	void clean_header_(CString& header);
 protected: // create from serialization only
 	CGit_05View();
 	DECLARE_DYNCREATE(CGit_05View)

@@ -37,6 +37,7 @@ void CGit_05Doc::set_file_for_display(const diffed_file_t& diffedFile)
 {
 	diffed_file_ = diffedFile;
 	CGit_05App * app_p = static_cast<CGit_05App*>(AfxGetApp());
+	app_p->deselect_file_from_commit_detail_window();
 	app_p->invalidate_view();
 }
 

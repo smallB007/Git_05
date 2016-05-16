@@ -230,6 +230,13 @@ void CGit_05App::set_file_for_display(const diffed_file_t& diffedFile)
 	CGit_05View::GetView()->InvalidateRect_();
 	
 }
+
+void CGit_05App::deselect_file_from_commit_detail_window() const
+{
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	pMainWnd->deselect_file_from_commit_detail_window();
+}
+
 bool CGit_05App::write_repo_path_to_file_(const CString& c_repo_path)
 {
 	//load first what's in file and see if this repo is already there

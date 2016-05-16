@@ -99,6 +99,24 @@ void CGit_05View::OnDraw(CDC* pDC)
 	//	m_pRender->OnRender();
 	//}
 }
+#include <algorithm>
+void CGit_05View::clean_header_(CString& header)
+{
+	
+	// Convert a TCHAR string to a LPCSTR
+	CT2CA pszConvertedAnsiString(header);
+	// construct a std::string using the LPCSTR input
+	std::string std_header(pszConvertedAnsiString);
+	std::reverse(begin(std_header),end(std_header));
+
+	auto it = std::find(begin(std_header), end(std_header), '@');
+	std_header.erase(begin(std_header), it);
+	std::reverse(begin(std_header), end(std_header));
+
+	CA2W w_str(std_header.c_str());
+	header = w_str;
+}
+
 
 void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
 {
@@ -142,6 +160,7 @@ void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
 	for (const auto& hunk : diffedFile.hunk_lines)
 	{
 		header = hunk.first.header;
+		clean_header_(header);
 		pDC->FillRect(&header_rect, &header_brush_);
 		pDC->DrawText(header, header_rect, DT_CENTER);
 		rect.top += font_height;
@@ -310,10 +329,10 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	col_1_brush_.CreateSysColorBrush(5);
 	col_2_brush_.CreateSysColorBrush(10);
 	//COLORREF header_color_;
-	volatile int column_font_height{ 18 };
+	volatile int column_font_height{ font_height };
 	
 	font.CreateFont(font_height, 0, 0, 0, 0, 0, 0, 0, 0, OUT_TT_ONLY_PRECIS, 0, PROOF_QUALITY, 0, _T("Courier New"));
-	column_font.CreateFont(column_font_height, 0, 0, 0, 0, 0, 0, 0, 0, OUT_TT_ONLY_PRECIS, 0, PROOF_QUALITY, 0, _T("Tahoma"));
+	column_font.CreateFont(column_font_height, 0, 0, 0, 0, 0, 0, 0, 0, OUT_TT_ONLY_PRECIS, 0, PROOF_QUALITY, 0, _T("Courier New"));
 	return 0;
 }
 

@@ -32,6 +32,7 @@ public:
 	void set_file_for_display(const diffed_file_t& diffedFile);
 	void reset_view() const;
 	void invalidate_view();
+	void deselect_file_from_commit_detail_window() const;
 // Overrides
 public:
 	virtual BOOL InitInstance();

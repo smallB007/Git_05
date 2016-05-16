@@ -119,6 +119,8 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	
 	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
 
+	pMainWnd->reset_view();
+	
 	if (git_entity_type_ == GIT_ENTITY_TYPE::REPO)
 	{
 		//1. Populate combo box with branch names
@@ -132,7 +134,6 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		//auto repo_name = parent_->get_current_repo();
 		//auto branch_name = parent_->get_current_branch();
 		//pMainWnd->set_current_repo(commit_id);
-		pMainWnd->reset_view();
 		pMainWnd->set_info_for_commit(commit_id);
 	}
 

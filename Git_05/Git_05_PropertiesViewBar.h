@@ -31,6 +31,7 @@ public:
 		m_wndPropList.SetGroupNameFullWidth (bSet);
 	}
 	void set_commit_info(const GIT_Commit_Local& commitInfo);
+	void deselect_file_from_commit_detail_window();
 protected:
 	CBCGPPropList	m_wndPropList;
 

@@ -333,6 +333,14 @@ LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
 }
 
 
+void Git05_CBCGPPropBar::deselect_file_from_commit_detail_window()
+{
+	//This was written in order to prevent crash when one file was selected in commit details option and user selected different commit
+	CBCGPProp* top = m_wndPropList.GetProperty(0);
+	m_wndPropList.SetCurSel(top);
+	
+}
+
 // void Git05_CBCGPPropBar::OnLButtonUp(UINT nFlags, CPoint point)
 // {
 // 	// TODO: Add your message handler code here and/or call default

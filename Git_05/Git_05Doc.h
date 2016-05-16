@@ -18,9 +18,10 @@ public:
 	{
 		return diffed_file_;
 	}
+
 	void reset_file_for_display()
 	{
-		diffed_file_ = diffed_file_t();
+		set_file_for_display(diffed_file_t());
 	}
 // Attributes
 public:
