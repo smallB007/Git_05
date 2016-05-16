@@ -64,6 +64,7 @@ int GIT_Engine::git_diff_line_cb(const git_diff_delta * delta, const git_diff_hu
 	a_file.diff_delta = *delta;
 	git_o5_diff_line_t a_git_05_line(*line);
 	
+	a_git_05_line.content.erase(std::remove(begin(a_git_05_line.content),end(a_git_05_line.content),'\n'), end(a_git_05_line.content));
 
 	a_file.hunk_lines[*hunk].push_back(a_git_05_line);
 	

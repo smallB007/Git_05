@@ -10,6 +10,23 @@
 class CGit_05View : public CView
 {
 	std::unique_ptr<Direct2DHandler> m_pRender;
+
+	CBrush header_brush_;
+	CBrush col_1_brush_;
+	CBrush col_2_brush_;
+	//COLORREF header_color_;
+	CBrush background_brush_;
+	COLORREF background_color_;
+	CBrush brush_frame_;
+
+	COLORREF color_red{ RGB(255, 153, 167) };
+	COLORREF color_green{ RGB(110, 247, 120) };
+	COLORREF color_black{RGB(0, 0, 0)};
+	CFont font;
+	int font_height{ 20 };
+	CFont column_font;
+	volatile int column_width{ 40 };
+	
 public:
 	void add_diff_line(CString diffLine);
 	//void display_diffed_file(const diffed_file_t& diffedFile);

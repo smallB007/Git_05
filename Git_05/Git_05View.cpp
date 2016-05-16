@@ -81,14 +81,12 @@ void CGit_05View::OnDraw(CDC* pDC)
 	CRect rect;
 	GetClientRect(&rect);
 	
-	CBrush brush;
-	brush.CreateSysColorBrush(COLOR_3DFACE);
-	pDC->FillRect(&rect, &brush);
+	
+	pDC->FillRect(&rect, &background_brush_);
 
 	rect.DeflateRect(2, 2, 2, 2);
-	CBrush brush_highligth_; 
-	brush_highligth_.CreateSysColorBrush(COLOR_ACTIVECAPTION);
-	pDC->FrameRect(&rect, &brush_highligth_);
+	
+	pDC->FrameRect(&rect, &brush_frame_);
 	//pDC->DrawText(L"Hello Git_05", rect,0);
 	render_diffed_file_(pDC,pDoc->get_diffed_file());
 
@@ -107,61 +105,118 @@ void CGit_05View::render_diffed_file_(CDC* pDC, const diffed_file_t& diffedFile)
 	////
 	/*CClientDC dc(this);
 	HFONT hfontOld = SetCurrFont(&dc);
-
-	TEXTMETRIC tm;
-	dc.GetTextMetrics(&tm);*/
+	*/
 	/////
 	CRect rect;
 	GetClientRect(&rect);
 	rect.DeflateRect(5, 5);
 	
-	COLORREF color_red(RGB(150, 0, 0));
-	COLORREF color_green(RGB(0, 255, 0));
-	COLORREF color_black(RGB(0, 0, 0));
+
+	CRect background_rect = rect;
+	background_rect.top += font_height;
+	background_rect.bottom = background_rect.top;
+	
+	CRect column_1_rect = background_rect;
+	CRect column_2_rect = background_rect;
+	column_1_rect.right = column_1_rect.left + column_width;
+	column_2_rect.left = column_1_rect.right;
+	column_2_rect.right = column_2_rect.left + column_width;
+	background_rect.left = column_2_rect.right;
+	CRect column_1_top_rect = column_1_rect;
+	CRect column_2_top_rect = column_2_rect;
+	pDC->SetBkMode(TRANSPARENT);
 
 	//https://msdn.microsoft.com/en-us/library/windows/desktop/dd183499%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-	CFont font;
-	font.CreateFont(20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("Tahoma"));
+	
+	
+	pDC->SelectObject(&font);
+	TEXTMETRIC tm;
+	pDC->GetTextMetrics(&tm);
+	CRect header_rect = rect;
+	header_rect.bottom = font_height + tm.tmDescent;
+	COLORREF background_color;
+	CString header;
 
+	CString sign;
+	size_t last_line_no{ 0 };//to prevent false lines like //No newline at the end of file being displayed Header.h git_test_2.sln
 	for (const auto& hunk : diffedFile.hunk_lines)
 	{
+		header = hunk.first.header;
+		pDC->FillRect(&header_rect, &header_brush_);
+		pDC->DrawText(header, header_rect, DT_CENTER);
+		rect.top += font_height;
+
 		for (const git_o5_diff_line_t& diffed_line : hunk.second)
 		{
-			COLORREF line_color;
+			
 			char origin = diffed_line.origin;
+			sign = origin;
 			switch (origin)
 			{
 			case '+':
-				line_color = color_green;
+				background_color = color_green;
 				break;
 			case '-':
-				line_color = color_red;
+				background_color = color_red;
 				break;
 			default:
-				line_color = color_black;
-				break;
+				background_color = background_color_;
+				sign = "";
+ 				break;
 			}
 			
-			CString line_no;
-			line_no.Format(_T("%d"), diffed_line.new_lineno);
-			CString sign(origin);
-			CA2W w_str(diffed_line.content.c_str());
-			CString line(line_no + L"  " + sign + L"  " + w_str);
-			//pDC->SelectObject(&myPen2);
-			if (pDC)
+			if (diffed_line.new_lineno != last_line_no)
 			{
-				//pDC->SetTextColor(line_color);
-				//pDC->SetBkColor(line_color);a
- 				CBrush brush;
- 				brush.CreateSolidBrush(color_red);
-				rect.bottom = 100;
- 				pDC->FillRect(&rect, &brush);
-				pDC->SelectObject(&font);
-				pDC->SetBkMode(TRANSPARENT);
-				auto height = pDC->DrawText(line, rect, DT_END_ELLIPSIS);
-				rect.top += 20;
+				last_line_no = diffed_line.new_lineno;
+
+				CString old_line_no;
+				//if (-1 != diffed_line.old_lineno)
+				//{
+					old_line_no.Format(_T("%d"), diffed_line.old_lineno);
+				//}
+
+				CString new_line_no;
+				new_line_no.Format(_T("%d"), diffed_line.new_lineno);
+
+				CA2W w_str(diffed_line.content.c_str());
+				CString line(/*old_line_no + L"  " + new_line_no + L"  " + */L" " + sign + L"  " + w_str);
+				//pDC->SelectObject(&myPen2);
+				if (pDC)
+				{
+					//pDC->SetTextColor(background_color);
+					//pDC->SetBkColor(background_color);a
+					CBrush brush;
+					brush.CreateSolidBrush(background_color);
+					background_rect.bottom += font_height + tm.tmDescent;
+					column_1_rect.bottom = background_rect.bottom;
+					column_2_rect.bottom = background_rect.bottom;
+					pDC->FillRect(&column_1_rect, &brush);
+					//pDC->FrameRect(&column_1_rect, &header_brush_);
+					pDC->FillRect(&column_2_rect, &brush);
+					//pDC->FrameRect(&column_2_rect, &header_brush_);
+					pDC->FillRect(&background_rect, &brush);
+
+					pDC->SelectObject(&font);
+					pDC->DrawText(line, background_rect, DT_END_ELLIPSIS);
+					pDC->SelectObject(&column_font);
+					pDC->DrawText(old_line_no, column_1_rect, DT_CENTER );
+					pDC->DrawText(new_line_no, column_2_rect, DT_CENTER );
+					//rect.top += font_height;
+					background_rect.top = background_rect.bottom;
+					column_1_rect.top = background_rect.top;
+					column_2_rect.top = background_rect.top;
+				}
 			}
 		}
+	}
+	if (diffedFile.hunk_lines.size())
+	{//to prevent drawing line in case of any file not been selected yet
+		column_1_rect.top = column_1_top_rect.top;
+		column_2_rect.top = column_2_top_rect.top;
+		background_rect.top = column_2_top_rect.top;
+		pDC->FrameRect(&column_1_rect, &header_brush_);
+		pDC->FrameRect(&column_2_rect, &header_brush_);
+		pDC->FrameRect(&background_rect, &header_brush_);
 	}
 }
 
@@ -242,12 +297,23 @@ int CGit_05View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
 	//m_pRender = std::make_unique<Direct2DHandler>(m_hWnd,D2D1::ColorF::LightGray);//make it shared
 	//m_pRender->Initialize();
+	background_brush_.CreateSysColorBrush(COLOR_3DFACE);
+	brush_frame_.CreateSysColorBrush(COLOR_ACTIVECAPTION);
 	
+	LOGBRUSH logic_brush;
+	background_brush_.GetLogBrush(&logic_brush);
+	background_color_ = logic_brush.lbColor;
 
-
+	header_brush_.CreateSysColorBrush(2);
+	col_1_brush_.CreateSysColorBrush(5);
+	col_2_brush_.CreateSysColorBrush(10);
+	//COLORREF header_color_;
+	volatile int column_font_height{ 18 };
+	
+	font.CreateFont(font_height, 0, 0, 0, 0, 0, 0, 0, 0, OUT_TT_ONLY_PRECIS, 0, PROOF_QUALITY, 0, _T("Courier New"));
+	column_font.CreateFont(column_font_height, 0, 0, 0, 0, 0, 0, 0, 0, OUT_TT_ONLY_PRECIS, 0, PROOF_QUALITY, 0, _T("Tahoma"));
 	return 0;
 }
 
