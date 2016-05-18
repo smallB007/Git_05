@@ -202,7 +202,7 @@ void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std:
 	repo_branches_[repo_name] = branches_with_commits;
 	
 	add_repo_to_list_ctrl_(repo_name);
-	
+	set_current_repo(repo_name);
 }
 
 
@@ -505,6 +505,7 @@ int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
 	m_wndListCtrl_->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
 	m_wndListCtrl_->SetItemText(itemNo, 2, _T("Changes: 20"));
 	m_wndListCtrl_->SetItemText(itemNo, 3, _T("Ahead of Master: 17"));
+	
 	VERIFY(_SetTilesViewLinesCount(3));
 	UINT arrColumns[3] = { 1, 2, 3 };
 	for (auto item{ 0 }, end{ m_wndListCtrl_->GetItemCount() }; item < end; ++item)

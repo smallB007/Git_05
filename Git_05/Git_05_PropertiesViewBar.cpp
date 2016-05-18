@@ -147,6 +147,14 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	pProp = new CBCGPProp(_T("Email"), c_email.c_str(), _T("Commiter's email"));
 	pProp->AllowEdit(FALSE);
 	commiter_group_uptr_->AddSubItem(pProp);
+	//
+	auto commit_date = ctime(&(time_t)commitInfo.commit_author.when.time);
+	CA2W ca2commit_date(commit_date);
+	std::wstring c_commit_date = ca2commit_date;
+	pProp = new CBCGPProp(_T("commit_date"), c_commit_date.c_str(), _T("The date this commit was made"));
+	pProp->AllowEdit(FALSE);
+	commiter_group_uptr_->AddSubItem(pProp);
+	//
 
 	auto message = commitInfo.commit_message;
 	CA2W ca2message(message.c_str());
@@ -320,6 +328,7 @@ LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
 
 				if (group_name == L"Statistics")
 				{
+					
 					CBCGPProp* shaGroup = m_wndPropList.GetProperty(2);
 					CBCGPProp* shaProp = shaGroup->GetSubItem(1);
 					CString sha = shaProp->GetValue();
@@ -336,6 +345,7 @@ LRESULT Git05_CBCGPPropBar::OnPropertySelected(WPARAM /*wp*/, LPARAM lp)
 void Git05_CBCGPPropBar::deselect_file_from_commit_detail_window()
 {
 	//This was written in order to prevent crash when one file was selected in commit details option and user selected different commit
+	//CBCGPProp* cur = m_wndPropList.GetCurSel()
 	CBCGPProp* top = m_wndPropList.GetProperty(0);
 	m_wndPropList.SetCurSel(top);
 	

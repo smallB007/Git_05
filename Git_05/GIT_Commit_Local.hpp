@@ -2,27 +2,6 @@
 #include <string>
 #include <set>
 
-template<class Git_Diff_File>
-struct Git_Diff_File_Less;
-
-template<>
-struct Git_Diff_File_Less<git_diff_file>
-{
-	bool operator ()(const git_diff_file& left, const git_diff_file& right)
-	{
-		return strcmp(left.path, right.path);
-	}
-};
-
-struct Less_hunk
-{
-	bool operator()(const git_diff_hunk& left, const git_diff_hunk& right)
-	{
-
-		return left.old_start < right.old_start;
-	}
-};
-
 struct git_o5_diff_line_t
 {
 	char   origin;       /**< A git_diff_line_t value */
@@ -40,23 +19,21 @@ public:
 		content_len{ diffLine.content_len },
 		content_offset{ diffLine.content_offset }
 	{
-		//std::vector<char> chars;
-		//for (int i{0}; i < content_len;++i)
-		//{
-		//	chars.push_back(diffLine.content[i]);
-		//}
-		//for (auto char_ : chars)
-		//{
 		content.append(diffLine.content, diffLine.content_len);
-		//}
+	}
+};
 
+struct Less_hunk
+{
+	bool operator()(const git_diff_hunk& left, const git_diff_hunk& right)
+	{
+		return left.old_start < right.old_start;
 	}
 };
 
 struct diffed_file_t
 {
 	git_diff_delta diff_delta;
-	//git_diff_file diff_file;
 	std::map<git_diff_hunk, std::vector<git_o5_diff_line_t>, Less_hunk> hunk_lines;
 };
 
@@ -64,9 +41,13 @@ struct Less_Diff_File
 {
 	bool operator()(const diffed_file_t& left, const diffed_file_t& right)
 	{
-		return strcmp(left.diff_delta.new_file.path, right.diff_delta.new_file.path);
+		std::string path_left(left.diff_delta.new_file.path);
+		std::string path_right(right.diff_delta.new_file.path);
+		return path_left < path_right;//strcmp(left.diff_delta.new_file.path, right.diff_delta.new_file.path);
 	}
 };
+
+
 
 class GIT_Commit_Local
 {
@@ -74,10 +55,6 @@ public:
 	std::string commit_id;
 	std::string commit_message;
 	git_signature commit_author;
-	//git_oid commit_id;
-	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_modified;
-	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_added;
-	//std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>> files_deleted;
 	std::set<diffed_file_t, Less_Diff_File> diffed_files;
 	diffed_file_t get_diffed_file(const CString& fileName)const;
 };

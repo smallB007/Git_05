@@ -23,7 +23,7 @@ private:
 	static int git_diff_file_cb(const git_diff_delta *delta, float progress, void *payload);
 	static int git_diff_hunk_cb(const git_diff_delta *delta, const git_diff_hunk *hunk, void *payload);
 	static int payload_fn(const git_diff_delta *delta);
-	static int get_files_from_git_diff(const git_diff_delta *delta, std::set<git_diff_file, Git_Diff_File_Less<git_diff_file>>& files,  const git_delta_t delta_t);
+	//static int get_files_from_git_diff(const git_diff_delta *delta, std::set<git_diff_file, Less_Diff_File>& files,  const git_delta_t delta_t);
 	
 public:
 	static void list_commits_for_branch(git_repository*repo,const CString& repo_path,  const CString& branch, std::vector<GIT_Commit_Local>& commitsForBranch);
