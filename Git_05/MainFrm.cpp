@@ -40,6 +40,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_COMMAND(ID_SOME_OFFICE_THEME, OnPaletteTheme)
 	//ON_CBN_SELCHANGE(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
 	ON_COMMAND(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
+	ON_COMMAND(IDC_VIEW_REPO_DIR_COMBO, OnCbn_Git_View_Repo_SelchangeCombo)
+	
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -139,6 +141,16 @@ CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()const
 	ASSERT_VALID(branches_p);
 	return branches_p;
 }
+
+CBCGPRibbonComboBox* CMainFrame::get_repo_view_cmb_()const
+{
+	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	ASSERT_VALID(pRibbon);
+	auto repo_view_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_VIEW_REPO_DIR_COMBO));
+	ASSERT_VALID(repo_view_p);
+	return repo_view_p;
+}
+
 
 void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
 {
@@ -341,6 +353,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//DockControlBar(&wnd_workspace_git_tree_2);
 
 	setup_ribbon_background_();
+	setup_repo_view_cmb_();
 	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	ASSERT_VALID(pRibbon);
 	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
@@ -613,11 +626,36 @@ void CMainFrame::OnPaletteTheme()
 #include "GIT_Commit_Local.hpp"
 void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
 {
-	auto branches_cmb_ = get_branches_cmb_();
-	auto ix = branches_cmb_->GetCurSel();
-	LPCTSTR branch_name = branches_cmb_->GetItem(ix);
+	auto branches_cmb_p = get_branches_cmb_();
+	auto ix = branches_cmb_p->GetCurSel();
+	LPCTSTR branch_name = branches_cmb_p->GetItem(ix);
 	CString repo_name = m_wndWorkSpace_Repos_.get_current_repo();
 	std::vector<GIT_Commit_Local> commits =	m_wndWorkSpace_Repos_.get_commits_for_branch(repo_name, branch_name);
 	m_wndWorkSpace_Commits_.set_commits(commits);
 }
 
+void CMainFrame::set_info_for_working_dir_(const CString& view_type)
+{
+	m_wndWorkSpace_UntrackedFiles_.SetWindowTextW(view_type);
+}
+
+void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
+{
+	auto repo_view_cmb = get_repo_view_cmb_();
+	auto ix = repo_view_cmb->GetCurSel();
+	
+	auto item = repo_view_cmb->GetItem(ix);
+	set_info_for_working_dir_(item);
+}
+
+void CMainFrame::setup_repo_view_cmb_()
+{
+	auto repo_view_cmb_p = get_repo_view_cmb_();
+	repo_view_cmb_p->AddItem(L"Working Dir");
+	repo_view_cmb_p->AddItem(L"Modified Items");
+	repo_view_cmb_p->AddItem(L"Added Items");
+	repo_view_cmb_p->AddItem(L"Deleted Items");
+	repo_view_cmb_p->AddItem(L"Untracked Items");
+	repo_view_cmb_p->AddItem(L"Ignored Items");
+	repo_view_cmb_p->SelectItem(0);
+}

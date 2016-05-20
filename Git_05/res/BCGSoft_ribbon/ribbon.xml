@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>3</VERSION_STAMP>
+		<VERSION_STAMP>4</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -426,6 +426,20 @@
 								</ID>
 								<WIDTH>108</WIDTH>
 								<EDIT_BOX>TRUE</EDIT_BOX>
+							</ELEMENT>
+						</ELEMENTS>
+					</PANEL>
+					<PANEL>
+						<ELEMENT_NAME>Panel</ELEMENT_NAME>
+						<NAME>Staging Area</NAME>
+						<ELEMENTS>
+							<ELEMENT>
+								<ELEMENT_NAME>ComboBox</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_VIEW_REPO_DIR_COMBO</NAME>
+									<VALUE>1094</VALUE>
+								</ID>
+								<WIDTH>108</WIDTH>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

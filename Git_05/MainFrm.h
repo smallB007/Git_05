@@ -87,6 +87,8 @@ protected:
 	afx_msg LRESULT OnBeforeShowRibbonBackstageView(WPARAM wp, LPARAM lp);
 	afx_msg void OnProgressBar();
 	afx_msg void OnPaletteTheme();
+	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();
+	afx_msg void OnCbn_Git_View_Repo_SelchangeCombo();
 	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateRibbonBar ();
@@ -95,9 +97,13 @@ protected:
 	CBitmap m_bmpAppPreview;
 private:
 	//_ui_ CComboBox git_tree_branches_;
-	CBCGPRibbonComboBox* branches_cmb_{nullptr};
+	//CBCGPRibbonComboBox* branches_cmb_{nullptr};
+	//CBCGPRibbonComboBox* repo_view_cmb_{ nullptr };
 	CBCGPRibbonComboBox* get_branches_cmb_()const;
+	CBCGPRibbonComboBox* get_repo_view_cmb_()const;
+	void setup_repo_view_cmb_();
+	void set_info_for_working_dir_(const CString& view_type);
 protected:
 	//void DoDataExchange(CDataExchange* pDX);
-	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();
+	
 };
