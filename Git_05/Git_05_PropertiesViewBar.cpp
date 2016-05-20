@@ -82,7 +82,7 @@ void Git05_CBCGPPropBar::OnSize(UINT nType, int cx, int cy)
 
 #include "GIT_Commit_Local.hpp"
 
-void Git05_CBCGPPropBar::assign_diffed_files_(const const GIT_Commit_Local& commitInfo)
+void Git05_CBCGPPropBar::assign_diffed_files_(const GIT_Commit_Local& commitInfo)
 {
 
 	CBCGPProp* pStatsModificationProp;

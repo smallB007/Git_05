@@ -195,7 +195,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-	const int visible = 1;
+	//const int visible = 1;
 	// TODO: add your status bar panes here:
 	m_wndStatusBar.AddElement (new CBCGPRibbonStatusBarPane (
 		ID_STATUSBAR_PANE1, _T("Pane 1"), TRUE), _T("Pane 1"));

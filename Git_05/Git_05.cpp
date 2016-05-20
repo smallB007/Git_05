@@ -152,6 +152,7 @@ BOOL CGit_05App::InitInstance()
 	m_pMainWnd->DragAcceptFiles();
 	
 	git_libgit2_init();
+	
 	load_repos_from_file_(repositories_file_);
 	//static_cast<CMainFrame*>(AfxGetMainWnd())->selectRepository();
 	return TRUE;
@@ -469,6 +470,8 @@ void CGit_05App::On_Add_Repo()
 	}
 }
 
+
+
 void CGit_05App::OnCreateRepoButton()
 {
 	//equivalent of git init
@@ -483,14 +486,12 @@ void CGit_05App::OnCreateRepoButton()
 	{
 		git_repository* out = nullptr;
 		auto folder_name = dlgFile.GetPathName();
-		CT2CA pszCharacterString(folder_name);
+		CT2CA path(folder_name);
 
-		if (git_repository_init(&out, pszCharacterString, 0) != git_error_code::GIT_OK)
-		{//couldn't init, say something ;)
-			throw "Not implemented yet";
-			const git_error *e = giterr_last();
-		}
-		else
+
+		GIT_Engine::git_init_opts_t git_init_options = { 1, 0, 0, 1, GIT_REPOSITORY_INIT_SHARED_UMASK, 0, 0, 0 };
+
+		if (GIT_Engine::git_init(out, path, git_init_options))
 		{
 			repos_.push_back(out);
 		}

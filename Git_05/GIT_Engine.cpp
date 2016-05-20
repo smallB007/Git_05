@@ -22,6 +22,78 @@ GIT_Engine::~GIT_Engine()
 {
 }
 
+void GIT_Engine::create_initial_commit(git_repository *repo)
+{
+	git_signature *sig;
+	git_index *index;
+	git_oid tree_id, commit_id;
+	git_tree *tree;
+
+
+	//First use the config to initialize a commit signature for the user.
+
+
+	if (git_signature_default(&sig, repo) < 0)
+	{
+		AfxMessageBox(L"Unable to create a commit signature.\nPerhaps 'user.name' and 'user.email' are not set");
+	}
+
+	/* Now let's create an empty tree for this commit */
+
+	if (git_repository_index(&index, repo) < 0)
+	{
+		AfxMessageBox(L"Could not open repository index");
+	}
+
+	//Outside of this example, you could call gitindexadd_bypath() here to put actual files into the index. For our purposes, we'll leave it empty for now.
+
+
+	if (git_index_write_tree(&tree_id, index) < 0)
+	{
+		AfxMessageBox(L"Unable to write initial tree from index");
+	}
+
+	git_index_free(index);
+
+	if (git_tree_lookup(&tree, repo, &tree_id) < 0)
+	{
+		AfxMessageBox(L"Could not look up initial tree");
+	}
+
+
+	//Ready to create the initial commit.
+
+	//Normally creating a commit would involve looking up the current HEAD commit and making that be the parent of the initial commit, but here this is the first commit so there will be no parent.
+
+
+	if (git_commit_create_v(
+		&commit_id, repo, "HEAD", sig, sig,
+		NULL, "Initial commit", tree, 0) < 0)
+	{
+		AfxMessageBox(L"Could not create the initial commit");
+	}
+
+	//Clean up so we don't leak memory.
+
+	git_tree_free(tree);
+	git_signature_free(sig);
+}
+
+bool GIT_Engine::git_init(git_repository *repo,const char* path, const git_init_opts_t& initOptions)
+{
+	auto result = git_repository_init(&repo, path, static_cast<int>(initOptions.bare)) == git_error_code::GIT_OK;
+	
+	if (initOptions.initial_commit)
+	{
+		create_initial_commit(repo);
+	}
+	if (false == result)
+	{
+		AfxMessageBox(L"Couldn't init git repository");//those messages should be moved outside of the engine as engine should only be responsible for git related tasks
+	}
+	return result;
+	
+}
 // int GIT_Engine::get_files_from_git_diff(const git_diff_delta *delta, std::set<git_diff_file, Less_Diff_File>& files, const git_delta_t delta_t)
 // {
 // 	switch (delta_t)

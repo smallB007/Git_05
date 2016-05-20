@@ -41,6 +41,7 @@ protected:  // control bar embedded members
 	CBCGPRibbonBar			m_wndRibbonBar;
 	
 	CWorkSpaceBar3			m_wndWorkSpace3;
+	CWorkSpaceBar3			m_wndWorkSpace_UntrackedFiles_;
 	CWorkSpaceBar4			m_wndWorkSpace_Repos_;
 	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;

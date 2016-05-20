@@ -16,7 +16,7 @@ private:
 	std::shared_ptr<CBCGPProp> pAdditionsGroup;
 	std::shared_ptr<CBCGPProp> pDeletionsGroup;
 	std::unique_ptr<CBCGPProp> pSHAGroup;
-	void assign_diffed_files_(const const GIT_Commit_Local& commitInfo);
+	void assign_diffed_files_(const GIT_Commit_Local& commitInfo);
 // Construction
 public:
 	Git05_CBCGPPropBar();
