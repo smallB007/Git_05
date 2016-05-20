@@ -66,6 +66,7 @@ void CMainFrame::select_active_repo()
 void CMainFrame::set_current_repo(const CString & repoName)
 {
 	m_wndWorkSpace_Repos_.set_current_repo(repoName);
+	//m_wndWorkSpace_UntrackedFiles_.add_untracked_files_to_list_ctrl_(repoName);
 }
 
 CString CMainFrame::get_current_branch()const
@@ -273,6 +274,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndWorkSpace_Commits_.set_type_list_ctrl_commits();
 	m_wndWorkSpace_Commits_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 //////////////////////
+	m_wndWorkSpace_UntrackedFiles_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
+	if (!m_wndWorkSpace_UntrackedFiles_.Create(_T("Untracked Files"), this, CRect(0, 0, 200, 200),
+		TRUE, ID_VIEW_WORKSPACE43,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND A NUMBER, NOTHING ELSE WILL DO!
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("Failed to create Workspace bar 4\n");
+		return -1;      // fail to create
+	}
+	m_wndWorkSpace_UntrackedFiles_.set_type_list_ctrl_untracked_files();
+	m_wndWorkSpace_UntrackedFiles_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
+	//
 		m_wndWorkSpace_Git_Tree_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::DX_RENDERER);
 
 		if (!m_wndWorkSpace_Git_Tree_.Create(_T("View 41"), this, CRect(0, 0, 200, 200),
@@ -309,6 +321,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndWorkSpace.EnableDocking(CBRS_ALIGN_ANY);
 	//m_wndWorkSpace2.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace3.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndWorkSpace_UntrackedFiles_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Repos_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Commits_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Git_Tree_.EnableDocking(CBRS_ALIGN_ANY);
@@ -318,6 +331,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableAutoHideBars(CBRS_ALIGN_ANY);
 	//DockControlBar(&m_wndWorkSpace);
 	DockControlBar(&m_wndWorkSpace3);
+	DockControlBar(&m_wndWorkSpace_UntrackedFiles_);
 	DockControlBar(&m_wndWorkSpace_Repos_);
 	DockControlBar(&m_wndWorkSpace_Git_Tree_);
 	DockControlBar(&m_wndWorkSpace_Commits_);

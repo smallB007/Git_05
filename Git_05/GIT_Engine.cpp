@@ -292,7 +292,188 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 
 	git_revwalk_free(walker);
 }
+//taken from git_status
+enum {
+	FORMAT_DEFAULT = 0,
+	FORMAT_LONG = 1,
+	FORMAT_SHORT = 2,
+	FORMAT_PORCELAIN = 3,
+};
 
+#define MAX_PATHSPEC 8
+
+struct opts {
+	git_status_options statusopt;
+	const char *repodir;
+	char *pathspec[MAX_PATHSPEC];
+	int npaths;
+	int format;
+	int zterm;
+	int showbranch;
+	int showsubmod;
+	int repeat;
+};
+
+static void print_long(git_status_list *status)
+{
+	size_t i, maxi = git_status_list_entrycount(status);
+	const git_status_entry *s;
+	int header = 0, changes_in_index = 0;
+	int changed_in_workdir = 0, rm_in_workdir = 0;
+	const char *old_path, *new_path;
+
+	for (i = 0; i < maxi; ++i) {
+		char *istatus = NULL;
+
+		s = git_status_byindex(status, i);
+
+		if (s->status == GIT_STATUS_CURRENT)
+			continue;
+
+		if (s->status & GIT_STATUS_WT_DELETED)
+			rm_in_workdir = 1;
+
+		if (s->status & GIT_STATUS_INDEX_NEW)
+			istatus = "new file: ";
+		if (s->status & GIT_STATUS_INDEX_MODIFIED)
+			istatus = "modified: ";
+		if (s->status & GIT_STATUS_INDEX_DELETED)
+			istatus = "deleted:  ";
+		if (s->status & GIT_STATUS_INDEX_RENAMED)
+			istatus = "renamed:  ";
+		if (s->status & GIT_STATUS_INDEX_TYPECHANGE)
+			istatus = "typechange:";
+
+		if (istatus == NULL)
+			continue;
+
+		if (!header) {
+			printf("# Changes to be committed:\n");
+			printf("#   (use \"git reset HEAD <file>...\" to unstage)\n");
+			printf("#\n");
+			header = 1;
+		}
+
+		old_path = s->head_to_index->old_file.path;
+		new_path = s->head_to_index->new_file.path;
+
+		if (old_path && new_path && strcmp(old_path, new_path))
+			printf("#\t%s  %s -> %s\n", istatus, old_path, new_path);
+		else
+			printf("#\t%s  %s\n", istatus, old_path ? old_path : new_path);
+	}
+
+	if (header) {
+		changes_in_index = 1;
+		printf("#\n");
+	}
+	header = 0;
+
+
+	for (i = 0; i < maxi; ++i) {
+		char *wstatus = NULL;
+
+		s = git_status_byindex(status, i);
+
+
+
+		if (s->status == GIT_STATUS_CURRENT || s->index_to_workdir == NULL)
+			continue;
+
+
+		if (s->status & GIT_STATUS_WT_MODIFIED)
+			wstatus = "modified: ";
+		if (s->status & GIT_STATUS_WT_DELETED)
+			wstatus = "deleted:  ";
+		if (s->status & GIT_STATUS_WT_RENAMED)
+			wstatus = "renamed:  ";
+		if (s->status & GIT_STATUS_WT_TYPECHANGE)
+			wstatus = "typechange:";
+
+		if (wstatus == NULL)
+			continue;
+
+		if (!header) {
+			printf("# Changes not staged for commit:\n");
+			printf("#   (use \"git add%s <file>...\" to update what will be committed)\n", rm_in_workdir ? "/rm" : "");
+			printf("#   (use \"git checkout -- <file>...\" to discard changes in working directory)\n");
+			printf("#\n");
+			header = 1;
+		}
+
+		old_path = s->index_to_workdir->old_file.path;
+		new_path = s->index_to_workdir->new_file.path;
+
+		if (old_path && new_path && strcmp(old_path, new_path))
+			printf("#\t%s  %s -> %s\n", wstatus, old_path, new_path);
+		else
+			printf("#\t%s  %s\n", wstatus, old_path ? old_path : new_path);
+	}
+
+	if (header) {
+		changed_in_workdir = 1;
+		printf("#\n");
+	}
+
+
+	header = 0;
+
+	for (i = 0; i < maxi; ++i) {
+		s = git_status_byindex(status, i);
+
+		if (s->status == GIT_STATUS_WT_NEW) {
+
+			if (!header) {
+				printf("# Untracked files:\n");
+				printf("#   (use \"git add <file>...\" to include in what will be committed)\n");
+				printf("#\n");
+				header = 1;
+			}
+
+			printf("#\t%s\n", s->index_to_workdir->old_file.path);
+		}
+	}
+
+	header = 0;
+
+	for (i = 0; i < maxi; ++i) {
+		s = git_status_byindex(status, i);
+
+		if (s->status == GIT_STATUS_IGNORED) {
+
+			if (!header) {
+				printf("# Ignored files:\n");
+				printf("#   (use \"git add -f <file>...\" to include in what will be committed)\n");
+				printf("#\n");
+				header = 1;
+			}
+
+			printf("#\t%s\n", s->index_to_workdir->old_file.path);
+		}
+	}
+
+	if (!changes_in_index && changed_in_workdir)
+		printf("no changes added to commit (use \"git add\" and/or \"git commit -a\")\n");
+}
+
+std::vector<CString> GIT_Engine::list_untracked_files(git_repository * repo, const CString& pathName)
+{
+	CT2CA pszConvertedAnsiString(pathName);
+	// construct a std::string using the LPCSTR input
+	std::string strStd_path_name(pszConvertedAnsiString);
+
+	git_status_list *status;
+	opts o = { GIT_STATUS_OPTIONS_INIT, "." };
+	o.statusopt.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
+	o.statusopt.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED |
+		GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX |
+		GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
+	o.repodir = strStd_path_name.c_str();
+	git_status_list_new(&status, repo, &o.statusopt);
+	print_long(status);
+	git_status_list_free(status);
+	return std::vector<CString>();
+}
 
 void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>& localBranches)
 {
@@ -301,7 +482,7 @@ void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>
 		
 		if (git_repository_head(&out, repo) == GIT_EUNBORNBRANCH)
 		{//branch without commits on it			^^^
-			
+			//for the moment initial commit is created so theoretically we should never end up here
 		}
 		else
 		{
@@ -378,8 +559,8 @@ bool GIT_Engine::check_if_repo(const CString & pathName)
 	else
 	{
 		result = true;
+		list_untracked_files(repo,pathName);
 	}
-	
 	git_repository_free(repo);
 	return result;
 }

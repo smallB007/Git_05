@@ -45,6 +45,7 @@ public:
 	static bool check_if_repo(const CString& pathName);
 	static bool git_init(git_repository *repo, const char* path, const git_init_opts_t& initOptions);
 	static void create_initial_commit(git_repository *repo);
+	static std::vector<CString> list_untracked_files(git_repository * repo, const CString& pathName);
 
 };
 

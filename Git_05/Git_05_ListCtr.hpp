@@ -20,7 +20,7 @@ private:
 	//CWorkSpaceBar4* parent_;
 public:
 	const CString file_with_repo_to_set_as_active_ = L"repo_to_set_as_active.txt";
-	enum GIT_ENTITY_TYPE { REPO, COMMIT, UNSPECIFIED };
+	enum GIT_ENTITY_TYPE { REPO, COMMIT,UNTRACKED_FILES, UNSPECIFIED };
 	GIT_ENTITY_TYPE git_entity_type_{ UNSPECIFIED };
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
@@ -95,6 +95,7 @@ protected:
 	//afx_msg LRESULT OnBCGSetControlVMMode(WPARAM, LPARAM);
 	//afx_msg LRESULT OnPrint(WPARAM wp, LPARAM lp);
 	//afx_msg void OnLButtonUp(UINT, CPoint);
+
 	afx_msg void OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnKillFocus(CWnd*);

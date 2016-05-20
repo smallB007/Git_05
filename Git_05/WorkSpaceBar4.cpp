@@ -178,7 +178,6 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 	std::vector<CString> branches;
 	for (const auto& aPair: branch_commits)
 	{
-		
 		branches.push_back(aPair.first);
 	}
 	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
@@ -366,6 +365,28 @@ void CWorkSpaceBar4::fill_repositories_()
 	m_wndTree.Expand(hRoot_, TVE_EXPAND);*/
 }
 
+int CWorkSpaceBar4::set_type_list_ctrl_untracked_files()
+{
+	m_wndListCtrl_->ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON);
+	m_wndListCtrl_->SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT | LVS_EX_CHECKBOXES);
+
+	CWinApp* pApp = AfxGetApp();
+	VERIFY(m_cImageListShell.Create(20, 20, ILC_COLOR32, 0, 0));
+	//typedef vector<CString> file_extensions;
+	//file_extensions extentions = GIT_Engine::list_untracked_files();
+	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_GREEN));
+	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_RED));
+	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_BW));
+	m_wndListCtrl_->SetImageList(&m_cImageListShell, LVSIL_NORMAL);
+	// 		
+	m_wndListCtrl_->InsertColumn(0, _T("Author"), LVCFMT_CENTER, -1, 0);
+	m_wndListCtrl_->InsertColumn(1, _T("Date"), LVCFMT_RIGHT, -1, 1);
+	m_wndListCtrl_->InsertColumn(2, _T("Short info"), LVCFMT_CENTER, -1, 2);
+	m_wndListCtrl_->InsertColumn(3, _T("INVISIBLE_SHA"), LVCFMT_CENTER, -1, 2);//this column will not be visible
+	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::UNTRACKED_FILES);
+	return m_wndListCtrl_->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
+}
+
 int CWorkSpaceBar4::set_type_list_ctrl_commits()
 {
 	CWinApp* pApp = AfxGetApp();
@@ -495,6 +516,34 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 
 	return 0;
 
+}
+
+// typedef struct _SHFILEINFOA
+// {
+// 	HICON       hIcon;                      // out: icon
+// 	int         iIcon;                      // out: icon index
+// 	DWORD       dwAttributes;               // out: SFGAO_ flags
+// 	CHAR        szDisplayName[MAX_PATH];    // out: display name (or path)
+// 	CHAR        szTypeName[80];             // out: type name
+// } SHFILEINFOA;
+
+void CWorkSpaceBar4::load_system_icons_()
+{
+	//You should call this function from a background thread. Failure to do so could cause the UI to stop responding.
+	//Keep in mind that you must free the obtained icon by passing hIcon to DestroyIcon() after you're done with it
+	
+	CString file_name(L"file.cpp");
+	SHGetFileInfo(file_name, FILE_ATTRIBUTE_NORMAL, &shfi, sizeof(SHFILEINFO),
+		SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON);
+	m_cImageListShell.Add(shfi.hIcon);
+}
+int CWorkSpaceBar4::add_untracked_files_to_list_ctrl_(repo_name_t repoName)
+{
+	load_system_icons_();
+	auto itemNo = m_wndListCtrl_->GetItemCount();
+	m_wndListCtrl_->InsertItem(itemNo, repoName, 3);
+	m_wndListCtrl_->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
+	return 0;
 }
 int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
 {

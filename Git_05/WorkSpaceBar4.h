@@ -25,22 +25,24 @@ public:
 private:
 	std::unique_ptr<Direct2DRenderer> renderer_;
 	HTREEITEM hRoot_;
-	CImageList m_cImageListNormal, m_cImageListSmall;
+	CImageList m_cImageListNormal, m_cImageListSmall, m_cImageListShell;
 	EVIEW_TYPE eview_type_{ LIST_CTRL };
-	
+	SHFILEINFO shfi;//for icons of system files like cpp etc
 	int create_list_ctrl_();
-	
 	int add_repo_to_list_ctrl_(repo_name_t repoName);
 	int add_commit_to_list_ctrl_(const GIT_Commit_Local& commit);
 	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
 
+	void load_system_icons_();
 
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
+	int add_untracked_files_to_list_ctrl_(repo_name_t repoName);//TODO move that to private
 	CWorkSpaceBar4();
 	virtual ~CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
+	int set_type_list_ctrl_untracked_files();
 	int set_type_list_ctrl_commits();
 	int set_type_list_ctrl_repos();
 	void git_tree(decltype(repo_branches_)&& repoBranches);

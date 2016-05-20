@@ -130,13 +130,14 @@
 #define ID_VIEW_WORKSPACE_GIT_TREE2     32867
 #define ID_VIEW_COMMIT                  32868
 #define ID_VIEW_WORKSPACE42             32869
+#define ID_VIEW_WORKSPACE43             32870
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        196
-#define _APS_NEXT_COMMAND_VALUE         32870
+#define _APS_NEXT_COMMAND_VALUE         32871
 #define _APS_NEXT_CONTROL_VALUE         1093
 #define _APS_NEXT_SYMED_VALUE           117
 #endif

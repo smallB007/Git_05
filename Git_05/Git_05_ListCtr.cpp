@@ -39,6 +39,9 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
+
+
+
 LRESULT Git_05_ListCtr::OnMouseLeave(WPARAM, LPARAM)
 {
 	/*This surprisingly prevents focus from current selection to be lost, yuppie ;)*/
@@ -127,7 +130,7 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		pMainWnd->set_branches_for_repo(git_entity_name);
 		
 	}
-	else
+	else if (git_entity_type_ == GIT_ENTITY_TYPE::COMMIT)
 	{
 		
 		auto commit_id = GetItemText(item_number, 3);//3 because it is a third column set in CWorkSpaceBar4::set_type_list_ctrl_commits()
@@ -135,6 +138,10 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		//auto branch_name = parent_->get_current_branch();
 		//pMainWnd->set_current_repo(commit_id);
 		pMainWnd->set_info_for_commit(commit_id);
+	}
+	else if (git_entity_type_ == GIT_ENTITY_TYPE::UNTRACKED_FILES)
+	{
+		//list untracked files
 	}
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
@@ -181,6 +188,30 @@ void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 		GetClientRect(rect);
 		prc.right = rect.right;
 		InvalidateRect(&prc);
+		if (git_entity_type_ == UNTRACKED_FILES)
+		{
+			NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+			*pResult = 0;
+
+			if (pNMListView->uOldState == 0 && pNMListView->uNewState == 0)
+				return;    // No change
+
+
+						   // Old check box state
+			BOOL bPrevState = (BOOL)(((pNMListView->uOldState &
+				LVIS_STATEIMAGEMASK) >> 12) - 1);
+			if (bPrevState < 0)    // On startup there's no previous state 
+				bPrevState = 0; // so assign as false (unchecked)
+
+								// New check box state
+			BOOL bChecked =
+				(BOOL)(((pNMListView->uNewState & LVIS_STATEIMAGEMASK) >> 12) - 1);
+			if (bChecked < 0) // On non-checkbox notifications assume false
+				bChecked = 0;
+
+			if (bPrevState == bChecked) // No change in check box
+				return;
+		}
 }
 
 int Git_05_ListCtr::OnCreate(LPCREATESTRUCT lpCreateStruct)
