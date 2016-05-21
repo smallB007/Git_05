@@ -78,8 +78,10 @@ protected:
 	afx_msg void OnUpdateViewWorkspaceRepos(CCmdUI* pCmdUI);
 	afx_msg void OnViewWorkspaceCommits();
 	afx_msg void OnUpdateViewWorkspaceCommits(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace41();
-	afx_msg void OnUpdateViewWorkspace41(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace_Git_Tree();
+	afx_msg void OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI);
+	afx_msg void OnViewWorkspace_Staging_Area();
+	afx_msg void OnUpdateViewWorkspace_Staging_Area(CCmdUI* pCmdUI);
 	afx_msg void OnViewOutput();
 	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnViewPropGrid();
@@ -101,7 +103,7 @@ private:
 	//CBCGPRibbonComboBox* repo_view_cmb_{ nullptr };
 	CBCGPRibbonComboBox* get_branches_cmb_()const;
 	CBCGPRibbonComboBox* get_repo_view_cmb_()const;
-	void setup_repo_view_cmb_();
+	CString setup_repo_view_cmb_();
 	void set_info_for_working_dir_(const CString& view_type);
 protected:
 	//void DoDataExchange(CDataExchange* pDX);

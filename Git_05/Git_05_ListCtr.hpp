@@ -44,7 +44,14 @@ public:
 
 	CString get_active_item()
 	{
-		return GetItemText(lastItem_, 0);
+		if (COMMIT == git_entity_type_)
+		{
+			return GetItemText(lastItem_, 0);
+		}
+		else if (REPO == git_entity_type_)
+		{
+			return GetItemText(lastItem_, 4);//hidden column with fullpath as a repo name
+		}
 	}
 	void write_repo_name_to_file_(const CString& repoName)const;
 	void read_repo_name_from_file_();

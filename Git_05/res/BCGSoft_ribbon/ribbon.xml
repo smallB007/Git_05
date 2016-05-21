@@ -406,6 +406,14 @@
 								</ID>
 								<TEXT>Commit Info</TEXT>
 							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button_Check</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_STAGING_AREA</NAME>
+									<VALUE>1115</VALUE>
+								</ID>
+								<TEXT>Staging Area</TEXT>
+							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 				</PANELS>

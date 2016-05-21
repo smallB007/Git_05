@@ -29,7 +29,7 @@ private:
 	EVIEW_TYPE eview_type_{ LIST_CTRL };
 	SHFILEINFO shfi;//for icons of system files like cpp etc
 	int create_list_ctrl_();
-	int add_repo_to_list_ctrl_(repo_name_t repoName);
+	int add_repo_to_list_ctrl_(repo_name_t repoName, repo_name_t repoNameShort);
 	int add_commit_to_list_ctrl_(const GIT_Commit_Local& commit);
 	void add_branches_to_combo_(const std::map<branch_name_t, std::vector<GIT_Commit_Local>>& branch_commits);
 

@@ -84,7 +84,7 @@ void Git_05_ListCtr::selectItem(const repo_name_t& itemName)
 
 	for (int i{ 0 }, end = GetItemCount(); i < end; ++i)
 	{
-		auto c_txt = GetItemText(i,0);
+		auto c_txt = GetItemText(i,4);//4 is a hidden column in repo with fullpath as a repo name 0 is the short name
 		if (c_txt == itemName)
 		{
 			lastItem_ = i;
@@ -414,7 +414,7 @@ void Git_05_ListCtr::OnDestroy()
 {
 	if (GIT_ENTITY_TYPE::REPO == git_entity_type_)
 	{
-		CString repo_name = GetItemText(lastItem_, 0);
+		CString repo_name = GetItemText(lastItem_, 4);//4 is the hidden column with full repo name, 0 is short version of that name
 		write_repo_name_to_file_(repo_name);
 	}
 	CListCtrl::OnDestroy();

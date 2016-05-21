@@ -151,7 +151,7 @@ void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 	auto commit_date = ctime(&(time_t)commitInfo.commit_author.when.time);
 	CA2W ca2commit_date(commit_date);
 	std::wstring c_commit_date = ca2commit_date;
-	pProp = new CBCGPProp(_T("commit_date"), c_commit_date.c_str(), _T("The date this commit was made"));
+	pProp = new CBCGPProp(_T("Commit date"), c_commit_date.c_str(), _T("The date this commit was made"));
 	pProp->AllowEdit(FALSE);
 	commiter_group_uptr_->AddSubItem(pProp);
 	//

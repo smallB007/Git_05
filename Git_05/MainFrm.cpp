@@ -24,10 +24,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE3, OnUpdateViewWorkspace3)
 	ON_COMMAND(ID_VIEW_WORKSPACE4, OnViewWorkspaceRepos)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE4, OnUpdateViewWorkspaceRepos)
+	ON_COMMAND(IDC_STAGING_AREA, OnViewWorkspace_Staging_Area)
+	ON_UPDATE_COMMAND_UI(IDC_STAGING_AREA, OnUpdateViewWorkspace_Staging_Area)
 	ON_COMMAND(ID_VIEW_WORKSPACE42, OnViewWorkspaceCommits)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE42, OnUpdateViewWorkspaceCommits)
-	ON_COMMAND(ID_VIEW_WORKSPACE41, OnViewWorkspace41)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE41, OnUpdateViewWorkspace41)
+	ON_COMMAND(ID_VIEW_WORKSPACE41, OnViewWorkspace_Git_Tree)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE41, OnUpdateViewWorkspace_Git_Tree)
 	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	ON_COMMAND(ID_VIEW_PROPERTIES, OnViewPropGrid)
@@ -69,6 +71,8 @@ void CMainFrame::set_current_repo(const CString & repoName)
 {
 	m_wndWorkSpace_Repos_.set_current_repo(repoName);
 	//m_wndWorkSpace_UntrackedFiles_.add_untracked_files_to_list_ctrl_(repoName);
+
+	//GIT_Engine::list_files_in_working_dir(repo, pathName);
 }
 
 CString CMainFrame::get_current_branch()const
@@ -283,11 +287,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create Workspace bar 4\n");
 		return -1;      // fail to create
 	}
+	CString selected_item = setup_repo_view_cmb_();//AC we need to call it here so we get the chance to set the correct name in WorkspaceView
 	m_wndWorkSpace_Commits_.set_type_list_ctrl_commits();
 	m_wndWorkSpace_Commits_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 //////////////////////
 	m_wndWorkSpace_UntrackedFiles_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
-	if (!m_wndWorkSpace_UntrackedFiles_.Create(_T("Untracked Files"), this, CRect(0, 0, 200, 200),
+	if (!m_wndWorkSpace_UntrackedFiles_.Create(selected_item, this, CRect(0, 0, 200, 200),
 		TRUE, ID_VIEW_WORKSPACE43,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND A NUMBER, NOTHING ELSE WILL DO!
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
@@ -353,7 +358,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//DockControlBar(&wnd_workspace_git_tree_2);
 
 	setup_ribbon_background_();
-	setup_repo_view_cmb_();
+	
 	CBCGPRibbonBar* pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	ASSERT_VALID(pRibbon);
 	auto branches_p = static_cast<CBCGPRibbonComboBox*>(pRibbon->FindByID(IDC_REPO_BRANCHES_COMBO));
@@ -555,7 +560,7 @@ void CMainFrame::OnUpdateViewWorkspaceCommits(CCmdUI* pCmdUI)
 	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
 }
 
-void CMainFrame::OnViewWorkspace41()
+void CMainFrame::OnViewWorkspace_Git_Tree()
 {
 	ShowControlBar(&m_wndWorkSpace_Git_Tree_,
 		!(m_wndWorkSpace_Git_Tree_.IsVisible()),
@@ -563,7 +568,7 @@ void CMainFrame::OnViewWorkspace41()
 	RecalcLayout();
 }
 
-void CMainFrame::OnUpdateViewWorkspace41(CCmdUI* pCmdUI)
+void CMainFrame::OnUpdateViewWorkspace_Git_Tree(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_wndWorkSpace_Git_Tree_.IsVisible());
 	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
@@ -599,6 +604,20 @@ void CMainFrame::OnUpdateViewPropGrid(CCmdUI* pCmdUI)
 	pCmdUI->Enable (!GetDockManager ()->IsPrintPreviewValid ());
 }
  // PROPERTYBAR
+
+void CMainFrame::OnViewWorkspace_Staging_Area()
+{
+	ShowControlBar(&m_wndWorkSpace_UntrackedFiles_,
+		!(m_wndWorkSpace_UntrackedFiles_.IsVisible()),
+		FALSE, TRUE);
+	RecalcLayout();
+}
+
+void CMainFrame::OnUpdateViewWorkspace_Staging_Area(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_wndWorkSpace_UntrackedFiles_.IsVisible());
+	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
+}
  // UI_TYPE_RIBBON
 
 LRESULT CMainFrame::OnBeforeShowRibbonBackstageView(WPARAM, LPARAM)
@@ -648,7 +667,7 @@ void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
 	set_info_for_working_dir_(item);
 }
 
-void CMainFrame::setup_repo_view_cmb_()
+CString CMainFrame::setup_repo_view_cmb_()
 {
 	auto repo_view_cmb_p = get_repo_view_cmb_();
 	repo_view_cmb_p->AddItem(L"Working Dir");
@@ -657,5 +676,7 @@ void CMainFrame::setup_repo_view_cmb_()
 	repo_view_cmb_p->AddItem(L"Deleted Items");
 	repo_view_cmb_p->AddItem(L"Untracked Items");
 	repo_view_cmb_p->AddItem(L"Ignored Items");
-	repo_view_cmb_p->SelectItem(0);
+	repo_view_cmb_p->SelectItem(0);//chance here to actually select last selection (store it in a file Artie;)
+	int ix = repo_view_cmb_p->GetCurSel();
+	return repo_view_cmb_p->GetItem(ix);
 }

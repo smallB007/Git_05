@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GIT_Engine.hpp"
 #include "GIT_Commit_Local.hpp"
-
+#include "Working_Dir.hpp"
 //statics
 diffed_file_t GIT_Engine::a_file;
 std::set<diffed_file_t, Less_Diff_File> GIT_Engine::diffed_files_;
@@ -314,7 +314,18 @@ struct opts {
 	int repeat;
 };
 
-static void print_long(git_status_list *status)
+void get_status_entries(git_status_list *status, Working_Dir*const workingDir)
+{
+	size_t i, maxi = git_status_list_entrycount(status);
+	const git_status_entry *s;
+	for (i = 0; i < maxi; ++i)
+	{
+		s = git_status_byindex(status, i);
+		workingDir->push_back(s);
+	}
+}
+
+static void print_long(git_status_list *status, Working_Dir*const workingDir)
 {
 	size_t i, maxi = git_status_list_entrycount(status);
 	const git_status_entry *s;
@@ -456,7 +467,8 @@ static void print_long(git_status_list *status)
 		printf("no changes added to commit (use \"git add\" and/or \"git commit -a\")\n");
 }
 
-std::vector<CString> GIT_Engine::list_untracked_files(git_repository * repo, const CString& pathName)
+
+Working_Dir GIT_Engine::list_files_in_working_dir(git_repository * repo, const CString& pathName)
 {
 	CT2CA pszConvertedAnsiString(pathName);
 	// construct a std::string using the LPCSTR input
@@ -470,9 +482,13 @@ std::vector<CString> GIT_Engine::list_untracked_files(git_repository * repo, con
 		GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
 	o.repodir = strStd_path_name.c_str();
 	git_status_list_new(&status, repo, &o.statusopt);
-	print_long(status);
+	Working_Dir working_dir(pathName);
+	//print_long(status,&working_dir);
+	get_status_entries(status, &working_dir);
+	//working_dir.get_sorted_entries();
+	//working_dir.get_sorted_files();
 	git_status_list_free(status);
-	return std::vector<CString>();
+	return working_dir;
 }
 
 void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>& localBranches)
@@ -559,7 +575,6 @@ bool GIT_Engine::check_if_repo(const CString & pathName)
 	else
 	{
 		result = true;
-		list_untracked_files(repo,pathName);
 	}
 	git_repository_free(repo);
 	return result;

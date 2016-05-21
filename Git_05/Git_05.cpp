@@ -339,46 +339,7 @@ const HTTPS_GIT_Client* const CGit_05App::get_https_git_client_p()
 {
 	return https_GIT_client_ptr_.get();
 }
-#include <algorithm>
-static const CString get_repo_name(CString c_repo_path)
-{
-	std::string repo_name;
-	CT2CA ct_repo_path(c_repo_path);
-	std::string repo_path(ct_repo_path);
 
-	char path_separator{ '\\' };
-	if (repo_path.find('/') != std::string::npos)
-	{
-		path_separator = '/';
-	}
-	std::string git_suffix(".git");
-	git_suffix.insert(cbegin(git_suffix),path_separator);
-	
-	if (repo_path.substr(repo_path.size() - git_suffix.size()) == git_suffix)
-	{
-		auto dot_git_removed = repo_path.substr(0, repo_path.size() - git_suffix.size());
-		size_t position = dot_git_removed.find_last_of(path_separator);
-		if (position != std::string::npos)
-		{
-			repo_name = dot_git_removed.substr(position);
-			repo_name.erase(std::remove(begin(repo_name),end(repo_name),path_separator), cend(repo_name));
-		}
-// 		auto rbeg = crbegin(dot_git_removed);
-// 		auto rend = crend(dot_git_removed);
-// 
-// 		while (rbeg != rend)
-// 		{
-// 			repo_name += *rbeg;
-// 			++rbeg;
-// 			if (*rbeg == path_separator)
-// 			{
-// 				break;
-// 			}
-// 		}
-	}
-	CA2W w_str(repo_name.c_str());
-	return w_str;
-}
 static void convert_to_dot_git_path(CString & c_repo_path)
 {
 	
@@ -412,12 +373,12 @@ void CGit_05App::populate_UI_(const CString& repo_path)
 	typedef CString repo_name_t;
 	std::map<repo_name_t, decltype(branch_commits)> repo_branches;
 
-	CString repo_name = get_repo_name(repo_path);
+	//CString repo_name = get_repo_name(repo_path);
 	
 	//CA2W ca2w(repo_name.c_str());
 	//std::wstring w_repo_name = ca2w;
 	//CString c_repo_name = w_repo_name.c_str();
-	repo_branches[repo_name] = branch_commits;
+	repo_branches[repo_path] = branch_commits;
 	get_main_frame()->m_wndWorkSpace_Repos_.git_tree(std::move(repo_branches));
 }
 

@@ -83,6 +83,8 @@
 #define IDC_COMMITS                     1089
 #define IDC_COMMIT_INFO_BUTTON          1092
 #define IDC_VIEW_REPO_DIR_COMBO         1094
+#define IDC_STAGING_AREA_BUTTON         1114
+#define IDC_STAGING_AREA                1115
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -139,7 +141,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        196
 #define _APS_NEXT_COMMAND_VALUE         32871
-#define _APS_NEXT_CONTROL_VALUE         1113
+#define _APS_NEXT_CONTROL_VALUE         1116
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

@@ -234,6 +234,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="User_Credentials.hpp" />
+    <ClInclude Include="Working_Dir.hpp" />
     <ClInclude Include="WorkSpaceBar3.h" />
     <ClInclude Include="WorkSpaceBar4.h" />
   </ItemGroup>
@@ -269,6 +270,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="User_Credentials.cpp" />
+    <ClCompile Include="Working_Dir.cpp" />
     <ClCompile Include="WorkSpaceBar3.cpp" />
     <ClCompile Include="WorkSpaceBar4.cpp" />
   </ItemGroup>

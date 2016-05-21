@@ -193,14 +193,55 @@ void CWorkSpaceBar4::set_current_repo(const repo_name_t& repoName)
 	add_branches_to_combo_(branches_with_commits);
 }
 
+#include <algorithm>
+static const CString get_repo_name(CString c_repo_path)
+{
+	std::string repo_name;
+	CT2CA ct_repo_path(c_repo_path);
+	std::string repo_path(ct_repo_path);
+
+	char path_separator{ '\\' };
+	if (repo_path.find('/') != std::string::npos)
+	{
+		path_separator = '/';
+	}
+	std::string git_suffix(".git");
+	git_suffix.insert(cbegin(git_suffix), path_separator);
+
+	if (repo_path.substr(repo_path.size() - git_suffix.size()) == git_suffix)
+	{
+		auto dot_git_removed = repo_path.substr(0, repo_path.size() - git_suffix.size());
+		size_t position = dot_git_removed.find_last_of(path_separator);
+		if (position != std::string::npos)
+		{
+			repo_name = dot_git_removed.substr(position);
+			repo_name.erase(std::remove(begin(repo_name), end(repo_name), path_separator), cend(repo_name));
+		}
+		// 		auto rbeg = crbegin(dot_git_removed);
+		// 		auto rend = crend(dot_git_removed);
+		// 
+		// 		while (rbeg != rend)
+		// 		{
+		// 			repo_name += *rbeg;
+		// 			++rbeg;
+		// 			if (*rbeg == path_separator)
+		// 			{
+		// 				break;
+		// 			}
+		// 		}
+	}
+	CA2W w_str(repo_name.c_str());
+	return w_str;
+}
+
 void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
 	//branch_commits_ = branchCommits;
 	auto repo_name = (*cbegin(repo_branches)).first;
 	auto branches_with_commits = (*cbegin(repo_branches)).second;
 	repo_branches_[repo_name] = branches_with_commits;
-	
-	add_repo_to_list_ctrl_(repo_name);
+	auto repo_name_short = get_repo_name(repo_name);
+	add_repo_to_list_ctrl_(repo_name, repo_name_short);
 	set_current_repo(repo_name);
 }
 
@@ -373,7 +414,7 @@ int CWorkSpaceBar4::set_type_list_ctrl_untracked_files()
 	CWinApp* pApp = AfxGetApp();
 	VERIFY(m_cImageListShell.Create(20, 20, ILC_COLOR32, 0, 0));
 	//typedef vector<CString> file_extensions;
-	//file_extensions extentions = GIT_Engine::list_untracked_files();
+	//file_extensions extentions = GIT_Engine::list_files_in_working_dir();
 	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_GREEN));
 	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_RED));
 	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_BW));
@@ -416,6 +457,7 @@ int CWorkSpaceBar4::set_type_list_ctrl_repos()
 	m_wndListCtrl_->InsertColumn(1, _T("Age"), LVCFMT_RIGHT, -1, 1);
 	m_wndListCtrl_->InsertColumn(2, _T("Owner"), LVCFMT_CENTER, -1, 2);
 	m_wndListCtrl_->InsertColumn(3, _T("City, Country"), LVCFMT_LEFT, -1, 3);
+	m_wndListCtrl_->InsertColumn(4, _T("Hidden full repo name"), LVCFMT_LEFT, -1, 3);
 	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::REPO);
 	return m_wndListCtrl_->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
 }
@@ -498,9 +540,9 @@ int CWorkSpaceBar4::add_commit_to_list_ctrl_(const GIT_Commit_Local& commit)
 	std::wstring c_commit_id = ca2commit;
 	//std::string str_commit(commit_id.id, std::cend(commit_id.id));
 	//CA2W ca2commit_id(str_commit.c_str());//correct this and select first commit
-	int diffed_files = commit.diffed_files.size();
+	int no_of_diffed_files = commit.diffed_files.size();
 	CString changes;
-	changes.Format(_T("Files affected: %d"), diffed_files);
+	changes.Format(_T("Files affected: %d"), no_of_diffed_files);
 	//std::wstring c_commit_id = ca2commit_id;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
 	m_wndListCtrl_->InsertItem(itemNo, c_name.c_str(), 2);
@@ -545,16 +587,16 @@ int CWorkSpaceBar4::add_untracked_files_to_list_ctrl_(repo_name_t repoName)
 	m_wndListCtrl_->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
 	return 0;
 }
-int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName)
+int CWorkSpaceBar4::add_repo_to_list_ctrl_(repo_name_t repoName, repo_name_t repoNameShort)
 {
 	//CA2W ca2w(repoName.c_str());
 	//std::wstring wide_str = ca2w;
 	auto itemNo = m_wndListCtrl_->GetItemCount();
-	m_wndListCtrl_->InsertItem(itemNo, repoName, 2);
+	m_wndListCtrl_->InsertItem(itemNo, repoNameShort, 2);
 	m_wndListCtrl_->SetItemText(itemNo, 1, _T("Unpublished commits: 1"));
 	m_wndListCtrl_->SetItemText(itemNo, 2, _T("Changes: 20"));
 	m_wndListCtrl_->SetItemText(itemNo, 3, _T("Ahead of Master: 17"));
-	
+	m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 	VERIFY(_SetTilesViewLinesCount(3));
 	UINT arrColumns[3] = { 1, 2, 3 };
 	for (auto item{ 0 }, end{ m_wndListCtrl_->GetItemCount() }; item < end; ++item)
