@@ -379,7 +379,7 @@ void CGit_05App::populate_UI_(const CString& repo_path)
 	//std::wstring w_repo_name = ca2w;
 	//CString c_repo_name = w_repo_name.c_str();
 	repo_branches[repo_path] = branch_commits;
-	get_main_frame()->m_wndWorkSpace_Repos_.git_tree(std::move(repo_branches));
+	get_main_frame()->add_repo(std::move(repo_branches));// m_wndWorkSpace_Repos_.git_tree();
 }
 
 

@@ -20,7 +20,7 @@ private:
 	//CWorkSpaceBar4* parent_;
 public:
 	const CString file_with_repo_to_set_as_active_ = L"repo_to_set_as_active.txt";
-	enum GIT_ENTITY_TYPE { REPO, COMMIT,UNTRACKED_FILES, UNSPECIFIED };
+	enum GIT_ENTITY_TYPE { REPO, COMMIT, WORKING_DIR, UNSPECIFIED };
 	GIT_ENTITY_TYPE git_entity_type_{ UNSPECIFIED };
 	Git_05_ListCtr();
 	~Git_05_ListCtr();
@@ -85,6 +85,8 @@ public:
 // // 		}
 // 		return CListCtrl::PreTranslateMessage(pMsg);
 // 	}
+	void AdjustColumnWidth();
+	int GetColumnCount();
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(Git_05_ListCtr)
 protected:

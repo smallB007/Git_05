@@ -41,13 +41,16 @@ protected:  // control bar embedded members
 	CBCGPRibbonBar			m_wndRibbonBar;
 	
 	CWorkSpaceBar3			m_wndWorkSpace3;
-	CWorkSpaceBar4			m_wndWorkSpace_UntrackedFiles_;
+	CWorkSpaceBar4			m_wndWorkSpace_WorkingDirectory_;
 	CWorkSpaceBar4			m_wndWorkSpace_Repos_;
 	CWorkSpaceBar4			m_wndWorkSpace_Commits_;
 	CWorkSpaceBar4			m_wndWorkSpace_Git_Tree_;
 	COutputBar				m_wndOutput;
 	Git05_CBCGPPropBar		m_wndCommitPropertiesGrid;
 public:
+	void setup_workdir_content(Working_Dir&& working_dir_content);
+	void CMainFrame::fill_view_for_item(const CString& viewType);
+	void add_repo(std::map<CString/*reponame*/, std::map<CString/*branchname*/, std::vector<GIT_Commit_Local>>>&& repo_branches);
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
 	//void selectRepository();
 	void set_current_repo(const CString& repoName);
@@ -61,6 +64,7 @@ public:
 	void display_info_for_diffed_file(const CString& sha, const CString& fileName);
 	void reset_view()const;
 	void deselect_file_from_commit_detail_window();
+	CString get_current_working_dir_view_type();
 private:
 	
 	//CGit_05App* get_main_app_()const { return static_cast<CGit_05App*>(AfxGetApp()); };//copy from BackStagePageInfo.h
@@ -91,6 +95,7 @@ protected:
 	afx_msg void OnPaletteTheme();
 	afx_msg void OnCbn_Git_Tree_Branches_SelchangeCombo();
 	afx_msg void OnCbn_Git_View_Repo_SelchangeCombo();
+	afx_msg void OnCommit();
 	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateRibbonBar ();
@@ -105,6 +110,7 @@ private:
 	CBCGPRibbonComboBox* get_repo_view_cmb_()const;
 	CString setup_repo_view_cmb_();
 	void set_info_for_working_dir_(const CString& view_type);
+	
 protected:
 	//void DoDataExchange(CDataExchange* pDX);
 	

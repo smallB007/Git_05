@@ -14,9 +14,9 @@ Working_Dir::~Working_Dir()
 {
 }
 
-std::map<git_status_t, std::vector<git_status_entry>> Working_Dir::get_sorted_entries() const
+std::map<git_status_t, std::vector<git_05_status_entry>> Working_Dir::get_sorted_entries() const
 {
-	std::map<git_status_t, std::vector<git_status_entry>> result;
+	std::map<git_status_t, std::vector<git_05_status_entry>> result;
 
 	for (const auto& entry : status_entries_)
 	{

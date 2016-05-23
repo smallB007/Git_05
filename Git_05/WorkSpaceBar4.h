@@ -5,11 +5,12 @@
 #pragma once
 #include "DemoListView.hpp"
 #include "Direct2DRenderer.hpp"
+#include "Working_Dir.hpp"
 
 class GIT_Commit_Local;
 class Git_05_ListCtr;
 class CGit_05App;
-
+class Working_Dir;
 class CWorkSpaceBar4 : public CBCGPDockingControlBar
 {
 public:
@@ -18,6 +19,7 @@ public:
 private:
 	//std::map<std::string, std::vector<GIT_Commit_Local>> branch_commits_;
 	std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>> repo_branches_;
+	Working_Dir working_dir_;
 public:
 
 	enum EVIEW_TYPE{LIST_CTRL,DX_RENDERER};
@@ -38,14 +40,16 @@ private:
 	BOOL _SetTilesViewLinesCount(int nCount);
 	BOOL _SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
 public:
+	void setup_workdir_content(Working_Dir&& working_dir_content);
 	int add_untracked_files_to_list_ctrl_(repo_name_t repoName);//TODO move that to private
 	CWorkSpaceBar4();
 	virtual ~CWorkSpaceBar4();
 	void set_view_type(EVIEW_TYPE view_type);
-	int set_type_list_ctrl_untracked_files();
+	int set_type_list_ctrl_working_directory();
+	void fill_view_for_item(const CString& view_type);
 	int set_type_list_ctrl_commits();
 	int set_type_list_ctrl_repos();
-	void git_tree(decltype(repo_branches_)&& repoBranches);
+	void add_repo(decltype(repo_branches_)&& repoBranches);
 	void set_branches_for_repo(const CString& repoName);
 	std::vector<branch_name_t> get_branches_for_repo(const CString& repoName);
 	

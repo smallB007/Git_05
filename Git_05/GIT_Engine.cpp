@@ -36,6 +36,7 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 	if (git_signature_default(&sig, repo) < 0)
 	{
 		AfxMessageBox(L"Unable to create a commit signature.\nPerhaps 'user.name' and 'user.email' are not set");
+		return;
 	}
 
 	/* Now let's create an empty tree for this commit */
@@ -43,6 +44,7 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 	if (git_repository_index(&index, repo) < 0)
 	{
 		AfxMessageBox(L"Could not open repository index");
+		return;
 	}
 
 	//Outside of this example, you could call gitindexadd_bypath() here to put actual files into the index. For our purposes, we'll leave it empty for now.
@@ -51,13 +53,15 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 	if (git_index_write_tree(&tree_id, index) < 0)
 	{
 		AfxMessageBox(L"Unable to write initial tree from index");
+		git_index_free(index);
+		return;
 	}
 
-	git_index_free(index);
 
 	if (git_tree_lookup(&tree, repo, &tree_id) < 0)
 	{
 		AfxMessageBox(L"Could not look up initial tree");
+		return;
 	}
 
 
@@ -71,12 +75,92 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 		NULL, "Initial commit", tree, 0) < 0)
 	{
 		AfxMessageBox(L"Could not create the initial commit");
+		//Clean up so we don't leak memory.
+		git_tree_free(tree);
+		git_signature_free(sig);
+		return;
 	}
 
-	//Clean up so we don't leak memory.
 
-	git_tree_free(tree);
-	git_signature_free(sig);
+}
+
+void GIT_Engine::create_commit(const CString& repoPath, const CString& branch)
+{
+	
+	Working_Dir working_dir = list_files_in_working_dir(repoPath);
+	std::map<git_status_t, std::vector<Working_Dir::full_file_path>> sorted_files = working_dir.get_sorted_files();
+	if (sorted_files.size())
+	{//cannot create commit with no files to commit
+
+		git_index *index;
+		git_oid tree_id, commit_id;
+
+		//int git_commit_tree(git_tree **tree_out, const git_commit *commit);
+		git_tree* tree{ nullptr };
+		git_commit* commit = get_top_commit_for_branch(repoPath, branch);
+		git_commit_tree(&tree, commit);
+
+		CT2CA c_str_path(repoPath);
+		const char* REPO = c_str_path;
+		git_repository* repo;
+
+		if (git_repository_open(&repo, REPO) != GIT_SUCCESS) {
+			AfxMessageBox(L"Cannot open repository:\n" + repoPath);
+			return;
+		}
+
+		git_signature *sig;
+		if (git_signature_default(&sig, repo) < 0)
+		{
+			AfxMessageBox(L"Unable to create a commit signature.\nPerhaps 'user.name' and 'user.email' are not set?");
+			return;
+		}
+
+		/* Now let's create an empty tree for this commit */
+
+		if (git_repository_index(&index, repo) < 0)
+		{
+			AfxMessageBox(L"Could not open repository index");
+			return;
+		}
+
+		//Outside of this example, you could call gitindexadd_bypath() here to put actual files into the index. For our purposes, we'll leave it empty for now.
+		//int git_index_add_bypath(git_index *index, const char *path);
+
+
+		for (const auto& _status : sorted_files)
+		{
+			for (const auto& file : _status.second)
+			{
+				CT2CA ctString(file);
+				std::string stdString(ctString);
+				git_index_add_bypath(index, stdString.c_str());
+			}
+		}
+		if (git_index_write_tree(&tree_id, index) < 0)
+		{
+			AfxMessageBox(L"Unable to write initial tree from index");
+			git_index_free(index);
+			return;
+		}
+
+		if (git_tree_lookup(&tree, repo, &tree_id) < 0)
+		{
+			AfxMessageBox(L"Could not look up initial tree");
+			return;
+		}
+
+		if (git_commit_create_v(
+			&commit_id, repo, "HEAD", sig, sig,
+			NULL, "get commit msg", tree, 1, commit) < 0)
+		{
+			AfxMessageBox(L"Could not create the initial commit");
+			//Clean up so we don't leak memory.
+			git_tree_free(tree);
+			git_signature_free(sig);
+			return;
+		}
+	}
 }
 
 bool GIT_Engine::git_init(git_repository *repo,const char* path, const git_init_opts_t& initOptions)
@@ -161,6 +245,81 @@ int GIT_Engine::payload_fn(const git_diff_delta *delta)
 	return a;
 }
 
+git_commit* GIT_Engine::get_top_commit_for_branch(const CString& repo_path, const CString& branch)
+{
+	git_repository* repo;
+	CT2CA c_str_path(repo_path);
+	const char* REPO = c_str_path;
+
+	if (git_repository_open(&repo, REPO) != GIT_SUCCESS) {
+		AfxMessageBox(L"Cannot open repository:\n" + repo_path);
+	}
+
+	// Read HEAD on branch
+	char head_filepath[512];
+	FILE *head_fileptr;
+	char head_rev[41];
+
+	strcpy(head_filepath, REPO);
+	CString heads;
+	if (strrchr(REPO, '/') != (REPO + strlen(REPO)))
+	{
+		heads = ("\\refs\\heads\\");
+	}
+	else
+	{
+		heads = ("/refs/heads/");
+	}
+
+	CString c_path_to_branch = heads + branch;
+	CT2CA pszConvertedAnsiString_path_to_branch(c_path_to_branch);
+	// construct a std::string using the LPCSTR input
+	std::string path_to_branch(pszConvertedAnsiString_path_to_branch);
+	strcat(head_filepath, path_to_branch.c_str());
+
+	if ((head_fileptr = fopen(head_filepath, "r")) == NULL) {
+		//fprintf(stderr, "Error opening '%s'\n", head_filepath);
+		AfxMessageBox(L"Cannot read file: " + repo_path + branch);
+		goto failure;
+	}
+
+	if (fread(head_rev, 40, 1, head_fileptr) != 1) {
+		//fprintf(stderr, "Error reading from '%s'\n", head_filepath);
+		AfxMessageBox(L"Error reading from: " + branch);
+		fclose(head_fileptr);
+		goto failure;
+	}
+
+	fclose(head_fileptr);
+
+
+	git_oid oid;
+	git_revwalk *walker;
+	git_commit *commit;
+
+	if (git_oid_fromstr(&oid, head_rev) != GIT_SUCCESS) {
+		//fprintf(stderr, "Invalid git object: '%s'\n", head_rev);
+		AfxMessageBox(L"Invalid git object: " + branch);
+		goto failure;
+	}
+
+	//git_revwalk_new(&walker, repo);
+	//git_revwalk_sorting(walker, GIT_SORT_TOPOLOGICAL);
+	//git_revwalk_push(walker, &oid);
+
+	if (git_commit_lookup(&commit, repo, &oid) != GIT_SUCCESS)
+	{
+		AfxMessageBox(L"Cannot find top commit for branch: " + branch);
+		goto failure;
+	}
+	else
+	{
+		return commit;
+	}
+failure:
+	return nullptr;
+}
+
 void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& repo_path, const CString& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
 {
  	CT2CA c_str_path(repo_path);
@@ -222,7 +381,7 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 
 	const char *commit_message;
 	const git_signature *commit_author;
-	std::vector<const git_oid*> commits_oid;
+	//std::vector<const git_oid*> commits_oid;
 	diffed_files_.clear();
 	a_file.hunk_lines.clear();
 	//in order to filter commits from a branch check what branch contains a specific commit
@@ -321,7 +480,7 @@ void get_status_entries(git_status_list *status, Working_Dir*const workingDir)
 	for (i = 0; i < maxi; ++i)
 	{
 		s = git_status_byindex(status, i);
-		workingDir->push_back(s);
+		workingDir->push_back(*s);
 	}
 }
 
@@ -468,27 +627,36 @@ static void print_long(git_status_list *status, Working_Dir*const workingDir)
 }
 
 
-Working_Dir GIT_Engine::list_files_in_working_dir(git_repository * repo, const CString& pathName)
+Working_Dir GIT_Engine::list_files_in_working_dir(const CString& pathName)
 {
+	git_repository * repo;
 	CT2CA pszConvertedAnsiString(pathName);
-	// construct a std::string using the LPCSTR input
+		// construct a std::string using the LPCSTR input
 	std::string strStd_path_name(pszConvertedAnsiString);
+	
+	if (git_repository_open(&repo, strStd_path_name.c_str()) == GIT_SUCCESS)
+	{
+		git_status_list *status;
+		opts o = { GIT_STATUS_OPTIONS_INIT, "." };
+		o.statusopt.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
+		o.statusopt.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED |
+			GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX |
+			GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
+		o.repodir = strStd_path_name.c_str();
+		git_status_list_new(&status, repo, &o.statusopt);
+		Working_Dir working_dir(pathName);
+		//print_long(status,&working_dir);
+		get_status_entries(status, &working_dir);
+		//working_dir.get_sorted_entries();
+		//working_dir.get_sorted_files();
+		git_status_list_free(status);
+		return working_dir;
+	}
+	else
+	{
+		return Working_Dir(pathName);
+	}
 
-	git_status_list *status;
-	opts o = { GIT_STATUS_OPTIONS_INIT, "." };
-	o.statusopt.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
-	o.statusopt.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED |
-		GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX |
-		GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
-	o.repodir = strStd_path_name.c_str();
-	git_status_list_new(&status, repo, &o.statusopt);
-	Working_Dir working_dir(pathName);
-	//print_long(status,&working_dir);
-	get_status_entries(status, &working_dir);
-	//working_dir.get_sorted_entries();
-	//working_dir.get_sorted_files();
-	git_status_list_free(status);
-	return working_dir;
 }
 
 void GIT_Engine::list_local_branches(git_repository * repo, std::vector<CString>& localBranches)

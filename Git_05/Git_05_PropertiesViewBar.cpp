@@ -92,41 +92,44 @@ void Git05_CBCGPPropBar::assign_diffed_files_(const GIT_Commit_Local& commitInfo
 	for (const auto& file : commitInfo.diffed_files)
 	{
 		//
-		std::string afile = file.diff_delta.new_file.path;
-		CA2W w_str_path(afile.c_str());
-		CString file_path = w_str_path;
+		if (file.diff_delta.new_file.path)
+		{
+			std::string afile = file.diff_delta.new_file.path;
+			CA2W w_str_path(afile.c_str());
+			CString file_path = w_str_path;
 
-		switch (file.diff_delta.status)
-		{
-		case GIT_DELTA_MODIFIED:
-		{
-			pStatsModificationProp = new CBCGPProp(file_path, (_variant_t)0,
-				_T("Modified file"));
-			pStatsModificationProp->AllowEdit(FALSE);
-			pModificationsGroup->AddSubItem(pStatsModificationProp);
-		}
-		break;
-		
-		case GIT_DELTA_ADDED:
-		{
-			pStatsAdditionProp = new CBCGPProp(file_path, (_variant_t)0,
-						_T("Added file"));
-					pStatsAdditionProp->AllowEdit(FALSE);
-					pAdditionsGroup->AddSubItem(pStatsAdditionProp);
-		}
-		break;
+			switch (file.diff_delta.status)
+			{
+			case GIT_DELTA_MODIFIED:
+			{
+				pStatsModificationProp = new CBCGPProp(file_path, (_variant_t)0,
+					_T("Modified file"));
+				pStatsModificationProp->AllowEdit(FALSE);
+				pModificationsGroup->AddSubItem(pStatsModificationProp);
+			}
+			break;
 
-		case GIT_DELTA_DELETED:
-		{
-			pStatsDeletionProp = new CBCGPProp(file_path, (_variant_t)0,
-						_T("Deleted file"));
-					pStatsDeletionProp->AllowEdit(FALSE);
-					pDeletionsGroup->AddSubItem(pStatsDeletionProp);
-		}
-		break;
+			case GIT_DELTA_ADDED:
+			{
+				pStatsAdditionProp = new CBCGPProp(file_path, (_variant_t)0,
+					_T("Added file"));
+				pStatsAdditionProp->AllowEdit(FALSE);
+				pAdditionsGroup->AddSubItem(pStatsAdditionProp);
+			}
+			break;
+
+			case GIT_DELTA_DELETED:
+			{
+				pStatsDeletionProp = new CBCGPProp(file_path, (_variant_t)0,
+					_T("Deleted file"));
+				pStatsDeletionProp->AllowEdit(FALSE);
+				pDeletionsGroup->AddSubItem(pStatsDeletionProp);
+			}
+			break;
+
+			}
 
 		}
-		
 	}
 
 }

@@ -6,7 +6,7 @@
 #include "GIT_Commit_Local.hpp"
 #include "MainFrm.h"
 #include "BackStagePageInfo.h"
-
+#include "GIT_Engine.hpp"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CBCGPFrameWnd)
 	//ON_CBN_SELCHANGE(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
 	ON_COMMAND(IDC_REPO_BRANCHES_COMBO, OnCbn_Git_Tree_Branches_SelchangeCombo)
 	ON_COMMAND(IDC_VIEW_REPO_DIR_COMBO, OnCbn_Git_View_Repo_SelchangeCombo)
+	ON_COMMAND(IDC_COMMIT_BUTTON, OnCommit)
 	
 END_MESSAGE_MAP()
 
@@ -70,9 +71,9 @@ void CMainFrame::select_active_repo()
 void CMainFrame::set_current_repo(const CString & repoName)
 {
 	m_wndWorkSpace_Repos_.set_current_repo(repoName);
-	//m_wndWorkSpace_UntrackedFiles_.add_untracked_files_to_list_ctrl_(repoName);
+	//m_wndWorkSpace_WorkingDirectory_.add_untracked_files_to_list_ctrl_(repoName);
 
-	//GIT_Engine::list_files_in_working_dir(repo, pathName);
+	//GIT_Engine::list_files_in_working_dir(repoName);
 }
 
 CString CMainFrame::get_current_branch()const
@@ -135,6 +136,7 @@ void CMainFrame::reset_view()const
 void CMainFrame::set_branches_for_repo(const CString & repoName)
 {
 	m_wndWorkSpace_Repos_.set_branches_for_repo(repoName);
+	
 }
 
 CBCGPRibbonComboBox* CMainFrame::get_branches_cmb_()const
@@ -155,6 +157,11 @@ CBCGPRibbonComboBox* CMainFrame::get_repo_view_cmb_()const
 	return repo_view_p;
 }
 
+
+void CMainFrame::add_repo(std::map<CString, std::map<CString, std::vector<GIT_Commit_Local>>>&& repo_branches)
+{
+	m_wndWorkSpace_Repos_.add_repo(std::move(repo_branches));
+}
 
 void CMainFrame::setup_git_branches_combo_(const std::vector<CString>& branches)
 {
@@ -287,20 +294,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create Workspace bar 4\n");
 		return -1;      // fail to create
 	}
-	CString selected_item = setup_repo_view_cmb_();//AC we need to call it here so we get the chance to set the correct name in WorkspaceView
 	m_wndWorkSpace_Commits_.set_type_list_ctrl_commits();
 	m_wndWorkSpace_Commits_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 //////////////////////
-	m_wndWorkSpace_UntrackedFiles_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
-	if (!m_wndWorkSpace_UntrackedFiles_.Create(selected_item, this, CRect(0, 0, 200, 200),
+	CString selected_item = setup_repo_view_cmb_();//AC we need to call it here so we get the chance to set the correct name in WorkspaceView
+	m_wndWorkSpace_WorkingDirectory_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::LIST_CTRL);
+	if (!m_wndWorkSpace_WorkingDirectory_.Create(selected_item, this, CRect(0, 0, 200, 200),
 		TRUE, ID_VIEW_WORKSPACE43,//For some bizarre reason ID must be ID_VIEW_WORKSPACE AND A NUMBER, NOTHING ELSE WILL DO!
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("Failed to create Workspace bar 4\n");
 		return -1;      // fail to create
 	}
-	m_wndWorkSpace_UntrackedFiles_.set_type_list_ctrl_untracked_files();
-	m_wndWorkSpace_UntrackedFiles_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
+	m_wndWorkSpace_WorkingDirectory_.set_type_list_ctrl_working_directory();
+	m_wndWorkSpace_WorkingDirectory_.SetIcon(imagesWorkspace.ExtractIcon(1), FALSE);
 	//
 		m_wndWorkSpace_Git_Tree_.set_view_type(CWorkSpaceBar4::EVIEW_TYPE::DX_RENDERER);
 
@@ -338,7 +345,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndWorkSpace.EnableDocking(CBRS_ALIGN_ANY);
 	//m_wndWorkSpace2.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace3.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndWorkSpace_UntrackedFiles_.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndWorkSpace_WorkingDirectory_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Repos_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Commits_.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndWorkSpace_Git_Tree_.EnableDocking(CBRS_ALIGN_ANY);
@@ -348,7 +355,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableAutoHideBars(CBRS_ALIGN_ANY);
 	//DockControlBar(&m_wndWorkSpace);
 	DockControlBar(&m_wndWorkSpace3);
-	DockControlBar(&m_wndWorkSpace_UntrackedFiles_);
+	DockControlBar(&m_wndWorkSpace_WorkingDirectory_);
 	DockControlBar(&m_wndWorkSpace_Repos_);
 	DockControlBar(&m_wndWorkSpace_Git_Tree_);
 	DockControlBar(&m_wndWorkSpace_Commits_);
@@ -607,15 +614,15 @@ void CMainFrame::OnUpdateViewPropGrid(CCmdUI* pCmdUI)
 
 void CMainFrame::OnViewWorkspace_Staging_Area()
 {
-	ShowControlBar(&m_wndWorkSpace_UntrackedFiles_,
-		!(m_wndWorkSpace_UntrackedFiles_.IsVisible()),
+	ShowControlBar(&m_wndWorkSpace_WorkingDirectory_,
+		!(m_wndWorkSpace_WorkingDirectory_.IsVisible()),
 		FALSE, TRUE);
 	RecalcLayout();
 }
 
 void CMainFrame::OnUpdateViewWorkspace_Staging_Area(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_wndWorkSpace_UntrackedFiles_.IsVisible());
+	pCmdUI->SetCheck(m_wndWorkSpace_WorkingDirectory_.IsVisible());
 	pCmdUI->Enable(!GetDockManager()->IsPrintPreviewValid());
 }
  // UI_TYPE_RIBBON
@@ -655,7 +662,8 @@ void CMainFrame::OnCbn_Git_Tree_Branches_SelchangeCombo()
 
 void CMainFrame::set_info_for_working_dir_(const CString& view_type)
 {
-	m_wndWorkSpace_UntrackedFiles_.SetWindowTextW(view_type);
+	m_wndWorkSpace_WorkingDirectory_.SetWindowTextW(view_type);
+	m_wndWorkSpace_WorkingDirectory_.fill_view_for_item(view_type);
 }
 
 void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
@@ -665,6 +673,13 @@ void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
 	
 	auto item = repo_view_cmb->GetItem(ix);
 	set_info_for_working_dir_(item);
+}
+
+void CMainFrame::OnCommit()
+{
+	auto repo_path = get_current_repo();
+	auto branch = get_current_branch();
+	GIT_Engine::create_commit(repo_path,branch);
 }
 
 CString CMainFrame::setup_repo_view_cmb_()
@@ -679,4 +694,22 @@ CString CMainFrame::setup_repo_view_cmb_()
 	repo_view_cmb_p->SelectItem(0);//chance here to actually select last selection (store it in a file Artie;)
 	int ix = repo_view_cmb_p->GetCurSel();
 	return repo_view_cmb_p->GetItem(ix);
+}
+
+CString CMainFrame::get_current_working_dir_view_type()
+{
+	auto repo_view_cmb_p = get_repo_view_cmb_();
+	int ix = repo_view_cmb_p->GetCurSel();
+	return repo_view_cmb_p->GetItem(ix);
+}
+
+void CMainFrame::fill_view_for_item(const CString& viewType)
+{
+	m_wndWorkSpace_WorkingDirectory_.fill_view_for_item(viewType);
+}
+
+void CMainFrame::setup_workdir_content(Working_Dir&& working_dir_content)
+{
+	m_wndWorkSpace_WorkingDirectory_.setup_workdir_content(std::move(working_dir_content));
+
 }

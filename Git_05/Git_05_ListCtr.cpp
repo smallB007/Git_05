@@ -139,7 +139,7 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		//pMainWnd->set_current_repo(commit_id);
 		pMainWnd->set_info_for_commit(commit_id);
 	}
-	else if (git_entity_type_ == GIT_ENTITY_TYPE::UNTRACKED_FILES)
+	else if (git_entity_type_ == GIT_ENTITY_TYPE::WORKING_DIR)
 	{
 		//list untracked files
 	}
@@ -188,7 +188,7 @@ void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 		GetClientRect(rect);
 		prc.right = rect.right;
 		InvalidateRect(&prc);
-		if (git_entity_type_ == UNTRACKED_FILES)
+		if (git_entity_type_ == WORKING_DIR)
 		{
 			NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 			*pResult = 0;
@@ -464,4 +464,25 @@ void Git_05_ListCtr::set_active_repo()
 void Git_05_ListCtr::set_active_commit()
 {
 	selectItem(0);
+}
+
+void Git_05_ListCtr::AdjustColumnWidth()
+{
+	SetRedraw(FALSE);
+	int nColumnCount = GetColumnCount();
+
+	for (int i = 0; i < nColumnCount; i++)
+	{
+		SetColumnWidth(i, LVSCW_AUTOSIZE);
+		int nColumnWidth = GetColumnWidth(i);
+		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+		int nHeaderWidth = GetColumnWidth(i);
+		SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+	}
+	SetRedraw(TRUE);
+}
+int Git_05_ListCtr::GetColumnCount()
+{
+	CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
+	return (pHeaderCtrl->GetItemCount());
 }

@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>4</VERSION_STAMP>
+		<VERSION_STAMP>5</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -421,6 +421,9 @@
 			<CATEGORY>
 				<ELEMENT_NAME>Category</ELEMENT_NAME>
 				<NAME>Repository</NAME>
+				<IMAGE_LARGE>
+					<NAME>IDR_BCGP_IMAGE_CATEGORY_LARGE_2</NAME>
+				</IMAGE_LARGE>
 				<PANELS>
 					<PANEL>
 						<ELEMENT_NAME>Panel</ELEMENT_NAME>
@@ -448,6 +451,21 @@
 									<VALUE>1094</VALUE>
 								</ID>
 								<WIDTH>108</WIDTH>
+							</ELEMENT>
+						</ELEMENTS>
+					</PANEL>
+					<PANEL>
+						<ELEMENT_NAME>Panel</ELEMENT_NAME>
+						<NAME>Commit</NAME>
+						<ELEMENTS>
+							<ELEMENT>
+								<ELEMENT_NAME>Button</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_COMMIT_BUTTON</NAME>
+									<VALUE>1117</VALUE>
+								</ID>
+								<TEXT>Commit</TEXT>
+								<INDEX_LARGE>0</INDEX_LARGE>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

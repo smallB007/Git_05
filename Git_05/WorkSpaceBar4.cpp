@@ -7,6 +7,9 @@
 #include "WorkSpaceBar4.h"
 #include "GIT_Commit_Local.hpp"
 #include "Git_05_ListCtr.hpp"
+#include "GIT_Engine.hpp"
+#include <algorithm>
+#include <string>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -44,7 +47,7 @@ END_MESSAGE_MAP()
 // 	return static_cast<CGit_05App*>(AfxGetApp());
 // };//copy from BackStagePageInfo.h
 
-CWorkSpaceBar4::CWorkSpaceBar4()
+CWorkSpaceBar4::CWorkSpaceBar4() :working_dir_{L""}
 {
 	// TODO: add one-time construction code here
 	//EnableD2DSupport();
@@ -185,15 +188,71 @@ void CWorkSpaceBar4::add_branches_to_combo_(const std::map<branch_name_t, std::v
 
 }
 
+
 void CWorkSpaceBar4::set_current_repo(const repo_name_t& repoName)
 {
 	m_wndListCtrl_->selectItem(repoName);
 	auto branches_with_commits = repo_branches_[repoName];
 
 	add_branches_to_combo_(branches_with_commits);
+	//if (m_wndListCtrl_->git_entity_type_ == Git_05_ListCtr::GIT_ENTITY_TYPE::REPO)
+	//{
+		Working_Dir working_dir_content = GIT_Engine::list_files_in_working_dir(repoName);
+		CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+		pMainWnd->setup_workdir_content(std::move(working_dir_content));
+		CString current_working_dir_view_type = pMainWnd->get_current_working_dir_view_type();
+		pMainWnd->fill_view_for_item(current_working_dir_view_type);
+	//}
 }
 
-#include <algorithm>
+void CWorkSpaceBar4::setup_workdir_content(Working_Dir&& working_dir_content)
+{
+	working_dir_ = working_dir_content;
+}
+
+static CString normalize_file_name_(const CString& fileName)
+{//removes full path and leaves only file name (if the file is in the working dir) or filename and path to file from working dir to that file folder 
+	CT2CA ct_file_name_path(fileName);
+	std::string file_name_path(ct_file_name_path);
+	// construct a std::string using the LPCSTR input
+	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+	CString cs_current_repo_path = pMainWnd->get_current_repo();
+	CT2CA ct_current_repo_path(cs_current_repo_path);
+	std::string current_repo_path(ct_current_repo_path);
+
+	auto mis = std::mismatch(cbegin(file_name_path), cend(file_name_path), cbegin(current_repo_path), cend(current_repo_path));
+	std::string normalized_name((mis.first),cend(file_name_path));
+	CA2W w_str(normalized_name.c_str());
+	CString result = w_str;
+	return result;
+}
+
+void CWorkSpaceBar4::fill_view_for_item(const CString& view_type)
+{
+	auto sorted_files = working_dir_.get_sorted_files();
+	int inx{ 0 };
+	m_wndListCtrl_->DeleteAllItems();
+	for (const auto& _git_status : sorted_files)
+	{
+		for (const auto& file_name : _git_status.second)
+		{
+			m_wndListCtrl_->InsertItem(inx,normalize_file_name_(file_name));
+			++inx;
+		}
+	}
+	LVCOLUMN lvCol;
+	::ZeroMemory((void *)&lvCol, sizeof(LVCOLUMN));
+	lvCol.mask = LVCF_TEXT;
+	m_wndListCtrl_->GetColumn(0, &lvCol);
+	CString str;
+	str.Format(L"%d", inx);
+	str += " Files";
+	lvCol.pszText = str.GetBuffer();
+	m_wndListCtrl_->SetColumn(0, &lvCol);
+	m_wndListCtrl_->AdjustColumnWidth();
+}
+
+
 static const CString get_repo_name(CString c_repo_path)
 {
 	std::string repo_name;
@@ -234,7 +293,7 @@ static const CString get_repo_name(CString c_repo_path)
 	return w_str;
 }
 
-void CWorkSpaceBar4::git_tree(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
+void CWorkSpaceBar4::add_repo(std::map<repo_name_t, std::map<branch_name_t, std::vector<GIT_Commit_Local>>>&& repo_branches)
 {
 	//branch_commits_ = branchCommits;
 	auto repo_name = (*cbegin(repo_branches)).first;
@@ -406,9 +465,9 @@ void CWorkSpaceBar4::fill_repositories_()
 	m_wndTree.Expand(hRoot_, TVE_EXPAND);*/
 }
 
-int CWorkSpaceBar4::set_type_list_ctrl_untracked_files()
+int CWorkSpaceBar4::set_type_list_ctrl_working_directory()
 {
-	m_wndListCtrl_->ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON);
+	m_wndListCtrl_->ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON | LVS_SORTASCENDING/* | LVS_REPORT*/);
 	m_wndListCtrl_->SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT | LVS_EX_CHECKBOXES);
 
 	CWinApp* pApp = AfxGetApp();
@@ -420,12 +479,55 @@ int CWorkSpaceBar4::set_type_list_ctrl_untracked_files()
 	//m_cImageListShell.Add(pApp->LoadIcon(IDI_GIT_BW));
 	m_wndListCtrl_->SetImageList(&m_cImageListShell, LVSIL_NORMAL);
 	// 		
-	m_wndListCtrl_->InsertColumn(0, _T("Author"), LVCFMT_CENTER, -1, 0);
-	m_wndListCtrl_->InsertColumn(1, _T("Date"), LVCFMT_RIGHT, -1, 1);
-	m_wndListCtrl_->InsertColumn(2, _T("Short info"), LVCFMT_CENTER, -1, 2);
-	m_wndListCtrl_->InsertColumn(3, _T("INVISIBLE_SHA"), LVCFMT_CENTER, -1, 2);//this column will not be visible
-	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::UNTRACKED_FILES);
-	return m_wndListCtrl_->SetView(LV_VIEW_TILE);// LV_VIEW_TILE
+	m_wndListCtrl_->InsertColumn(0, _T("Files"), LVCFMT_CENTER, -1, 0);
+	//
+	// Here's where we can add the checkbox to the column header
+	// First, we need to snag the header control and give it the
+	// HDS_CHECKBOXES style since the list view doesn't do this for us
+	HWND header = ListView_GetHeader(*m_wndListCtrl_.get());
+	DWORD dwHeaderStyle = ::GetWindowLong(header, GWL_STYLE);
+	#define HDS_CHECKBOXES 0x0040
+	dwHeaderStyle |= HDS_CHECKBOXES;
+	::SetWindowLong(header, GWL_STYLE, dwHeaderStyle);
+
+	// Store the ID of the header control so we can handle its notification by ID
+	auto m_HeaderId = ::GetDlgCtrlID(header);
+	//
+	//
+// 	LVCOLUMN pColumn = { 0 };
+// 	pColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+// #define HDF_CHECKBOX            0x0040
+// 	m_wndListCtrl_->GetColumn(0, &pColumn);
+// 	pColumn.fmt |= HDF_CHECKBOX;
+// 	pColumn.pszText = L"";
+// 	pColumn.cx = 25;
+// 	pColumn.iSubItem = 1;
+// 
+// 	m_wndListCtrl_->InsertColumn(0, &pColumn);
+	//
+	//m_wndListCtrl_->InsertColumn(1, _T("Date"), LVCFMT_RIGHT, -1, 1);
+	//m_wndListCtrl_->InsertColumn(2, _T("Short info"), LVCFMT_CENTER, -1, 2);
+	//m_wndListCtrl_->InsertColumn(3, _T("INVISIBLE_SHA"), LVCFMT_CENTER, -1, 2);//this column will not be visible
+	m_wndListCtrl_->set_git_entity_type(Git_05_ListCtr::GIT_ENTITY_TYPE::WORKING_DIR);
+	
+	//
+// 	LV_COLUMN lvColumn;
+// 
+// 	memset(&lvColumn, 0, sizeof(lvColumn));
+// 	lvColumn.mask = LVCF_FMT;
+// 
+// 	m_wndListCtrl_->GetColumn(0, &lvColumn);
+// 
+// 	//if ((m_gListColumn[0].fmt & LVCFMT_RIGHT) == LVCFMT_RIGHT)
+// 	//	lvColumn.fmt |= LVCFMT_RIGHT;
+// 	//else if (m_gListColumn[0].fmt & LVCFMT_CENTER) == LVCFMT_CENTER)
+// 	lvColumn.fmt |= LVCFMT_CENTER;
+// 
+// 	m_wndListCtrl_->GetColumn(0, &lvColumn);
+
+	
+	return m_wndListCtrl_->SetView(LV_VIEW_DETAILS /*| LV_VIEW_TILE*/);// LV_VIEW_TILE
+
 }
 
 int CWorkSpaceBar4::set_type_list_ctrl_commits()
