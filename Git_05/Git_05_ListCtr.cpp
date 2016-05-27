@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(Git_05_ListCtr, CListCtrl)
 	//ON_WM_LBUTTONUP()
 	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
+	ON_NOTIFY_REFLECT(LVN_ODSTATECHANGED, OnItemStateChanged)
 	ON_WM_KILLFOCUS()
 	ON_NOTIFY_REFLECT(NM_CLICK, OnClick)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnClick)//same as above, the only purpose of it is to keep item on list selected in case click will occur outside of list items
@@ -109,7 +110,7 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	ScreenToClient(&pos);
 	RECT prc;
 	ListView_GetItemRect(m_hWnd, 0, &prc, LVIR_BOUNDS);//take item on 0 index just to get its height
-	auto item_number = pos.y / prc.bottom;
+	auto item_number = pos.y / prc.bottom;//:AC: This is culprit which doesn't allow select items after them being scrolled
 	lastItem_ = item_number;
 	if (item_number > GetItemCount())
 	{
@@ -126,8 +127,13 @@ void Git_05_ListCtr::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	
 	if (git_entity_type_ == GIT_ENTITY_TYPE::REPO)
 	{
-		//1. Populate combo box with branch names
-		pMainWnd->set_branches_for_repo(git_entity_name);
+		git_entity_name = GetItemText(item_number, 4);//hidden column with full path to repo
+		CString current_repo = get_active_item();
+		if (git_entity_name != current_repo)
+		{//reload only if different repo is selected
+			//1. Populate combo box with branch names
+			pMainWnd->set_branches_for_repo(git_entity_name);
+		}
 		
 	}
 	else if (git_entity_type_ == GIT_ENTITY_TYPE::COMMIT)
@@ -175,6 +181,11 @@ void Git_05_ListCtr::OnKillFocus(CWnd*)
 	//SetItemState(lastItem_, LVIS_SELECTED, LVIS_SELECTED);
 }
 
+
+void Git_05_ListCtr::OnItemStateChanged(NMHDR* pNMHDR, LRESULT* pResult)
+{
+
+}
 void Git_05_ListCtr::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW & nm = *(LPNMLISTVIEW)pNMHDR;  // (1)

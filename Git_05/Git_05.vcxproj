@@ -204,9 +204,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h" />
+    <ClInclude Include="CListCtrl_Category_Groups.h" />
+    <ClInclude Include="CListCtrl_DataModel.h" />
+    <ClInclude Include="Commit_dlg.h" />
     <ClInclude Include="ComHelpers.hpp" />
     <ClInclude Include="ComPtr.hpp" />
     <ClInclude Include="CStringUtilities.h" />
+    <ClInclude Include="CString_Utils.h" />
     <ClInclude Include="Direct2DRenderer.hpp" />
     <ClInclude Include="Direct2DUtility.hpp" />
     <ClInclude Include="Direct2Handler.hpp" />
@@ -219,6 +223,7 @@
     <ClInclude Include="Git_05_Utils.h" />
     <ClInclude Include="GIT_Branch.hpp" />
     <ClInclude Include="GIT_Commit.hpp" />
+    <ClInclude Include="GIT_Commit_Data.hpp" />
     <ClInclude Include="GIT_Commit_Local.hpp" />
     <ClInclude Include="GIT_Engine.hpp" />
     <ClInclude Include="Git_Object.hpp" />
@@ -228,6 +233,8 @@
     <ClInclude Include="Git_Repository.hpp" />
     <ClInclude Include="Git_Repository_Attributes.hpp" />
     <ClInclude Include="HTTPS_GIT_Client.h" />
+    <ClInclude Include="ListCtrl_Category_GroupsDef.h" />
+    <ClInclude Include="ListCtrl_Category_GroupsDlg.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputBar.h" />
     <ClInclude Include="PropertiesViewBar.h" />
@@ -240,6 +247,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
+    <ClCompile Include="CListCtrl_Category_Groups.cpp" />
+    <ClCompile Include="Commit_dlg.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DUtility.cpp" />
     <ClCompile Include="Direct2Handler.cpp" />
@@ -251,6 +260,7 @@
     <ClCompile Include="Git_05_PropertiesViewBar.cpp" />
     <ClCompile Include="GIT_Branch.cpp" />
     <ClCompile Include="GIT_Commit.cpp" />
+    <ClCompile Include="GIT_Commit_Data.cpp" />
     <ClCompile Include="GIT_Commit_Local.cpp" />
     <ClCompile Include="GIT_Engine.cpp" />
     <ClCompile Include="Git_Object.cpp" />
@@ -260,6 +270,7 @@
     <ClCompile Include="Git_Repository.cpp" />
     <ClCompile Include="Git_Repository_Attributes.cpp" />
     <ClCompile Include="HTTPS_GIT_Client.cpp" />
+    <ClCompile Include="ListCtrl_Category_GroupsDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputBar.cpp" />
     <ClCompile Include="PropertiesViewBar.cpp" />
@@ -303,6 +314,7 @@
     <Image Include="res\cat.ico" />
     <Image Include="res\dog-small.ico" />
     <Image Include="res\dog.ico" />
+    <Image Include="res\downarrow.bmp" />
     <Image Include="res\elephant-small.ico" />
     <Image Include="res\elephant.ico" />
     <Image Include="res\Git_05.ico" />
@@ -314,6 +326,7 @@
     <Image Include="res\images_n.bmp" />
     <Image Include="res\ribbonfilelarge.png" />
     <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\uparrow.bmp" />
     <Image Include="res\Workspace.png" />
   </ItemGroup>
   <ItemGroup>

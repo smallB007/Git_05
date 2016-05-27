@@ -48,8 +48,9 @@ protected:  // control bar embedded members
 	COutputBar				m_wndOutput;
 	Git05_CBCGPPropBar		m_wndCommitPropertiesGrid;
 public:
+	void begin_create_commit(std::set<CString>&& checkedFiles, const CString& commitMsg);
 	void setup_workdir_content(Working_Dir&& working_dir_content);
-	void CMainFrame::fill_view_for_item(const CString& viewType);
+	void fill_view_for_item(const CString& viewType);
 	void add_repo(std::map<CString/*reponame*/, std::map<CString/*branchname*/, std::vector<GIT_Commit_Local>>>&& repo_branches);
 	void setup_git_branches_combo_(const std::vector<CString>& branches);
 	//void selectRepository();

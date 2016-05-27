@@ -30,7 +30,7 @@ std::map<git_status_t, std::vector<git_05_status_entry>> Working_Dir::get_sorted
 
 static void list_files(const path& dir, std::vector<path>*const files)
 {
-	if (is_regular_file(dir))
+	if (!is_directory(dir))
 	{
 		files->push_back(dir);
 	}
@@ -38,11 +38,11 @@ static void list_files(const path& dir, std::vector<path>*const files)
 	{
 		for (auto beg = directory_iterator(dir), end = directory_iterator(); beg != end; ++beg)
 		{
-			if (is_regular_file(*beg))
+			if (!is_directory(*beg))
 			{
 				files->push_back(*beg);
 			}
-			else if (is_directory(*beg))
+			else 
 			{
 				list_files(*beg, files);
 			}

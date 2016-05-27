@@ -107,6 +107,7 @@ protected:
 
 	afx_msg void OnMouseHover(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnItemStateChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnKillFocus(CWnd*);
 	afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
 	void selectItem(const repo_name_t & repoName);

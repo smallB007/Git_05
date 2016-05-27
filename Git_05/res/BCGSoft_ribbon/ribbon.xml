@@ -467,6 +467,15 @@
 								<TEXT>Commit</TEXT>
 								<INDEX_LARGE>0</INDEX_LARGE>
 							</ELEMENT>
+							<ELEMENT>
+								<ELEMENT_NAME>Button</ELEMENT_NAME>
+								<ID>
+									<NAME>IDC_STATUS_BUTTON</NAME>
+									<VALUE>1119</VALUE>
+								</ID>
+								<TEXT>Status</TEXT>
+								<INDEX_LARGE>0</INDEX_LARGE>
+							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>
 				</PANELS>

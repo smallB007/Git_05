@@ -2,9 +2,11 @@
 // Microsoft Visual C++ generated include file.
 // Used by Git_05.rc
 //
+#define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDS_MAIN_TOOLBAR                101
+#define IDS_ABOUTBOX                    101
 #define IDD_FORM_INFO                   106
 #define IDC_PREVIEW                     107
 #define IDC_SEPARATOR_1                 108
@@ -18,6 +20,9 @@
 #define IDC_TEXT4                       116
 #define IDR_MAINFRAME                   128
 #define IDR_Git_05TYPE                  129
+#define IDB_DOWNARROW                   129
+#define IDB_BITMAP2                     130
+#define IDB_UPARROW                     130
 #define IDR_POPUP_TOOLBAR               131
 #define IDR_PASTE_MENU                  134
 #define IDR_THEME_MENU                  136
@@ -29,7 +34,6 @@
 #define IDB_PNG1                        174
 #define IDB_GAME_ICON_PNG               174
 #define IDB_PNG2                        175
-#define IDD_DIALOG1                     176
 #define IDI_ICON6                       184
 #define IDB_BITMAP1                     185
 #define IDB_IMAGES_NORMAL               185
@@ -40,6 +44,7 @@
 #define IDI_GIT_BW                      194
 #define IDI_GREEN_RED                   195
 #define IDI_GIT_RED                     195
+#define IDD_LISTCTRL_CATEGORY_GROUPS_DIALOG 196
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -86,6 +91,12 @@
 #define IDC_STAGING_AREA_BUTTON         1114
 #define IDC_STAGING_AREA                1115
 #define IDC_COMMIT_BUTTON               1117
+#define IDC_STATUS_BUTTON               1119
+#define IDCANCEL                        1120
+#define IDC_EDIT1                       1123
+#define IDC_EDIT2                       1124
+#define IDC_LIST1                       1125
+#define ID_COMMIT                       1126
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -140,9 +151,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        196
+#define _APS_NEXT_RESOURCE_VALUE        198
 #define _APS_NEXT_COMMAND_VALUE         32871
-#define _APS_NEXT_CONTROL_VALUE         1118
+#define _APS_NEXT_CONTROL_VALUE         1127
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

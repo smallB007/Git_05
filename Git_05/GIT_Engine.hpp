@@ -39,7 +39,7 @@ public:
 		const char *dir;
 	};
 public:
-	static void list_commits_for_branch(git_repository*repo,const CString& repo_path,  const CString& branch, std::vector<GIT_Commit_Local>& commitsForBranch);
+	static void list_commits_for_branch(/*git_repository*repo,*/const CString& repo_path,  const CString& branch, std::vector<GIT_Commit_Local>& commitsForBranch);
 	static void list_local_branches(git_repository *repo, std::vector<CString>& localBranches);
 	static void get_repo(const CString& repo_path, git_repository** repo);
 	static void get_commits_for_branches(const CString& repo_path,std::map<CString, std::vector<GIT_Commit_Local>>& branchCommits);
@@ -47,7 +47,7 @@ public:
 	static bool check_if_repo(const CString& pathName);
 	static bool git_init(git_repository *repo, const char* path, const git_init_opts_t& initOptions);
 	static void create_initial_commit(git_repository *repo);
-	static void create_commit(const CString& repoPath, const CString& branch);
+	static void create_commit(const CString& repoPath, const CString& branch, const std::set<CString>& checkedFiles, const CString& commitMsg);
 	static Working_Dir list_files_in_working_dir(const CString& pathName);
 
 };

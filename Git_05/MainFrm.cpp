@@ -674,17 +674,46 @@ void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
 	auto item = repo_view_cmb->GetItem(ix);
 	set_info_for_working_dir_(item);
 }
-
+#include "Commit_dlg.h"
+#include "ListCtrl_Category_GroupsDlg.h"
 void CMainFrame::OnCommit()
+{
+	//std::unique_ptr<Commit_dlg> commit_dlg = std::make_unique<Commit_dlg>();
+	//commit_dlg->DoModal();
+
+	CListCtrl_Category_GroupsDlg dlg(this);
+	INT_PTR nResponse = dlg.DoModal();
+	if (nResponse == IDOK)
+	{
+		// TODO: Place code here to handle when the dialog is
+		//  dismissed with OK
+		//auto commit_data = dlg.get_commit_data();
+		//auto repo_path = get_current_repo();
+		//auto branch = get_current_branch();
+		//GIT_Engine::create_commit(repo_path, branch);
+	}
+	else if (nResponse == IDCANCEL)
+	{
+		// TODO: Place code here to handle when the dialog is
+		//  dismissed with Cancel
+	}
+	
+	
+}
+
+void CMainFrame::begin_create_commit(std::set<CString>&& checkedFiles, const CString& commitMsg)
 {
 	auto repo_path = get_current_repo();
 	auto branch = get_current_branch();
-	GIT_Engine::create_commit(repo_path,branch);
+	
+	GIT_Engine::create_commit(repo_path, branch, std::forward<decltype(checkedFiles)>(checkedFiles), commitMsg);
 }
+
 
 CString CMainFrame::setup_repo_view_cmb_()
 {
 	auto repo_view_cmb_p = get_repo_view_cmb_();
+	repo_view_cmb_p->AddItem(L"Staged Items");
 	repo_view_cmb_p->AddItem(L"Working Dir");
 	repo_view_cmb_p->AddItem(L"Modified Items");
 	repo_view_cmb_p->AddItem(L"Added Items");

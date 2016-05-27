@@ -136,99 +136,102 @@ void Git05_CBCGPPropBar::assign_diffed_files_(const GIT_Commit_Local& commitInfo
 
 void Git05_CBCGPPropBar::set_commit_info(const GIT_Commit_Local& commitInfo)
 {
-	//m_wndPropList.RemoveAll();
-	commiter_group_uptr_->RemoveAllSubItems();
-	auto name = commitInfo.commit_author.name;
-	CA2W ca2w(name);
-	std::wstring c_name = ca2w;
-	CBCGPProp* pProp = new CBCGPProp(_T("Name"), c_name.c_str(), _T("Commiter's name"));
-	pProp->AllowEdit(FALSE);
-	commiter_group_uptr_->AddSubItem(pProp);
-	auto email = commitInfo.commit_author.email;
-	CA2W ca2email(email);
-	std::wstring c_email = ca2email;
-	pProp = new CBCGPProp(_T("Email"), c_email.c_str(), _T("Commiter's email"));
-	pProp->AllowEdit(FALSE);
-	commiter_group_uptr_->AddSubItem(pProp);
-	//
-	auto commit_date = ctime(&(time_t)commitInfo.commit_author.when.time);
-	CA2W ca2commit_date(commit_date);
-	std::wstring c_commit_date = ca2commit_date;
-	pProp = new CBCGPProp(_T("Commit date"), c_commit_date.c_str(), _T("The date this commit was made"));
-	pProp->AllowEdit(FALSE);
-	commiter_group_uptr_->AddSubItem(pProp);
-	//
+	if (commitInfo.commit_id != "")
+	{
+		//m_wndPropList.RemoveAll();
+		commiter_group_uptr_->RemoveAllSubItems();
+		auto name = commitInfo.commit_author.name;
+		CA2W ca2w(name);
+		std::wstring c_name = ca2w;
+		CBCGPProp* pProp = new CBCGPProp(_T("Name"), c_name.c_str(), _T("Commiter's name"));
+		pProp->AllowEdit(FALSE);
+		commiter_group_uptr_->AddSubItem(pProp);
+		auto email = commitInfo.commit_author.email;
+		CA2W ca2email(email);
+		std::wstring c_email = ca2email;
+		pProp = new CBCGPProp(_T("Email"), c_email.c_str(), _T("Commiter's email"));
+		pProp->AllowEdit(FALSE);
+		commiter_group_uptr_->AddSubItem(pProp);
+		//
+		auto commit_date = ctime(&(time_t)commitInfo.commit_author.when.time);
+		CA2W ca2commit_date(commit_date);
+		std::wstring c_commit_date = ca2commit_date;
+		pProp = new CBCGPProp(_T("Commit date"), c_commit_date.c_str(), _T("The date this commit was made"));
+		pProp->AllowEdit(FALSE);
+		commiter_group_uptr_->AddSubItem(pProp);
+		//
 
-	auto message = commitInfo.commit_message;
-	CA2W ca2message(message.c_str());
-	std::wstring c_message = ca2message;
-	pProp = new CBCGPProp(_T("Message"), c_message.c_str(),	_T("Long description of a commit"));
-	pProp->AllowEdit(FALSE);
-	commiter_group_uptr_->AddSubItem(pProp);
+		auto message = commitInfo.commit_message;
+		CA2W ca2message(message.c_str());
+		std::wstring c_message = ca2message;
+		pProp = new CBCGPProp(_T("Message"), c_message.c_str(), _T("Long description of a commit"));
+		pProp->AllowEdit(FALSE);
+		commiter_group_uptr_->AddSubItem(pProp);
 
-	//STATS//
-	pModificationsGroup->RemoveAllSubItems();
-	pAdditionsGroup->RemoveAllSubItems();
-	pDeletionsGroup->RemoveAllSubItems();
-	assign_diffed_files_(commitInfo);
-	//CBCGPProp* pStatsModificationProp;
-	//for (const auto& modified_file : commitInfo.files_modified)
-	//{
-	//	CA2W w_str_modified_path(modified_file.path);
-	//	CString modified_file_path = w_str_modified_path;
-	//		pStatsModificationProp = new CBCGPProp(modified_file_path, (_variant_t)0,
-	//		_T("Modified file"));
-	//	pStatsModificationProp->AllowEdit(FALSE);
-	//	pModificationsGroup->AddSubItem(pStatsModificationProp);
-	//
-	//	
-	//}
-	//CBCGPProp* pStatsAdditionProp;
-	//for (const auto& added_file : commitInfo.files_added)
-	//{
-	//	CA2W w_str_added_path(added_file.path);
-	//	CString added_file_path = w_str_added_path;
-	//	pStatsAdditionProp = new CBCGPProp(added_file_path, (_variant_t)0,
-	//		_T("Added file"));
-	//	pStatsAdditionProp->AllowEdit(FALSE);
-	//	pAdditionsGroup->AddSubItem(pStatsAdditionProp);
-	//}
+		//STATS//
+		pModificationsGroup->RemoveAllSubItems();
+		pAdditionsGroup->RemoveAllSubItems();
+		pDeletionsGroup->RemoveAllSubItems();
+		assign_diffed_files_(commitInfo);
+		//CBCGPProp* pStatsModificationProp;
+		//for (const auto& modified_file : commitInfo.files_modified)
+		//{
+		//	CA2W w_str_modified_path(modified_file.path);
+		//	CString modified_file_path = w_str_modified_path;
+		//		pStatsModificationProp = new CBCGPProp(modified_file_path, (_variant_t)0,
+		//		_T("Modified file"));
+		//	pStatsModificationProp->AllowEdit(FALSE);
+		//	pModificationsGroup->AddSubItem(pStatsModificationProp);
+		//
+		//	
+		//}
+		//CBCGPProp* pStatsAdditionProp;
+		//for (const auto& added_file : commitInfo.files_added)
+		//{
+		//	CA2W w_str_added_path(added_file.path);
+		//	CString added_file_path = w_str_added_path;
+		//	pStatsAdditionProp = new CBCGPProp(added_file_path, (_variant_t)0,
+		//		_T("Added file"));
+		//	pStatsAdditionProp->AllowEdit(FALSE);
+		//	pAdditionsGroup->AddSubItem(pStatsAdditionProp);
+		//}
 
-	//CBCGPProp* pStatsDeletionProp;
-	//for (const auto& deleted_file : commitInfo.files_deleted)
-	//{
-	//	CA2W w_str_deleted_path(deleted_file.path);
-	//	CString deleted_file_path = w_str_deleted_path;
-	//	pStatsDeletionProp = new CBCGPProp(deleted_file_path, (_variant_t)0,
-	//		_T("Deleted file"));
-	//	pStatsDeletionProp->AllowEdit(FALSE);
-	//	pDeletionsGroup->AddSubItem(pStatsDeletionProp);
-	//}
+		//CBCGPProp* pStatsDeletionProp;
+		//for (const auto& deleted_file : commitInfo.files_deleted)
+		//{
+		//	CA2W w_str_deleted_path(deleted_file.path);
+		//	CString deleted_file_path = w_str_deleted_path;
+		//	pStatsDeletionProp = new CBCGPProp(deleted_file_path, (_variant_t)0,
+		//		_T("Deleted file"));
+		//	pStatsDeletionProp->AllowEdit(FALSE);
+		//	pDeletionsGroup->AddSubItem(pStatsDeletionProp);
+		//}
 
-	pSHAGroup->RemoveAllSubItems();
-	CBCGPProp* pSHAProp;
-	
-	CString w_str_sha_short(commitInfo.commit_id.substr(0, 7).c_str());
-	CString w_str_sha_long(commitInfo.commit_id.c_str());
+		pSHAGroup->RemoveAllSubItems();
+		CBCGPProp* pSHAProp;
+
+		CString w_str_sha_short(commitInfo.commit_id.substr(0, 7).c_str());
+		CString w_str_sha_long(commitInfo.commit_id.c_str());
 
 
-	pSHAProp = new CBCGPProp(_T("Short version"), w_str_sha_short.GetString(),
-		_T("Short version of SHA"));
-	pSHAProp->AllowEdit(FALSE);
+		pSHAProp = new CBCGPProp(_T("Short version"), w_str_sha_short.GetString(),
+			_T("Short version of SHA"));
+		pSHAProp->AllowEdit(FALSE);
 
-	pSHAGroup->AddSubItem(pSHAProp);
-	pSHAProp = new CBCGPProp(_T("Long version"), w_str_sha_long.GetString(),
-		_T("Long version of SHA"));
-	pSHAProp->AllowEdit(FALSE);
+		pSHAGroup->AddSubItem(pSHAProp);
+		pSHAProp = new CBCGPProp(_T("Long version"), w_str_sha_long.GetString(),
+			_T("Long version of SHA"));
+		pSHAProp->AllowEdit(FALSE);
 
-	pSHAGroup->AddSubItem(pSHAProp);
-	pSHAGroup->Expand(FALSE);
-	//pSHAProp->Expand(FALSE);
-	////
-	////////////SHA//////////////////////////////////////////////////////////////
-	
-		////	
-	m_wndPropList.AdjustLayout();
+		pSHAGroup->AddSubItem(pSHAProp);
+		pSHAGroup->Expand(FALSE);
+		//pSHAProp->Expand(FALSE);
+		////
+		////////////SHA//////////////////////////////////////////////////////////////
+
+			////	
+		m_wndPropList.AdjustLayout();
+	}
 
 }
 

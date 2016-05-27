@@ -209,23 +209,23 @@ void CWorkSpaceBar4::setup_workdir_content(Working_Dir&& working_dir_content)
 {
 	working_dir_ = working_dir_content;
 }
-
-static CString normalize_file_name_(const CString& fileName)
-{//removes full path and leaves only file name (if the file is in the working dir) or filename and path to file from working dir to that file folder 
-	CT2CA ct_file_name_path(fileName);
-	std::string file_name_path(ct_file_name_path);
-	// construct a std::string using the LPCSTR input
-	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
-	CString cs_current_repo_path = pMainWnd->get_current_repo();
-	CT2CA ct_current_repo_path(cs_current_repo_path);
-	std::string current_repo_path(ct_current_repo_path);
-
-	auto mis = std::mismatch(cbegin(file_name_path), cend(file_name_path), cbegin(current_repo_path), cend(current_repo_path));
-	std::string normalized_name((mis.first),cend(file_name_path));
-	CA2W w_str(normalized_name.c_str());
-	CString result = w_str;
-	return result;
-}
+#include "CString_Utils.h"
+// static CString normalize_file_name_(const CString& fileName)
+// {//removes full path and leaves only file name (if the file is in the working dir) or filename and path to file from working dir to that file folder 
+// 	CT2CA ct_file_name_path(fileName);
+// 	std::string file_name_path(ct_file_name_path);
+// 	// construct a std::string using the LPCSTR input
+// 	CMainFrame *pMainWnd = static_cast<CMainFrame*>(AfxGetMainWnd());
+// 	CString cs_current_repo_path = pMainWnd->get_current_repo();
+// 	CT2CA ct_current_repo_path(cs_current_repo_path);
+// 	std::string current_repo_path(ct_current_repo_path);
+// 
+// 	auto mis = std::mismatch(cbegin(file_name_path), cend(file_name_path), cbegin(current_repo_path), cend(current_repo_path));
+// 	std::string normalized_name((mis.first),cend(file_name_path));
+// 	CA2W w_str(normalized_name.c_str());
+// 	CString result = w_str;
+// 	return result;
+// }
 
 void CWorkSpaceBar4::fill_view_for_item(const CString& view_type)
 {
@@ -467,7 +467,7 @@ void CWorkSpaceBar4::fill_repositories_()
 
 int CWorkSpaceBar4::set_type_list_ctrl_working_directory()
 {
-	m_wndListCtrl_->ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON | LVS_SORTASCENDING/* | LVS_REPORT*/);
+	m_wndListCtrl_->ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON | LVS_SORTASCENDING | LVS_REPORT);
 	m_wndListCtrl_->SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT | LVS_EX_CHECKBOXES);
 
 	CWinApp* pApp = AfxGetApp();
@@ -486,7 +486,7 @@ int CWorkSpaceBar4::set_type_list_ctrl_working_directory()
 	// HDS_CHECKBOXES style since the list view doesn't do this for us
 	HWND header = ListView_GetHeader(*m_wndListCtrl_.get());
 	DWORD dwHeaderStyle = ::GetWindowLong(header, GWL_STYLE);
-	#define HDS_CHECKBOXES 0x0040
+	//#define HDS_CHECKBOXES 0x0040
 	dwHeaderStyle |= HDS_CHECKBOXES;
 	::SetWindowLong(header, GWL_STYLE, dwHeaderStyle);
 

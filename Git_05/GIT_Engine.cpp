@@ -48,7 +48,7 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 	}
 
 	//Outside of this example, you could call gitindexadd_bypath() here to put actual files into the index. For our purposes, we'll leave it empty for now.
-
+	
 
 	if (git_index_write_tree(&tree_id, index) < 0)
 	{
@@ -84,12 +84,13 @@ void GIT_Engine::create_initial_commit(git_repository *repo)
 
 }
 
-void GIT_Engine::create_commit(const CString& repoPath, const CString& branch)
+#include "CString_Utils.h"
+void GIT_Engine::create_commit(const CString& repoPath, const CString& branch, const std::set<CString>& checkedFiles, const CString& commitMsg)
 {
 	
-	Working_Dir working_dir = list_files_in_working_dir(repoPath);
-	std::map<git_status_t, std::vector<Working_Dir::full_file_path>> sorted_files = working_dir.get_sorted_files();
-	if (sorted_files.size())
+	//Working_Dir working_dir = list_files_in_working_dir(repoPath);
+	//std::map<git_status_t, std::vector<Working_Dir::full_file_path>> sorted_files = working_dir.get_sorted_files();
+	if (checkedFiles.size())
 	{//cannot create commit with no files to commit
 
 		git_index *index;
@@ -123,20 +124,34 @@ void GIT_Engine::create_commit(const CString& repoPath, const CString& branch)
 			AfxMessageBox(L"Could not open repository index");
 			return;
 		}
-
 		//Outside of this example, you could call gitindexadd_bypath() here to put actual files into the index. For our purposes, we'll leave it empty for now.
 		//int git_index_add_bypath(git_index *index, const char *path);
 
-
-		for (const auto& _status : sorted_files)
+// 		for (const auto& _status : sorted_files)
+// 		{
+// 			for (const auto& file : _status.second)
+// 			{
+				//char *dir = "git_test_3/git_test_3 - Copy - Copy.cpp";
+				//git_strarray paths = { &dir, 1 };
+				//git_index_add_all(index, &paths, 0, NULL, NULL);
+				//CT2CA ctString(normalize_file_name_(file));
+		for (const auto& file : checkedFiles)
 		{
-			for (const auto& file : _status.second)
+			CT2CA ctString(file);
+			std::string stdString(ctString);
+			//git_index_add_bypath(index, stdString.c_str());
+			auto ec = git_index_entrycount(index);
+			auto caps = git_index_caps(index);
+			if (git_index_add_bypath(index, /*"git_test_3/git_test_3 - Copy - Copy - Copy.cpp"*/stdString.c_str()) != GIT_SUCCESS)
 			{
-				CT2CA ctString(file);
-				std::string stdString(ctString);
-				git_index_add_bypath(index, stdString.c_str());
+				//AfxMessageBox(L"Unable to add files to commit.\nUse console to resolve the issue.");
+				//return;
+				int a{ 0 };
 			}
 		}
+		//	}
+		//}
+		
 		if (git_index_write_tree(&tree_id, index) < 0)
 		{
 			AfxMessageBox(L"Unable to write initial tree from index");
@@ -149,17 +164,26 @@ void GIT_Engine::create_commit(const CString& repoPath, const CString& branch)
 			AfxMessageBox(L"Could not look up initial tree");
 			return;
 		}
-
-		if (git_commit_create_v(
-			&commit_id, repo, "HEAD", sig, sig,
-			NULL, "get commit msg", tree, 1, commit) < 0)
 		{
-			AfxMessageBox(L"Could not create the initial commit");
-			//Clean up so we don't leak memory.
-			git_tree_free(tree);
-			git_signature_free(sig);
-			return;
+			CT2CA ctCommitMsg(commitMsg);
+			std::string stdCommitMsg(ctCommitMsg);
+			if (git_commit_create_v(
+				&commit_id, repo, "HEAD", sig, sig,
+				NULL, stdCommitMsg.c_str(), tree, 1, commit) < 0)
+			{
+				AfxMessageBox(L"Could not create commit");/*the initial*/
+				//Clean up so we don't leak memory.
+				git_tree_free(tree);
+				git_signature_free(sig);
+				return;
+			}
 		}
+		git_commit_free(commit);
+		git_tree_free(tree);
+		git_signature_free(sig);
+		//std::vector<GIT_Commit_Local> commits_for_branch;
+		//list_commits_for_branch(repoPath, branch, commits_for_branch);
+
 	}
 }
 
@@ -320,7 +344,7 @@ failure:
 	return nullptr;
 }
 
-void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& repo_path, const CString& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
+void GIT_Engine::list_commits_for_branch(/*git_repository* repo_, */const CString& repo_path, const CString& branch,std::vector<GIT_Commit_Local>& commitsForBranch)
 {
  	CT2CA c_str_path(repo_path);
  	const char* REPO = c_str_path;
@@ -439,6 +463,7 @@ void GIT_Engine::list_commits_for_branch(git_repository* repo_, const CString& r
 		//printf("'%.*s' by %s <%s>\n", strlen(commit_message) - 1, commit_message, commit_author->name, commit_author->email);
 
 		git_commit_free(commit);
+		//git_repository_free(repo);
 	}
 
 	//git_oid oid_out;
@@ -475,6 +500,7 @@ struct opts {
 
 void get_status_entries(git_status_list *status, Working_Dir*const workingDir)
 {
+	//here git_status_list_entrycount is sensitive to .gitignore
 	size_t i, maxi = git_status_list_entrycount(status);
 	const git_status_entry *s;
 	for (i = 0; i < maxi; ++i)
@@ -641,7 +667,7 @@ Working_Dir GIT_Engine::list_files_in_working_dir(const CString& pathName)
 		o.statusopt.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
 		o.statusopt.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED |
 			GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX |
-			GIT_STATUS_OPT_SORT_CASE_SENSITIVELY;
+			GIT_STATUS_OPT_SORT_CASE_SENSITIVELY | GIT_INDEX_ADD_FORCE;
 		o.repodir = strStd_path_name.c_str();
 		git_status_list_new(&status, repo, &o.statusopt);
 		Working_Dir working_dir(pathName);
@@ -723,7 +749,7 @@ void GIT_Engine::get_commits_for_branches(const CString & repo_path, std::map<CS
 	for (const auto& branch : local_branches)
 	{
 		local_commits.clear();
-		GIT_Engine::list_commits_for_branch(repo, repo_path, branch, local_commits);
+		GIT_Engine::list_commits_for_branch(/*repo, */repo_path, branch, local_commits);
 		branchCommits.insert(std::make_pair(branch, local_commits));
 	}
 	git_repository_free(repo);
