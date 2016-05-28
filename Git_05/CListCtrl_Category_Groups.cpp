@@ -9,6 +9,7 @@ BEGIN_MESSAGE_MAP(CListCtrl_Category_Groups, CListCtrl)
 	ON_WM_CONTEXTMENU()	// OnContextMenu
 	ON_WM_LBUTTONDBLCLK()
 	ON_NOTIFY_REFLECT(NM_CLICK, OnClick)
+	
 	ON_WM_CREATE()
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
 	ON_NOTIFY_REFLECT_EX(LVN_COLUMNCLICK, OnHeaderClick)	// Column Click
@@ -1080,6 +1081,7 @@ void CListCtrl_Category_Groups::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	//GetItemState(0)
 	//SetItemState(1, LVIS_SELECTED, LVIS_SELECTED);
+	
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	 auto item = pNMListView->iItem;
 	 bool isChecked = GetCheck(item);

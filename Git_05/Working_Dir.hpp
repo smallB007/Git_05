@@ -20,14 +20,14 @@ public:
 		if (nullptr != original.head_to_index)
 		{
 			head_to_index = std::make_shared<git_diff_delta>(*original.head_to_index);
-			char* old_file = new char[strlen(original.index_to_workdir->old_file.path) + 1];
-			strcpy(old_file, original.index_to_workdir->old_file.path);
-			index_to_workdir->old_file.path = old_file;
+			char* old_file = new char[strlen(original.head_to_index->old_file.path) + 1];
+			strcpy(old_file, original.head_to_index->old_file.path);
+			head_to_index->old_file.path = old_file;
 			new_old_paths.push_back(std::make_shared<char*>(old_file));
 
-			char* new_file = new char[strlen(original.index_to_workdir->new_file.path) + 1];
-			strcpy(new_file, original.index_to_workdir->new_file.path);
-			index_to_workdir->new_file.path = new_file;
+			char* new_file = new char[strlen(original.head_to_index->new_file.path) + 1];
+			strcpy(new_file, original.head_to_index->new_file.path);
+			head_to_index->new_file.path = new_file;
 			new_old_paths.push_back(std::make_shared<char*>(new_file));
 			
 		}
