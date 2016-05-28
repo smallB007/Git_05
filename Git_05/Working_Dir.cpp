@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Working_Dir.hpp"
 
-#include <boost/filesystem.hpp>
-using namespace boost;
-using namespace boost::filesystem;
+
 
 Working_Dir::Working_Dir(const CString& pathName) :path_name_{pathName}
 {
@@ -28,15 +26,15 @@ std::map<git_status_t, std::vector<git_05_status_entry>> Working_Dir::get_sorted
 
 
 
-static void list_files(const path& dir, std::vector<path>*const files)
+void Working_Dir::list_files(const path& no_dot_git_dir, std::vector<path>*const files)const
 {
-	if (!is_directory(dir))
+	if (!is_directory(no_dot_git_dir))
 	{
-		files->push_back(dir);
+		files->push_back(no_dot_git_dir);
 	}
 	else
 	{
-		for (auto beg = directory_iterator(dir), end = directory_iterator(); beg != end; ++beg)
+		for (auto beg = directory_iterator(no_dot_git_dir), end = directory_iterator(); beg != end; ++beg)
 		{
 			if (!is_directory(*beg))
 			{
@@ -50,7 +48,7 @@ static void list_files(const path& dir, std::vector<path>*const files)
 	}
 }
 
-static std::string remove_dot_git(const CString& repoPath)
+std::string Working_Dir::remove_dot_git(const CString& repoPath)const
 {
 	CT2CA pszConvertedAnsiString(repoPath);
 	std::string path_no_dot_git (pszConvertedAnsiString);
@@ -85,4 +83,9 @@ std::map<git_status_t, std::vector<CString>> Working_Dir::get_sorted_files()cons
 	}
 
 	return result;
+}
+
+std::vector<git_05_status_entry> Working_Dir::get_entries()const
+{
+	return status_entries_;
 }

@@ -49,6 +49,6 @@ public:
 	static void create_initial_commit(git_repository *repo);
 	static void create_commit(const CString& repoPath, const CString& branch, const std::set<CString>& checkedFiles, const CString& commitMsg);
 	static Working_Dir list_files_in_working_dir(const CString& pathName);
-
+	static void parse_status(git_status_list *status);
 };
 

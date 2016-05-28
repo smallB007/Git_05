@@ -114,10 +114,10 @@ BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 	{
 		auto _title = m_DataModel.GetColTitle(col);
 		CString title( _title.c_str() );
-		m_ListCtrl.InsertColumn(col, title, LVCFMT_LEFT, 100);
+		m_ListCtrl.InsertColumn(col, title, LVCFMT_LEFT, 300);
 		m_ListCtrl.InsertColumn(col, L"HiddenFilename", LVCFMT_LEFT, 100);
-		m_ListCtrl.InsertColumn(col, L"HiddenStatus", LVCFMT_LEFT, 100);
-		m_ListCtrl.InsertColumn(col, L"HiddenState", LVCFMT_LEFT, 100);
+		m_ListCtrl.InsertColumn(col, L"HiddenStatus", LVCFMT_LEFT, 300);
+		m_ListCtrl.InsertColumn(col, L"HiddenState", LVCFMT_LEFT, 500);
 	}
 	//m_ListCtrl.SetTilesViewLinesCount(1);
 // 	m_ListCtrl.SetTilesViewLinesCount(1);
@@ -167,6 +167,7 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 // 		++nItem;
 	}
 	m_ListCtrl.GroupByColumn(0);
+	m_ListCtrl.AdjustColumnWidth();
 	//the below disables headers
 	//m_ListCtrl.ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON | LVS_SORTASCENDING/* | LVS_REPORT*/);
 	//m_ListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT | LVS_EX_CHECKBOXES);
@@ -255,7 +256,11 @@ void CListCtrl_Category_GroupsDlg::OnBnClickedCommit()
 	{
 		CMainFrame* main_frame_p = static_cast<CMainFrame*>(m_pParentWnd);
 		main_frame_p->begin_create_commit(std::move(checked_files),commit_msg);
-
 	}
 	// TODO: Add your control notification handler code here
+}
+
+void CListCtrl_Category_GroupsDlg::populate_view(const Working_Dir&& workingDir)
+{
+	m_DataModel.fill_model(std::forward<const Working_Dir>(workingDir));
 }

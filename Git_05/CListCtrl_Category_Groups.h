@@ -11,7 +11,7 @@ class CListCtrl_Category_Groups : public CListCtrl
 public:
 	~CListCtrl_Category_Groups()
 	{
-		int a{0};
+		//int a{0};
 	}
 	CListCtrl_Category_Groups()
 		:m_SortCol(-1)
@@ -56,6 +56,8 @@ public:
 
 	BOOL SetTilesViewLinesCount(int nCount);
 	BOOL SetItemTileLines(int nItem, UINT* parrColumns, UINT nCount);
+	int GetColumnCount();
+	void AdjustColumnWidth();
 protected:
 	virtual void PreSubclassWindow();
 

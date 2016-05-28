@@ -98,6 +98,9 @@
     <ClCompile Include="ListCtrl_Category_GroupsDlg.cpp">
       <Filter>Current</Filter>
     </ClCompile>
+    <ClCompile Include="CListCtrl_DataModel.cpp">
+      <Filter>Current</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">

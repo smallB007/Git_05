@@ -237,7 +237,7 @@ std::set<CString> CListCtrl_Category_Groups::get_checked_items()
 				lvitem.iItem = nRow;
 				auto an_item = GetItemText(nRow, 0);
 				checked_items.insert(an_item);
-				int a{ 0 };
+			//	int a{ 0 };
 			}
 		}
 	}
@@ -599,6 +599,7 @@ void CListCtrl_Category_Groups::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CListCtrl_Category_Groups::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
+	//http://www.codeproject.com/Articles/79/Neat-Stuff-to-Do-in-List-Controls-Using-Custom-Dra
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
 	// Take the default processing unless we 
 	// set this to something else below.
@@ -651,7 +652,7 @@ void CListCtrl_Category_Groups::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			COLORREF crText = logic_brush_.lbColor;
 			pLVCD->clrTextBk = crText;
 			pLVCD->clrFace = crText;
-			pLVCD->iIconEffect = 0;//no effect
+			//pLVCD->iIconEffect = 0;//no effect
 		}
 		else
 		{
@@ -1082,26 +1083,27 @@ void CListCtrl_Category_Groups::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	 auto item = pNMListView->iItem;
 	 bool isChecked = GetCheck(item);
-	*pResult = 0;
-
-	if (pNMListView->uOldState == 0 && pNMListView->uNewState == 0)
-		return;    // No change
-
-
-						 // Old check box state
-	BOOL bPrevState = (BOOL)(((pNMListView->uOldState &
-		LVIS_STATEIMAGEMASK) >> 12) - 1);
-	if (bPrevState < 0)    // On startup there's no previous state 
-		bPrevState = 0; // so assign as false (unchecked)
-
-						// New check box state
-	BOOL bChecked =
-		(BOOL)(((pNMListView->uNewState & LVIS_STATEIMAGEMASK) >> 12) - 1);
-	if (bChecked < 0) // On non-checkbox notifications assume false
-		bChecked = 0;
-
-	if (bPrevState == bChecked) // No change in check box
-		return;
+	 SetCheck(item,!isChecked);
+	//*pResult = 0;
+	//
+	//if (pNMListView->uOldState == 0 && pNMListView->uNewState == 0)
+	//	return;    // No change
+	//
+	//
+	//					 // Old check box state
+	//BOOL bPrevState = (BOOL)(((pNMListView->uOldState &
+	//	LVIS_STATEIMAGEMASK) >> 12) - 1);
+	//if (bPrevState < 0)    // On startup there's no previous state 
+	//	bPrevState = 0; // so assign as false (unchecked)
+	//
+	//					// New check box state
+	//BOOL bChecked =
+	//	(BOOL)(((pNMListView->uNewState & LVIS_STATEIMAGEMASK) >> 12) - 1);
+	//if (bChecked < 0) // On non-checkbox notifications assume false
+	//	bChecked = 0;
+	//
+	//if (bPrevState == bChecked) // No change in check box
+	//	return;
 	
 }
 
@@ -1110,4 +1112,25 @@ BOOL CListCtrl_Category_Groups::OnDrag(NMHDR* pNMHDR, LRESULT* pResult)
 	
 
 	return FALSE;
+}
+
+void CListCtrl_Category_Groups::AdjustColumnWidth()
+{
+	SetRedraw(FALSE);
+	int nColumnCount = GetColumnCount();
+
+	for (int i = 0; i < nColumnCount; i++)
+	{
+		SetColumnWidth(i, LVSCW_AUTOSIZE);
+		int nColumnWidth = GetColumnWidth(i);
+		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+		int nHeaderWidth = GetColumnWidth(i);
+		SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+	}
+	SetRedraw(TRUE);
+}
+int CListCtrl_Category_Groups::GetColumnCount()
+{
+	CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
+	return (pHeaderCtrl->GetItemCount());
 }

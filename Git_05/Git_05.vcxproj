@@ -248,6 +248,7 @@
   <ItemGroup>
     <ClCompile Include="BackStagePageInfo.cpp" />
     <ClCompile Include="CListCtrl_Category_Groups.cpp" />
+    <ClCompile Include="CListCtrl_DataModel.cpp" />
     <ClCompile Include="Commit_dlg.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DUtility.cpp" />

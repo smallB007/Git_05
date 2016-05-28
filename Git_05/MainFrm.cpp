@@ -674,17 +674,21 @@ void CMainFrame::OnCbn_Git_View_Repo_SelchangeCombo()
 	auto item = repo_view_cmb->GetItem(ix);
 	set_info_for_working_dir_(item);
 }
-#include "Commit_dlg.h"
+//#include "Commit_dlg.h"
 #include "ListCtrl_Category_GroupsDlg.h"
 void CMainFrame::OnCommit()
 {
 	//std::unique_ptr<Commit_dlg> commit_dlg = std::make_unique<Commit_dlg>();
 	//commit_dlg->DoModal();
-
+	auto repo_path = get_current_repo();
+	Working_Dir files_in_working_dir = GIT_Engine::list_files_in_working_dir(repo_path);
 	CListCtrl_Category_GroupsDlg dlg(this);
+	dlg.populate_view(std::move(files_in_working_dir));
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
+		//:AC:commit is made from inside OnCommit handler in dlg
+
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with OK
 		//auto commit_data = dlg.get_commit_data();

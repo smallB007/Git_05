@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <set>
+#include <vector>
 
+#include "Working_Dir.hpp"
 
 struct CListCtrl_DataRecord
 {
@@ -12,7 +14,7 @@ struct CListCtrl_DataRecord
 													  const std::string& state/*added,deleted,modified*/)
 		:
 		file_name_(fileName)
-		,status_ {status}
+		,status_{status}
 		,state_{state}
 	{}
 
@@ -58,18 +60,18 @@ public:
 	void InitDataModel()
 	{
 		m_Records.clear();
-		m_Records.push_back( CListCtrl_DataRecord("list.cpp", "Staged", "added") );
-		m_Records.push_back( CListCtrl_DataRecord("alist.cpp", "Staged", "added") );
-		m_Records.push_back( CListCtrl_DataRecord("blist.cpp", "Ignored", "added") );
-		m_Records.push_back( CListCtrl_DataRecord("clist.cpp", "Staged", "modified") );
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back( CListCtrl_DataRecord("list.cpp", "Staged", "added") );
+		//m_Records.push_back( CListCtrl_DataRecord("alist.cpp", "Staged", "added") );
+		//m_Records.push_back( CListCtrl_DataRecord("blist.cpp", "Ignored", "added") );
+		//m_Records.push_back( CListCtrl_DataRecord("clist.cpp", "Staged", "modified") );
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 
 		//if (m_RowMultiplier > 1)
 		//{
@@ -81,6 +83,7 @@ public:
 		//	}
 		//}
 	}
+	void fill_model(const Working_Dir& workingDir);
 
 	const std::string& GetCellText(size_t lookupId, int col) const
 	{
@@ -117,7 +120,7 @@ public:
 		return CListCtrl_DataRecord().GetCellText(col, true); 
 	}
 
-	vector<CListCtrl_DataRecord> GetRecords()const
+	std::vector<CListCtrl_DataRecord> GetRecords()const
 	{
 		return m_Records; 
 	}

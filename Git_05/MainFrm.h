@@ -3,6 +3,7 @@
 
 
 #pragma once
+#include <set>
 #include "WorkSpaceBar3.h"
 #include "WorkSpaceBar4.h"
 #include "OutputBar.h"

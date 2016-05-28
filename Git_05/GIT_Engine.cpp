@@ -510,7 +510,7 @@ void get_status_entries(git_status_list *status, Working_Dir*const workingDir)
 	}
 }
 
-static void print_long(git_status_list *status, Working_Dir*const workingDir)
+void GIT_Engine::parse_status(git_status_list *status/*, Working_Dir*const workingDir*/)
 {
 	size_t i, maxi = git_status_list_entrycount(status);
 	const git_status_entry *s;

@@ -4,12 +4,13 @@
 #pragma once
 #include "resource.h"
 #include "afxcmn.h"
+#include "afxwin.h"
 
 #include "CListCtrl_Category_Groups.h"
 #include "CListCtrl_DataModel.h"
 
-#include "GIT_Commit_Data.hpp"
-#include "afxwin.h"
+//#include "GIT_Commit_Data.hpp"
+#include "Working_Dir.hpp"
 
 // CListCtrl_Category_GroupsDlg dialog
 class CListCtrl_Category_GroupsDlg : public CDialog
@@ -44,6 +45,7 @@ private:
 	private:
 		//std::set<CString> get_selected_files_();
 public:
+	void populate_view(const Working_Dir&& workingDir);
 private:
 	CEdit commit_header_edt_;
 	CEdit commit_body_edt_;
