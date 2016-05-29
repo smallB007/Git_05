@@ -46,7 +46,15 @@ private:
 		//std::set<CString> get_selected_files_();
 public:
 	void populate_view(const Working_Dir&& workingDir);
+	//void setBranchName(const CString& branchName);
 private:
 	CEdit commit_header_edt_;
 	CEdit commit_body_edt_;
+	CStatic branch_name_;
+public:
+	afx_msg void OnClickList1(NMHDR *pNMHDR, LRESULT *pResult);
+private:
+	CStatic origin_branch;
+public:
+	afx_msg void OnBnClickedMfcmenubutton1();
 };

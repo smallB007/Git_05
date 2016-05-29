@@ -681,8 +681,10 @@ void CMainFrame::OnCommit()
 	//std::unique_ptr<Commit_dlg> commit_dlg = std::make_unique<Commit_dlg>();
 	//commit_dlg->DoModal();
 	auto repo_path = get_current_repo();
+	
 	Working_Dir files_in_working_dir = GIT_Engine::list_files_in_working_dir(repo_path);
 	CListCtrl_Category_GroupsDlg dlg(this);
+	//dlg.setBranchName(branch);
 	dlg.populate_view(std::move(files_in_working_dir));
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

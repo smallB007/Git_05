@@ -4,7 +4,7 @@
 #include "stdafx.h"
 //#include "ListCtrl_Category_GroupsApp.h"
 #include "ListCtrl_Category_GroupsDlg.h"
-
+#include "MainFrm.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -49,6 +49,7 @@ CListCtrl_Category_GroupsDlg::CListCtrl_Category_GroupsDlg(CWnd* pParent /*=NULL
 	: CDialog(CListCtrl_Category_GroupsDlg::IDD, pParent)
 {
 	//m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	
 }
 
 void CListCtrl_Category_GroupsDlg::DoDataExchange(CDataExchange* pDX)
@@ -57,6 +58,8 @@ void CListCtrl_Category_GroupsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ListCtrl);
 	DDX_Control(pDX, IDC_EDIT2, commit_header_edt_);
 	DDX_Control(pDX, IDC_EDIT1, commit_body_edt_);
+	DDX_Control(pDX, IDC_BRANCH_NAME, branch_name_);
+	DDX_Control(pDX, IDC_ORIGIN_BRANCH, origin_branch);
 }
 
 BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
@@ -66,6 +69,8 @@ BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
 	//}}AFX_MSG_MAP
 	
 	ON_BN_CLICKED(ID_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClickedCommit)
+	ON_NOTIFY(NM_CLICK, IDC_LIST1, &CListCtrl_Category_GroupsDlg::OnClickList1)
+	ON_BN_CLICKED(IDC_MFCMENUBUTTON1, &CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1)
 END_MESSAGE_MAP()
 
 
@@ -80,6 +85,7 @@ BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_RED));
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_BW));
 	m_ListCtrl.SetImageList(&m_cImageListNormal, LVSIL_SMALL);
+	m_ListCtrl.SetBkColor(CLR_NONE);
 	// 		
 	/*m_ListCtrl.InsertColumn(0, _T("Repo name"), LVCFMT_CENTER, -1, 0);*/
 	// Add "About..." menu item to system menu.
@@ -171,6 +177,9 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 	//the below disables headers
 	//m_ListCtrl.ModifyStyle(LVS_TYPEMASK, LVS_SMALLICON | LVS_SORTASCENDING/* | LVS_REPORT*/);
 	//m_ListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_TRACKSELECT | LVS_EX_BORDERSELECT | LVS_EX_CHECKBOXES);
+	auto main_frame_p = static_cast<CMainFrame*>(m_pParentWnd);
+	auto branchName = main_frame_p->get_current_branch();
+	branch_name_.SetWindowText(branchName);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -241,7 +250,7 @@ HCURSOR CListCtrl_Category_GroupsDlg::OnQueryDragIcon()
 // }
 
 //#include "GIT_Engine.hpp"
-#include "MainFrm.h"
+
 void CListCtrl_Category_GroupsDlg::OnBnClickedCommit()
 {
 	CDialog::OnOK();
@@ -259,8 +268,28 @@ void CListCtrl_Category_GroupsDlg::OnBnClickedCommit()
 	}
 	// TODO: Add your control notification handler code here
 }
-
+// void CListCtrl_Category_GroupsDlg::setBranchName(const CString& branchName)
+// {
+// 	auto pWnd = GetDlgItem(IDC_BRANCH_NAME);
+// 	if (pWnd)
+// 	{
+// 		SetDlgItemText(IDC_BRANCH_NAME, L"Hello");
+// 	}
+// }
 void CListCtrl_Category_GroupsDlg::populate_view(const Working_Dir&& workingDir)
 {
 	m_DataModel.fill_model(std::forward<const Working_Dir>(workingDir));
+}
+
+void CListCtrl_Category_GroupsDlg::OnClickList1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+
+void CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1()
+{
+	// TODO: Add your control notification handler code here
 }

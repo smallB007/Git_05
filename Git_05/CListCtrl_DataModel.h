@@ -62,12 +62,12 @@ public:
 		m_Records.clear();
 		//m_Records.push_back( CListCtrl_DataRecord("list.cpp", "Staged", "added") );
 		//m_Records.push_back( CListCtrl_DataRecord("alist.cpp", "Staged", "added") );
-		//m_Records.push_back( CListCtrl_DataRecord("blist.cpp", "Ignored", "added") );
-		//m_Records.push_back( CListCtrl_DataRecord("clist.cpp", "Staged", "modified") );
-		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
-		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		m_Records.push_back( CListCtrl_DataRecord("blist.cpp", "Ignored", "added") );
+		m_Records.push_back( CListCtrl_DataRecord("clist.cpp", "Staged", "modified") );
+		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
+		m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 		//m_Records.push_back(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));

@@ -657,8 +657,8 @@ void CListCtrl_Category_Groups::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 		else
 		{
-			//pLVCD->clrTextBk = background_color_;
-			//pLVCD->clrFace = background_color_;
+			pLVCD->clrTextBk = background_color_;
+			pLVCD->clrFace = background_color_;
 		}
 		*pResult = CDRF_NOTIFYPOSTPAINT;
 	}

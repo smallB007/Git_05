@@ -97,6 +97,11 @@
 #define IDC_EDIT2                       1124
 #define IDC_LIST1                       1125
 #define ID_COMMIT                       1126
+#define IDC_BRANCH_NAME                 1127
+#define IDC_ORIGIN_BRANCH               1128
+#define IDC_MFCBUTTON1                  1129
+#define IDC_MFCBUTTON2                  1130
+#define IDC_MFCMENUBUTTON1              1131
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -151,9 +156,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        198
+#define _APS_NEXT_RESOURCE_VALUE        199
 #define _APS_NEXT_COMMAND_VALUE         32871
-#define _APS_NEXT_CONTROL_VALUE         1127
+#define _APS_NEXT_CONTROL_VALUE         1132
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif
