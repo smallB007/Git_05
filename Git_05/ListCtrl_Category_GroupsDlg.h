@@ -46,7 +46,8 @@ private:
 		//std::set<CString> get_selected_files_();
 public:
 	void populate_view(const Working_Dir&& workingDir);
-	
+	git_delta_t get_item_state(const CString& file_name);
+	CString get_item_status_(const CString& fileName);
 	//void setBranchName(const CString& branchName);
 private:
 	CEdit commit_header_edt_;

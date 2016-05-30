@@ -518,6 +518,28 @@ IDI_GIT_BW              ICON                    "res\\Git_Icon_BW.ico"
 
 IDI_GIT_RED             ICON                    "res\\Git_Icon_Red.ico"
 
+IDI_ADDED               ICON                    "res\\commit_file_status_icons\\Added_256x256.ico"
+
+IDI_CONFLICTED          ICON                    "res\\commit_file_status_icons\\Conflicted_256x256.ico"
+
+IDI_COPIED              ICON                    "res\\commit_file_status_icons\\Copied_256x256.ico"
+
+IDI_DELETED             ICON                    "res\\commit_file_status_icons\\Deleted_256x256.ico"
+
+IDI_IGNORED             ICON                    "res\\commit_file_status_icons\\Ignored_256x256.ico"
+
+IDI_MODIFIED            ICON                    "res\\commit_file_status_icons\\Modified_256x256.ico"
+
+IDI_RENAMED             ICON                    "res\\commit_file_status_icons\\Renamed_256x256.ico"
+
+IDI_TYPECHANGE          ICON                    "res\\commit_file_status_icons\\Typechange_256x256.ico"
+
+IDI_UNMODIFIED          ICON                    "res\\commit_file_status_icons\\Unmodified_256x256.ico"
+
+IDI_UNREADABLE          ICON                    "res\\commit_file_status_icons\\Unreadable_256x256.ico"
+
+IDI_UNTRACKED           ICON                    "res\\commit_file_status_icons\\Untracked_256x256.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -554,7 +576,7 @@ BEGIN
     CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,25,89,414,165
     LTEXT           "This branch is ahead of:",IDC_STATIC,21,34,78,8
     LTEXT           "origin/branch_name by 2 commits",IDC_ORIGIN_BRANCH,103,34,332,8,SS_WORDELLIPSIS
-    CONTROL         "Add",IDC_MFCMENUBUTTON1,"MfcMenuButton",WS_TABSTOP,156,56,80,14, BS_FLAT
+    CONTROL         "Add",IDC_MFCMENUBUTTON1,"MfcMenuButton",WS_TABSTOP,156,56,80,14,0x8000L
     PUSHBUTTON      "Button1",IDC_BUTTON1,29,74,50,14
 END
 

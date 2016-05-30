@@ -75,15 +75,31 @@ END_MESSAGE_MAP()
 
 
 // CListCtrl_Category_GroupsDlg message handlers
+git_delta_t CListCtrl_Category_GroupsDlg::get_item_state(const CString& fileName)
+{
+	return m_ListCtrl.get_item_state(fileName);
+}
+CString CListCtrl_Category_GroupsDlg::get_item_status_(const CString& fileName)
+{
+	return m_ListCtrl.get_item_status(fileName);
+}
 
 BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	CWinApp* pApp = AfxGetApp();
 	VERIFY(m_cImageListNormal.Create(20, 20, ILC_COLOR32, 0, 0));
-	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_GREEN));
-	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_RED));
-	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_BW));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_UNMODIFIED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_ADDED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_DELETED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_MODIFIED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_RENAMED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_COPIED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_IGNORED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_UNTRACKED));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_TYPECHANGE));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_UNREADABLE));
+	m_cImageListNormal.Add(pApp->LoadIcon(IDI_CONFLICTED));
 	m_ListCtrl.SetImageList(&m_cImageListNormal, LVSIL_SMALL);
 	m_ListCtrl.SetBkColor(CLR_NONE);
 	m_ListCtrl.set_data_model(&m_DataModel);//so we can retrieve status of a file Staged, unstaged etc.
@@ -150,8 +166,9 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 		//rowId = m_ListCtrl.InsertItem(++rowId, value,0);
 		//m_ListCtrl.SetItemData(rowId, rowId);
 		auto file_name = records[rowId].file_name_;
-		CString c_file_name(file_name/*.c_str()*/);
-		m_ListCtrl.InsertItem(rowId, c_file_name, 0);
+		//CString c_file_name(file_name/*.c_str()*/);
+		git_delta_t image_inx = get_item_state(file_name);
+		m_ListCtrl.InsertItem(rowId, file_name, image_inx);
 		//cnt = m_ListCtrl.GetItemCount();
 		//auto _status = records[rowId].status_;
 		//CString c_status(_status.c_str());

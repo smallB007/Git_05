@@ -45,6 +45,18 @@
 #define IDI_GREEN_RED                   195
 #define IDI_GIT_RED                     195
 #define IDD_LISTCTRL_CATEGORY_GROUPS_DIALOG 196
+#define IDI_ADDED                       199
+#define IDI_CONFLICTED                  200
+#define IDI_COPIED                      201
+#define IDI_DELETED                     202
+#define IDI_IGNORED                     203
+#define IDI_MODIFIED                    204
+#define IDI_RENAMED                     205
+#define IDI_ICON9                       206
+#define IDI_TYPECHANGE                  206
+#define IDI_UNMODIFIED                  207
+#define IDI_UNREADABLE                  208
+#define IDI_UNTRACKED                   209
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -156,7 +168,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        199
+#define _APS_NEXT_RESOURCE_VALUE        210
 #define _APS_NEXT_COMMAND_VALUE         32871
 #define _APS_NEXT_CONTROL_VALUE         1132
 #define _APS_NEXT_SYMED_VALUE           117

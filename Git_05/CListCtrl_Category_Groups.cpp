@@ -369,10 +369,16 @@ namespace {
 	}
 }
 #include "CListCtrl_DataModel.h"
-CString CListCtrl_Category_Groups::get_item_status_(const CString& fileName)
+git_delta_t CListCtrl_Category_Groups::get_item_state(const CString& fileName)
+{
+	return m_DataModel_->get_item_state(fileName);
+}
+CString CListCtrl_Category_Groups::get_item_status(const CString& fileName)
 {
 	return m_DataModel_->get_item_status(fileName);
 }
+
+
 
 BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 {
@@ -398,7 +404,7 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 		{
 			//CString cellText = GetItemText(nRow, 1);//Staged, Untracked etc
 
-			CString cellText = get_item_status_(GetItemText(nRow, 0));//Staged, Untracked etc
+			CString cellText = get_item_status(GetItemText(nRow, 0));//Staged, Untracked etc
 			int nGroupId = groups.FindKey(cellText);
 			if (nGroupId==-1)
 			{

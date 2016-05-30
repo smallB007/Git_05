@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CListCtrl_DataModel.h"
 #include "CString_Utils.h"
+//statics
+
 //m_Records.push_back(CListCtrl_DataRecord("list.cpp", L"Staged", L"added"));
 
 //entry.status
@@ -38,15 +40,15 @@
 void CListCtrl_DataModel::fill_model(const Working_Dir& workingDir)
 {
 	std::vector<git_05_status_entry> sorted_files = workingDir.get_entries();
-	CString state;
-	CString the_status;
+	git_delta_t state;//added, modified etc
+	CString the_status;//staged, unstaged etc
 	CString file_name;
 // 	int header = 0, changes_in_index = 0;
 // 	int changed_in_workdir = 0, rm_in_workdir = 0;
 
 	for (const auto& entry : sorted_files)
 	{
-		file_name = entry.index_to_workdir->new_file.path;
+		state = entry.index_to_workdir->status;;
 		switch (entry.status)
 		{
 
@@ -55,59 +57,60 @@ void CListCtrl_DataModel::fill_model(const Working_Dir& workingDir)
 
 		case GIT_STATUS_INDEX_NEW:
 		{
-			state = L"new file";
+		//	state = L"new file";
 			the_status = L"Changes staged for commit";
 		}
 			break;
 		case GIT_STATUS_INDEX_MODIFIED:
 		{
-			state = L"modified";
+			//state = L"modified";
 			the_status = L"Changes staged for commit";
 		}
 				break;
 		case GIT_STATUS_INDEX_DELETED:
-				state = L"deleted";
+			//	state = L"deleted";
 				the_status = L"Changes staged for commit";
 				break;
 		case GIT_STATUS_INDEX_RENAMED:
-				state = L"renamed";
+		//		state = L"renamed";
 				the_status = L"Changes staged for commit";
 				break;
 		case GIT_STATUS_INDEX_TYPECHANGE:
-				state = L"typechange";
+			//	state = L"typechange";
 				the_status = L"Changes staged for commit";
 				break;
 		//those above will be files staged for a commit
 
 			//those below will be files not staged for a commit
 		case GIT_STATUS_WT_MODIFIED:
-				state = L"modified";
+			//	state = L"modified";
 				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_DELETED:
-				state = L"deleted";
+			//	state = L"deleted";
 				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_RENAMED:
-				state = L"renamed";
+		//		state = L"renamed";
 				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_TYPECHANGE:
-				state = L"typechange";
+			//	state = L"typechange";
 				the_status = L"Changes not staged for commit";
 				break;
 			//those below will be files which are untracked
 		case GIT_STATUS_WT_NEW:
-				state = L"untracked";
+		//		state = L"untracked";
 				the_status = L"Untracked";
 				break;
 			//those below will be files ignored
 		case GIT_STATUS_IGNORED:
-				state = L"ignored";
+		//		state = L"ignored";
 				the_status = L"Ignored";
 				break;
 		}
 		
+		file_name = entry.index_to_workdir->new_file.path;
 		std::vector<path> files;
 		std::string no_dot_git_path = workingDir.remove_dot_git(workingDir.get_path_name());
 		CT2CA pszConvertedAnsiString(file_name);
@@ -138,4 +141,18 @@ CString CListCtrl_DataModel::get_item_status(const CString& fileName)
 		}
 	}
 	return file_status;
+}
+
+git_delta_t CListCtrl_DataModel::get_item_state(const CString& fileName)
+{
+	git_delta_t item_state;
+	for (const auto& record : m_Records)
+	{
+		if (record.file_name_ == fileName)
+		{
+			item_state = record.get_file_state();
+			break;
+		}
+	}
+	return item_state;
 }

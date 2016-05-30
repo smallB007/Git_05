@@ -11,8 +11,10 @@ class CListCtrl_Category_Groups : public CListCtrl
 	CBrush brush_background_;
 	LOGBRUSH logic_brush_;
 	CListCtrl_DataModel* m_DataModel_;//read only
-	CString get_item_status_(const CString& fileName);
+	
 public:
+	git_delta_t get_item_state(const CString& fileName);
+	CString get_item_status(const CString& fileName);
 	void set_data_model(CListCtrl_DataModel* dataModel)
 	{
 		m_DataModel_ = dataModel;

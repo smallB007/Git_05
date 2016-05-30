@@ -2,16 +2,25 @@
 #include <string>
 #include <set>
 #include <vector>
-
+#include <map>
 #include "Working_Dir.hpp"
 
-struct CListCtrl_DataRecord
-{
-	CListCtrl_DataRecord()
-	{}
 
+
+class CListCtrl_DataRecord
+{
+private:
+	
+	
+
+
+
+	
+	//CListCtrl_DataRecord()
+	//{}
+public:
 	CListCtrl_DataRecord(const CString& fileName, const CString& status/*Staged,Unstaged,Untracked,Ignored*/,
-													  const CString& state/*added,deleted,modified*/)
+		const git_delta_t state/*added,deleted,modified*/)
 		:
 		file_name_(fileName)
 		,status_{status}
@@ -20,7 +29,7 @@ struct CListCtrl_DataRecord
 
 	CString	file_name_;
 	CString	status_;
-	CString state_;
+	git_delta_t state_;
 	//std::string	added_;
 	//std::string	modified_;
 	//std::string	deleted_;
@@ -28,11 +37,13 @@ struct CListCtrl_DataRecord
 	{
 		return file_name_;
 	}
+	
 	const CString get_file_status()const
 	{
 		return status_;
 	}
-	const CString get_file_state()const
+
+	git_delta_t get_file_state()const
 	{
 		return state_;
 	}
@@ -77,14 +88,14 @@ public:
 		InitDataModel();
 	}
 	CString get_item_status(const CString& fileName);
-	
+	git_delta_t get_item_state(const CString& fileName);
 	void InitDataModel()
 	{
 		m_Records.clear();
 		//m_Records.push_back( CListCtrl_DataRecord("list.cpp", "Staged", "added") );
 		//m_Records.push_back( CListCtrl_DataRecord("alist.cpp", "Staged", "added") );
-		m_Records.push_back( CListCtrl_DataRecord(L"blist.cpp", L"Ignored", L"added") );
-		m_Records.push_back( CListCtrl_DataRecord(L"clist.cpp", L"Staged", L"modified") );
+		//m_Records.push_back( CListCtrl_DataRecord(L"blist.cpp", L"Ignored", L"new file") );
+		//m_Records.push_back( CListCtrl_DataRecord(L"clist.cpp", L"Staged", L"modified") );
 		//m_Records.insert(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 		//m_Records.insert(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
 		//m_Records.insert(CListCtrl_DataRecord("xlist.cpp", "Untracked", "deleted"));
