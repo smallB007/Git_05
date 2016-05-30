@@ -85,9 +85,6 @@
     <ClCompile Include="Git_05_ListCtr.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Commit_dlg.cpp">
-      <Filter>Git_05\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Working_Dir.cpp">
       <Filter>Git_05\cpp</Filter>
     </ClCompile>
@@ -200,9 +197,6 @@
       <Filter>BCG\hpp</Filter>
     </ClInclude>
     <ClInclude Include="Git_05_ListCtr.hpp">
-      <Filter>Git_05\hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="Commit_dlg.h">
       <Filter>Git_05\hpp</Filter>
     </ClInclude>
     <ClInclude Include="CString_Utils.h">
@@ -348,6 +342,9 @@
     </Text>
     <Text Include="ToDo_Git_05_App.txt" />
     <Text Include="ToDo_Git_05.txt">
+      <Filter>Git_05</Filter>
+    </Text>
+    <Text Include="Frameworks.txt">
       <Filter>Git_05</Filter>
     </Text>
   </ItemGroup>

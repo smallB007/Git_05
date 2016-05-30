@@ -195,6 +195,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="Frameworks.txt" />
     <Text Include="KB.txt" />
     <Text Include="ReadMe.txt" />
     <Text Include="ToDo.txt" />
@@ -206,7 +207,6 @@
     <ClInclude Include="BackStagePageInfo.h" />
     <ClInclude Include="CListCtrl_Category_Groups.h" />
     <ClInclude Include="CListCtrl_DataModel.h" />
-    <ClInclude Include="Commit_dlg.h" />
     <ClInclude Include="ComHelpers.hpp" />
     <ClInclude Include="ComPtr.hpp" />
     <ClInclude Include="CStringUtilities.h" />
@@ -249,7 +249,6 @@
     <ClCompile Include="BackStagePageInfo.cpp" />
     <ClCompile Include="CListCtrl_Category_Groups.cpp" />
     <ClCompile Include="CListCtrl_DataModel.cpp" />
-    <ClCompile Include="Commit_dlg.cpp" />
     <ClCompile Include="Direct2DRenderer.cpp" />
     <ClCompile Include="Direct2DUtility.cpp" />
     <ClCompile Include="Direct2Handler.cpp" />

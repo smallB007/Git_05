@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CListCtrl_DataModel.h"
 #include "CString_Utils.h"
-//m_Records.push_back(CListCtrl_DataRecord("list.cpp", "Staged", "added"));
+//m_Records.push_back(CListCtrl_DataRecord("list.cpp", L"Staged", L"added"));
 
 //entry.status
 //GIT_STATUS_CURRENT = 0,
@@ -38,9 +38,9 @@
 void CListCtrl_DataModel::fill_model(const Working_Dir& workingDir)
 {
 	std::vector<git_05_status_entry> sorted_files = workingDir.get_entries();
-	std::string state;
-	std::string the_status;
-	std::string file_name;
+	CString state;
+	CString the_status;
+	CString file_name;
 // 	int header = 0, changes_in_index = 0;
 // 	int changed_in_workdir = 0, rm_in_workdir = 0;
 
@@ -55,70 +55,87 @@ void CListCtrl_DataModel::fill_model(const Working_Dir& workingDir)
 
 		case GIT_STATUS_INDEX_NEW:
 		{
-			state = "new file";
-			the_status = "Changes staged for commit";
+			state = L"new file";
+			the_status = L"Changes staged for commit";
 		}
 			break;
 		case GIT_STATUS_INDEX_MODIFIED:
 		{
-			state = "modified";
-			the_status = "Changes staged for commit";
+			state = L"modified";
+			the_status = L"Changes staged for commit";
 		}
 				break;
 		case GIT_STATUS_INDEX_DELETED:
-				state = "deleted";
-				the_status = "Changes staged for commit";
+				state = L"deleted";
+				the_status = L"Changes staged for commit";
 				break;
 		case GIT_STATUS_INDEX_RENAMED:
-				state = "renamed";
-				the_status = "Changes staged for commit";
+				state = L"renamed";
+				the_status = L"Changes staged for commit";
 				break;
 		case GIT_STATUS_INDEX_TYPECHANGE:
-				state = "typechange";
-				the_status = "Changes staged for commit";
+				state = L"typechange";
+				the_status = L"Changes staged for commit";
 				break;
 		//those above will be files staged for a commit
 
 			//those below will be files not staged for a commit
 		case GIT_STATUS_WT_MODIFIED:
-				state = "modified";
-				the_status = "Changes not staged for commit";
+				state = L"modified";
+				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_DELETED:
-				state = "deleted";
-				the_status = "Changes not staged for commit";
+				state = L"deleted";
+				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_RENAMED:
-				state = "renamed";
-				the_status = "Changes not staged for commit";
+				state = L"renamed";
+				the_status = L"Changes not staged for commit";
 				break;
 		case GIT_STATUS_WT_TYPECHANGE:
-				state = "typechange";
-				the_status = "Changes not staged for commit";
+				state = L"typechange";
+				the_status = L"Changes not staged for commit";
 				break;
 			//those below will be files which are untracked
 		case GIT_STATUS_WT_NEW:
-				state = "untracked";
-				the_status = "Untracked";
+				state = L"untracked";
+				the_status = L"Untracked";
 				break;
 			//those below will be files ignored
 		case GIT_STATUS_IGNORED:
-				state = "ignored";
-				the_status = "Ignored";
+				state = L"ignored";
+				the_status = L"Ignored";
 				break;
 		}
 		
 		std::vector<path> files;
 		std::string no_dot_git_path = workingDir.remove_dot_git(workingDir.get_path_name());
-		workingDir.list_files(no_dot_git_path + file_name, &files);
+		CT2CA pszConvertedAnsiString(file_name);
+		// construct a std::string using the LPCSTR input
+		std::string strStd_file_name(pszConvertedAnsiString);
+		workingDir.list_files(no_dot_git_path + strStd_file_name, &files);
 		for (const auto& _file_name: files)
 		{
 			CString fn = normalize_file_name_(_file_name.c_str());
 			CT2CA pszConvertedAnsiString(fn);
 			// construct a std::string using the LPCSTR input
 			std::string std_file_name(pszConvertedAnsiString);
-			m_Records.push_back(CListCtrl_DataRecord(std_file_name, the_status, state));
+			m_Records.push_back(CListCtrl_DataRecord(fn, the_status, state));
 		}
 	}
 
+}
+
+CString CListCtrl_DataModel::get_item_status(const CString& fileName)
+{
+	CString file_status;
+	for (const auto& record : m_Records)
+	{
+		if (record.file_name_ == fileName)
+		{
+			file_status = record.get_file_status();
+			break;
+		}
+	}
+	return file_status;
 }

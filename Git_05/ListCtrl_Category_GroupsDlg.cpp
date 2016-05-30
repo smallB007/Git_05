@@ -86,6 +86,7 @@ BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_GIT_BW));
 	m_ListCtrl.SetImageList(&m_cImageListNormal, LVSIL_SMALL);
 	m_ListCtrl.SetBkColor(CLR_NONE);
+	m_ListCtrl.set_data_model(&m_DataModel);//so we can retrieve status of a file Staged, unstaged etc.
 	// 		
 	/*m_ListCtrl.InsertColumn(0, _T("Repo name"), LVCFMT_CENTER, -1, 0);*/
 	// Add "About..." menu item to system menu.
@@ -118,12 +119,12 @@ BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 	// Create Columns
 	for(int col = 0; col < m_DataModel.GetColCount() ; ++col)
 	{
-		auto _title = m_DataModel.GetColTitle(col);
-		CString title( _title.c_str() );
-		m_ListCtrl.InsertColumn(col, title, LVCFMT_LEFT, 300);
-		m_ListCtrl.InsertColumn(col, L"HiddenFilename", LVCFMT_LEFT, 100);
-		m_ListCtrl.InsertColumn(col, L"HiddenStatus", LVCFMT_LEFT, 300);
-		m_ListCtrl.InsertColumn(col, L"HiddenState", LVCFMT_LEFT, 500);
+		//auto _title = m_DataModel.GetColTitle(col);
+		//CString title( _title.c_str() );
+		m_ListCtrl.InsertColumn(col, L"Hidden", LVCFMT_LEFT, -1);
+		//m_ListCtrl.InsertColumn(col, L"HiddenFilename", LVCFMT_LEFT, 100);
+		//m_ListCtrl.InsertColumn(col, L"HiddenStatus", LVCFMT_LEFT, 300);
+		//m_ListCtrl.InsertColumn(col, L"HiddenState", LVCFMT_LEFT, 500);
 	}
 	//m_ListCtrl.SetTilesViewLinesCount(1);
 // 	m_ListCtrl.SetTilesViewLinesCount(1);
@@ -142,28 +143,28 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 	// Insert data into list-control by copying from datamodel
 	//int nItem = 0;
 	auto records = m_DataModel.GetRecords();
-	auto cnt = m_ListCtrl.GetItemCount();
+	//auto cnt = m_ListCtrl.GetItemCount();
 	for(size_t rowId = 0, end = records.size(); rowId < end; ++rowId)
 	{
 		//CString value( m_DataModel.GetCellText(rowId, 0).c_str() );
 		//rowId = m_ListCtrl.InsertItem(++rowId, value,0);
 		//m_ListCtrl.SetItemData(rowId, rowId);
 		auto file_name = records[rowId].file_name_;
-		CString c_file_name(file_name.c_str());
+		CString c_file_name(file_name/*.c_str()*/);
 		m_ListCtrl.InsertItem(rowId, c_file_name, 0);
-		cnt = m_ListCtrl.GetItemCount();
-		auto _status = records[rowId].status_;
-		CString c_status(_status.c_str());
-		m_ListCtrl.SetItemText(rowId, 1 , c_status);
-		cnt = m_ListCtrl.GetItemCount();
-		auto _state = records[rowId].state_;
-		CString c_state(_state.c_str());
-		m_ListCtrl.SetItemText(rowId, 2,c_state);
-		cnt = m_ListCtrl.GetItemCount();
-		
-		auto fn = m_ListCtrl.GetItemText(rowId, 0);
-		fn = m_ListCtrl.GetItemText(rowId, 1);
-		fn = m_ListCtrl.GetItemText(rowId, 2);
+		//cnt = m_ListCtrl.GetItemCount();
+		//auto _status = records[rowId].status_;
+		//CString c_status(_status.c_str());
+		//m_ListCtrl.SetItemText(rowId, 1 , c_status);
+		//cnt = m_ListCtrl.GetItemCount();
+		//auto _state = records[rowId].state_;
+		//CString c_state(_state.c_str());
+		//m_ListCtrl.SetItemText(rowId, 2,c_state);
+		//cnt = m_ListCtrl.GetItemCount();
+		//
+		//auto fn = m_ListCtrl.GetItemText(rowId, 0);
+		//fn = m_ListCtrl.GetItemText(rowId, 1);
+		//fn = m_ListCtrl.GetItemText(rowId, 2);
 		
 // 		for(int col = 0; col < m_DataModel.GetColCount() ; ++col)
 // 		{

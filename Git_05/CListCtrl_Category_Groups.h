@@ -1,5 +1,7 @@
 #pragma once
 #include <set>
+class CListCtrl_DataModel;
+
 class CListCtrl_Category_Groups : public CListCtrl
 {
 	COLORREF background_color_;// { RGB(200, 200, 200) };
@@ -8,7 +10,13 @@ class CListCtrl_Category_Groups : public CListCtrl
 	CBrush brush_highligth_;
 	CBrush brush_background_;
 	LOGBRUSH logic_brush_;
+	CListCtrl_DataModel* m_DataModel_;//read only
+	CString get_item_status_(const CString& fileName);
 public:
+	void set_data_model(CListCtrl_DataModel* dataModel)
+	{
+		m_DataModel_ = dataModel;
+	}
 	~CListCtrl_Category_Groups()
 	{
 		//int a{0};

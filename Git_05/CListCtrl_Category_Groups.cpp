@@ -368,7 +368,11 @@ namespace {
 		return XPStyle;
 	}
 }
-
+#include "CListCtrl_DataModel.h"
+CString CListCtrl_Category_Groups::get_item_status_(const CString& fileName)
+{
+	return m_DataModel_->get_item_status(fileName);
+}
 
 BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 {
@@ -392,8 +396,9 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 		// Loop through all rows and find possible groups
 		for(int nRow=0, end = GetItemCount(); nRow < end; ++nRow)
 		{
-			CString cellText = GetItemText(nRow, 1);//Staged, Untracked etc
+			//CString cellText = GetItemText(nRow, 1);//Staged, Untracked etc
 
+			CString cellText = get_item_status_(GetItemText(nRow, 0));//Staged, Untracked etc
 			int nGroupId = groups.FindKey(cellText);
 			if (nGroupId==-1)
 			{

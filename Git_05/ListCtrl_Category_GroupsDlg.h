@@ -39,13 +39,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	CListCtrl_Category_Groups m_ListCtrl;
-	CListCtrl_DataModel m_DataModel;
+	CListCtrl_DataModel m_DataModel;//consider moving it to a CListCtrl_Category_Groups
 	CImageList m_cImageListNormal;
 
 	private:
 		//std::set<CString> get_selected_files_();
 public:
 	void populate_view(const Working_Dir&& workingDir);
+	
 	//void setBranchName(const CString& branchName);
 private:
 	CEdit commit_header_edt_;
