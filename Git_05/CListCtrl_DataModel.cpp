@@ -156,3 +156,24 @@ git_delta_t CListCtrl_DataModel::get_item_state(const CString& fileName)
 	}
 	return item_state;
 }
+
+void CListCtrl_DataModel::set_status_to_staged(const std::set<CString>& checkedFiles)
+{
+	for (const auto& _file_name : checkedFiles)
+	{
+		set_item_status_staged_(_file_name);
+	}
+}
+
+void CListCtrl_DataModel::set_item_status_staged_(const CString& fileName)
+{
+	//m_Records.set_file_status_staged(fileName);
+	for (auto& item : m_Records)
+	{
+		if (item.file_name_ == fileName)
+		{
+			item.set_file_status(L"Changes staged for commit");
+			break;
+		}
+	}
+}

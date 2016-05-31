@@ -52,7 +52,6 @@
 #define IDI_IGNORED                     203
 #define IDI_MODIFIED                    204
 #define IDI_RENAMED                     205
-#define IDI_ICON9                       206
 #define IDI_TYPECHANGE                  206
 #define IDI_UNMODIFIED                  207
 #define IDI_UNREADABLE                  208
@@ -68,6 +67,7 @@
 #define IDC_PATH_LABEL                  1043
 #define IDC_BUTTON1                     1044
 #define IDC_ACCOUNT_BUTTON              1044
+#define IDC_ADD_TO_STAGE_BUTTON         1044
 #define IDC_BUTTON2                     1045
 #define IDC_SAVECONFIG_BUTTON           1045
 #define IDC_BUTTON3                     1046

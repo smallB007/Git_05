@@ -56,7 +56,7 @@ void CListCtrl_Category_GroupsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_ListCtrl);
-	DDX_Control(pDX, IDC_EDIT2, commit_header_edt_);
+	//DDX_Control(pDX, IDC_EDIT2, commit_header_edt_);
 	DDX_Control(pDX, IDC_EDIT1, commit_body_edt_);
 	DDX_Control(pDX, IDC_BRANCH_NAME, branch_name_);
 	DDX_Control(pDX, IDC_ORIGIN_BRANCH, origin_branch);
@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
 	ON_BN_CLICKED(ID_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClickedCommit)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, &CListCtrl_Category_GroupsDlg::OnClickList1)
 	ON_BN_CLICKED(IDC_MFCMENUBUTTON1, &CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1)
+	ON_BN_CLICKED(IDC_ADD_TO_STAGE_BUTTON, &CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton)
 END_MESSAGE_MAP()
 
 
@@ -88,7 +89,7 @@ BOOL CListCtrl_Category_GroupsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	CWinApp* pApp = AfxGetApp();
-	VERIFY(m_cImageListNormal.Create(20, 20, ILC_COLOR32, 0, 0));
+	VERIFY(m_cImageListNormal.Create(32, 32, ILC_COLOR32, 0, 0));
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_UNMODIFIED));
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_ADDED));
 	m_cImageListNormal.Add(pApp->LoadIcon(IDI_DELETED));
@@ -269,20 +270,25 @@ HCURSOR CListCtrl_Category_GroupsDlg::OnQueryDragIcon()
 
 //#include "GIT_Engine.hpp"
 
+std::set<CString> CListCtrl_Category_GroupsDlg::get_checked_items()
+{
+	return m_ListCtrl.get_checked_items();
+}
+
 void CListCtrl_Category_GroupsDlg::OnBnClickedCommit()
 {
 	CDialog::OnOK();
 	auto checked_files = m_ListCtrl.get_checked_items();
-	CString msg_header;
-	commit_header_edt_.GetWindowText(msg_header);
+	//CString msg_header;
+	//commit_header_edt_.GetWindowText(msg_header);
 	CString msg_body;
 	commit_body_edt_.GetWindowText(msg_body);
-	CString commit_msg = msg_header + L"\n" + msg_body;
+	//CString commit_msg = msg_header + L"\n" + msg_body;
 
 	if (m_pParentWnd)
 	{
 		CMainFrame* main_frame_p = static_cast<CMainFrame*>(m_pParentWnd);
-		main_frame_p->begin_create_commit(std::move(checked_files),commit_msg);
+		main_frame_p->begin_create_commit(std::move(checked_files),msg_body);
 	}
 	// TODO: Add your control notification handler code here
 }
@@ -310,4 +316,20 @@ void CListCtrl_Category_GroupsDlg::OnClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 void CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1()
 {
 	// TODO: Add your control notification handler code here
+}
+
+
+void CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton()
+{
+	// TODO: Add your control notification handler code here
+	//1.get checked items
+	auto checked_items = get_checked_items();
+	//2.add those items to stage
+	set_status_to_staged_(checked_items);
+	m_ListCtrl.GroupByColumn(0);
+}
+
+void CListCtrl_Category_GroupsDlg::set_status_to_staged_(const std::set<CString>& checkedFiles)
+{
+	m_DataModel.set_status_to_staged(checkedFiles);
 }

@@ -44,13 +44,16 @@ private:
 
 	private:
 		//std::set<CString> get_selected_files_();
+	void set_status_to_staged_(const std::set<CString>& checkedFiles);
 public:
 	void populate_view(const Working_Dir&& workingDir);
 	git_delta_t get_item_state(const CString& file_name);
 	CString get_item_status_(const CString& fileName);
+
+	std::set<CString> get_checked_items();
 	//void setBranchName(const CString& branchName);
 private:
-	CEdit commit_header_edt_;
+	//CEdit commit_header_edt_;
 	CEdit commit_body_edt_;
 	CStatic branch_name_;
 public:
@@ -59,4 +62,5 @@ private:
 	CStatic origin_branch;
 public:
 	afx_msg void OnBnClickedMfcmenubutton1();
+	afx_msg void OnBnClickedAddToStageButton();
 };

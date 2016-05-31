@@ -42,7 +42,10 @@ public:
 	{
 		return status_;
 	}
-
+	void set_file_status(const CString& fileStatus)
+	{
+		status_ = fileStatus;
+	}
 	git_delta_t get_file_state()const
 	{
 		return state_;
@@ -89,6 +92,8 @@ public:
 	}
 	CString get_item_status(const CString& fileName);
 	git_delta_t get_item_state(const CString& fileName);
+	void set_status_to_staged(const std::set<CString>& checkedFiles);
+	void set_item_status_staged_(const CString& fileName);
 	void InitDataModel()
 	{
 		m_Records.clear();
