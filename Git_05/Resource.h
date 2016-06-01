@@ -56,6 +56,8 @@
 #define IDI_UNMODIFIED                  207
 #define IDI_UNREADABLE                  208
 #define IDI_UNTRACKED                   209
+#define IDR_MENU1                       210
+#define IDR_MENU_ADD_FILES_COMMIT       210
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -113,7 +115,7 @@
 #define IDC_ORIGIN_BRANCH               1128
 #define IDC_MFCBUTTON1                  1129
 #define IDC_MFCBUTTON2                  1130
-#define IDC_MFCMENUBUTTON1              1131
+#define IDC_MENU_BUTTON_ADD_FILES_COMMIT 1131
 #define ID_VIEW_TOOLBARS                32771
 #define ID_VIEW_TILE                    32774
 #define ID_VIEW_LARGEICONS              32775
@@ -163,13 +165,19 @@
 #define ID_VIEW_COMMIT                  32868
 #define ID_VIEW_WORKSPACE42             32869
 #define ID_VIEW_WORKSPACE43             32870
+#define ID_ITEM1_SUBITEM1               32871
+#define ID_ITEM1_SUBITEM2               32872
+#define ID_ITEM1_BYSTATUS               32873
+#define ID_ITEM1_BY_STAGE               32874
+#define ID_ITEM1_BYSTAGE                32875
+#define ID_ITEM1_BYTYPE                 32876
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        210
-#define _APS_NEXT_COMMAND_VALUE         32871
+#define _APS_NEXT_RESOURCE_VALUE        211
+#define _APS_NEXT_COMMAND_VALUE         32877
 #define _APS_NEXT_CONTROL_VALUE         1132
 #define _APS_NEXT_SYMED_VALUE           117
 #endif

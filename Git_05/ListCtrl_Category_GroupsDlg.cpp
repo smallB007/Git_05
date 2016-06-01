@@ -60,6 +60,9 @@ void CListCtrl_Category_GroupsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT1, commit_body_edt_);
 	DDX_Control(pDX, IDC_BRANCH_NAME, branch_name_);
 	DDX_Control(pDX, IDC_ORIGIN_BRANCH, origin_branch);
+	DDX_Control(pDX, ID_COMMIT, commit_btn);
+	DDX_Control(pDX, IDC_MENU_BUTTON_ADD_FILES_COMMIT, add_menu_btn_);
+
 }
 
 BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
@@ -70,8 +73,9 @@ BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
 	
 	ON_BN_CLICKED(ID_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClickedCommit)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, &CListCtrl_Category_GroupsDlg::OnClickList1)
-	ON_BN_CLICKED(IDC_MFCMENUBUTTON1, &CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1)
+	ON_BN_CLICKED(IDC_MENU_BUTTON_ADD_FILES_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg)
 	ON_BN_CLICKED(IDC_ADD_TO_STAGE_BUTTON, &CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton)
+	ON_COMMAND(ID_ITEM1_SUBITEM1, &CListCtrl_Category_GroupsDlg::OnItem1Click)
 END_MESSAGE_MAP()
 
 
@@ -199,6 +203,11 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 	auto main_frame_p = static_cast<CMainFrame*>(m_pParentWnd);
 	auto branchName = main_frame_p->get_current_branch();
 	branch_name_.SetWindowText(branchName);
+	commit_btn.EnableWindow(FALSE);
+
+	m_menu.LoadMenu(IDR_MENU_ADD_FILES_COMMIT);
+	add_menu_btn_.m_hMenu = m_menu.GetSubMenu(0)->GetSafeHmenu();
+	add_menu_btn_.m_bDefaultClick = TRUE;
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -313,9 +322,33 @@ void CListCtrl_Category_GroupsDlg::OnClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
-void CListCtrl_Category_GroupsDlg::OnBnClickedMfcmenubutton1()
+void CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg()
 {
 	// TODO: Add your control notification handler code here
+	switch (add_menu_btn_.m_nMenuResult)
+	{
+	case ID_ITEM1_BYTYPE:
+	{
+		int a{ 0 };
+	}
+		break;
+	case ID_ITEM1_BYSTAGE:
+	{
+		int b{ 0 };
+	}
+		break;
+	case ID_ITEM1_BYSTATUS:
+	{
+		int b{ 0 };
+	}
+	break;
+	default:
+	{
+		int c{ 0 };
+	}
+
+	}
+	
 }
 
 
@@ -332,4 +365,10 @@ void CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton()
 void CListCtrl_Category_GroupsDlg::set_status_to_staged_(const std::set<CString>& checkedFiles)
 {
 	m_DataModel.set_status_to_staged(checkedFiles);
+}
+
+void CListCtrl_Category_GroupsDlg::OnItem1Click()
+{
+	// TODO: Add your command handler code here
+	int a{ 0 };
 }

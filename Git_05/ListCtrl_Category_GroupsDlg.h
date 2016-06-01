@@ -11,6 +11,7 @@
 
 //#include "GIT_Commit_Data.hpp"
 #include "Working_Dir.hpp"
+#include "BCGPMenuButton.h"
 
 // CListCtrl_Category_GroupsDlg dialog
 class CListCtrl_Category_GroupsDlg : public CDialog
@@ -61,6 +62,12 @@ public:
 private:
 	CStatic origin_branch;
 public:
-	afx_msg void OnBnClickedMfcmenubutton1();
+	afx_msg void OnBnClicked_Add_Files_Commit_Dlg();
 	afx_msg void OnBnClickedAddToStageButton();
+private:
+	CButton commit_btn;
+	CMenu		m_menu;
+	CBCGPMenuButton add_menu_btn_;
+public:
+	afx_msg void OnItem1Click();
 };
