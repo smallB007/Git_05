@@ -48,11 +48,12 @@ public:
 	BOOL SetGroupState(int nGroupID, DWORD dwState);
 	BOOL IsGroupStateEnabled();
 
+	std::set<CString> get_unchecked_items()const;
 	bool is_group_checked(int nGroupId);
 	void CheckEntireGroup(int nGroupId, bool bChecked = true);
 	void UnCheckEntireGroup(int nGroupId);
 	std::set<CString> get_checked_items();
-
+	void set_item_checked(const CString& fileName);
 	bool SortColumn(int columnIndex, bool ascending);
 	void SetSortArrow(int colIndex, bool ascending);
 

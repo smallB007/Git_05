@@ -223,6 +223,29 @@ int CListCtrl_Category_Groups::GroupHitTest(const CPoint& point)
 	return nGroupId;
 }
 
+std::set<CString> CListCtrl_Category_Groups::get_unchecked_items()const
+{//roll it with get_checked_items
+	std::set<CString> unchecked_items;
+
+	if ((GetExtendedStyle() & LVS_EX_CHECKBOXES))
+	{
+		for (int nRow = 0; nRow < GetItemCount(); ++nRow)
+		{
+			if (!GetCheck(nRow))
+			{
+				LVITEM lvitem;
+				lvitem.mask = LVIF_TEXT;
+				lvitem.iItem = nRow;
+				auto an_item = GetItemText(nRow, 0);
+				unchecked_items.insert(an_item);
+				//	int a{ 0 };
+			}
+		}
+	}
+
+	return unchecked_items;
+}
+
 std::set<CString> CListCtrl_Category_Groups::get_checked_items()
 {
 	std::set<CString> checked_items;
@@ -244,6 +267,29 @@ std::set<CString> CListCtrl_Category_Groups::get_checked_items()
 	}
 
 	return checked_items;
+}
+
+void CListCtrl_Category_Groups::set_item_checked(const CString & fileName)
+{
+	if ((GetExtendedStyle() & LVS_EX_CHECKBOXES))
+	{
+		for (int nRow = 0; nRow < GetItemCount(); ++nRow)
+		{
+			//if (GetCheck(nRow))
+			//{
+				//LVITEM lvitem;
+				//lvitem.mask = LVIF_TEXT;
+				//lvitem.iItem = nRow;
+				auto an_item = GetItemText(nRow, 0);
+				if (an_item == fileName)
+				{
+					SetCheck(nRow);
+				}
+				//checked_items.insert(an_item);
+				//	int a{ 0 };
+			//}
+		}
+	}
 }
 
 
@@ -425,7 +471,7 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 			if (IsGroupStateEnabled())
 				dwState = LVGS_COLLAPSIBLE;
 #endif
-			auto gh = groups.GetKeyAt(nGroupId);
+			//auto gh = groups.GetKeyAt(nGroupId);
 			VERIFY( InsertGroupHeader(nGroupId, nGroupId, groups.GetKeyAt(nGroupId), dwState) != -1);
 			SetGroupTask(nGroupId, _T(""));
 			//LVGROUPMETRICS group_metrics{ 0 };

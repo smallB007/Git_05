@@ -58,6 +58,8 @@
 #define IDI_UNTRACKED                   209
 #define IDR_MENU1                       210
 #define IDR_MENU_ADD_FILES_COMMIT       210
+#define IDD_DIALOG1                     211
+#define IDD_ITEM_SELECT_DIALOG          211
 #define IDI_CAT                         310
 #define IDI_CAT_SMALL                   311
 #define IDI_DOG                         312
@@ -72,6 +74,7 @@
 #define IDC_ADD_TO_STAGE_BUTTON         1044
 #define IDC_BUTTON2                     1045
 #define IDC_SAVECONFIG_BUTTON           1045
+#define IDC_REMOVE_FROM_STAGE_BUTTON    1045
 #define IDC_BUTTON3                     1046
 #define IDC_LOGIN_BUTTON                1046
 #define IDC_WINDOWUS_LAUNCH_BUTTON      1054
@@ -176,7 +179,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        211
+#define _APS_NEXT_RESOURCE_VALUE        213
 #define _APS_NEXT_COMMAND_VALUE         32877
 #define _APS_NEXT_CONTROL_VALUE         1132
 #define _APS_NEXT_SYMED_VALUE           117

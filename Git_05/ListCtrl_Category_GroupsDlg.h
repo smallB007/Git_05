@@ -46,12 +46,18 @@ private:
 	private:
 		//std::set<CString> get_selected_files_();
 	void set_status_to_staged_(const std::set<CString>& checkedFiles);
+	void set_status_to_unstaged_(const std::set<CString>& checkedFiles);
+	std::set<CString> get_unchecked_items_();
 public:
 	void populate_view(const Working_Dir&& workingDir);
 	git_delta_t get_item_state(const CString& file_name);
 	CString get_item_status_(const CString& fileName);
 
 	std::set<CString> get_checked_items();
+	void set_items_checked(const std::set<CString>& fileNames);
+	void stage_checked_items();
+	void unstage_checked_items();
+	//void stage_items_by_type();
 	//void setBranchName(const CString& branchName);
 private:
 	//CEdit commit_header_edt_;
@@ -62,12 +68,20 @@ public:
 private:
 	CStatic origin_branch;
 public:
-	afx_msg void OnBnClicked_Add_Files_Commit_Dlg();
-	afx_msg void OnBnClickedAddToStageButton();
+	//afx_msg void OnBnClicked_Add_Files_Commit_Dlg();
+	
 private:
 	CButton commit_btn;
-	CMenu		m_menu;
-	CBCGPMenuButton add_menu_btn_;
+	//CMenu		m_menu;
+	//CBCGPMenuButton add_menu_btn_;
 public:
-	afx_msg void OnItem1Click();
+	//afx_msg void OnItem1Click();
+	afx_msg void OnBnClickedAddToStageButton();
+
+	void check_items();
+	void parse_regex(std::set<CString>& files_names, const std::set<CString>& regexes);
+	void translate_from_wildcard_to_regex(std::set<CString>& std_combined_regex, const std::set<CString>& wildCards);
+	afx_msg void OnBnClickedRemoveFromStageButton();
+private:
+	CEdit regex_edit_box;
 };

@@ -98,6 +98,7 @@
     <ClCompile Include="CListCtrl_DataModel.cpp">
       <Filter>Current</Filter>
     </ClCompile>
+    <ClCompile Include="ItemSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackStagePageInfo.h">
@@ -218,6 +219,7 @@
     <ClInclude Include="ListCtrl_Category_GroupsDlg.h">
       <Filter>Current</Filter>
     </ClInclude>
+    <ClInclude Include="ItemSelect.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml">

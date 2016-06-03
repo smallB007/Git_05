@@ -233,6 +233,7 @@
     <ClInclude Include="Git_Repository.hpp" />
     <ClInclude Include="Git_Repository_Attributes.hpp" />
     <ClInclude Include="HTTPS_GIT_Client.h" />
+    <ClInclude Include="ItemSelect.hpp" />
     <ClInclude Include="ListCtrl_Category_GroupsDef.h" />
     <ClInclude Include="ListCtrl_Category_GroupsDlg.h" />
     <ClInclude Include="MainFrm.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="Git_Repository.cpp" />
     <ClCompile Include="Git_Repository_Attributes.cpp" />
     <ClCompile Include="HTTPS_GIT_Client.cpp" />
+    <ClCompile Include="ItemSelect.cpp" />
     <ClCompile Include="ListCtrl_Category_GroupsDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputBar.cpp" />

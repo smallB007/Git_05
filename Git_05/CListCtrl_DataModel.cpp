@@ -165,6 +165,14 @@ void CListCtrl_DataModel::set_status_to_staged(const std::set<CString>& checkedF
 	}
 }
 
+void CListCtrl_DataModel::set_status_to_unstaged(const std::set<CString>& checkedFiles)
+{
+	for (const auto& _file_name : checkedFiles)
+	{
+		set_item_status_unstaged_(_file_name);
+	}
+}
+
 void CListCtrl_DataModel::set_item_status_staged_(const CString& fileName)
 {
 	//m_Records.set_file_status_staged(fileName);
@@ -173,6 +181,19 @@ void CListCtrl_DataModel::set_item_status_staged_(const CString& fileName)
 		if (item.file_name_ == fileName)
 		{
 			item.set_file_status(L"Changes staged for commit");
+			break;
+		}
+	}
+}
+
+void CListCtrl_DataModel::set_item_status_unstaged_(const CString& fileName)
+{
+	//m_Records.set_file_status_staged(fileName);
+	for (auto& item : m_Records)
+	{
+		if (item.file_name_ == fileName)
+		{
+			item.set_file_status(L"Changes not staged for commit");
 			break;
 		}
 	}

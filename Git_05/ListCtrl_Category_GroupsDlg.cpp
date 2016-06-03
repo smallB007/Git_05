@@ -61,8 +61,9 @@ void CListCtrl_Category_GroupsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BRANCH_NAME, branch_name_);
 	DDX_Control(pDX, IDC_ORIGIN_BRANCH, origin_branch);
 	DDX_Control(pDX, ID_COMMIT, commit_btn);
-	DDX_Control(pDX, IDC_MENU_BUTTON_ADD_FILES_COMMIT, add_menu_btn_);
+	//DDX_Control(pDX, IDC_MENU_BUTTON_ADD_FILES_COMMIT, add_menu_btn_);
 
+	DDX_Control(pDX, IDC_EDIT2, regex_edit_box);
 }
 
 BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
@@ -73,9 +74,10 @@ BEGIN_MESSAGE_MAP(CListCtrl_Category_GroupsDlg, CDialog)
 	
 	ON_BN_CLICKED(ID_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClickedCommit)
 	ON_NOTIFY(NM_CLICK, IDC_LIST1, &CListCtrl_Category_GroupsDlg::OnClickList1)
-	ON_BN_CLICKED(IDC_MENU_BUTTON_ADD_FILES_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg)
+	//ON_BN_CLICKED(IDC_MENU_BUTTON_ADD_FILES_COMMIT, &CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg)
 	ON_BN_CLICKED(IDC_ADD_TO_STAGE_BUTTON, &CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton)
-	ON_COMMAND(ID_ITEM1_SUBITEM1, &CListCtrl_Category_GroupsDlg::OnItem1Click)
+	//ON_COMMAND(ID_ITEM1_SUBITEM1, &CListCtrl_Category_GroupsDlg::OnItem1Click)
+	ON_BN_CLICKED(IDC_REMOVE_FROM_STAGE_BUTTON, &CListCtrl_Category_GroupsDlg::OnBnClickedRemoveFromStageButton)
 END_MESSAGE_MAP()
 
 
@@ -205,9 +207,9 @@ m_wndListCtrl_->SetItemText(itemNo, 4, repoName);
 	branch_name_.SetWindowText(branchName);
 	commit_btn.EnableWindow(FALSE);
 
-	m_menu.LoadMenu(IDR_MENU_ADD_FILES_COMMIT);
-	add_menu_btn_.m_hMenu = m_menu.GetSubMenu(0)->GetSafeHmenu();
-	add_menu_btn_.m_bDefaultClick = TRUE;
+	//m_menu.LoadMenu(IDR_MENU_ADD_FILES_COMMIT);
+	//add_menu_btn_.m_hMenu = m_menu.GetSubMenu(0)->GetSafeHmenu();
+	//add_menu_btn_.m_bDefaultClick = TRUE;
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -284,6 +286,14 @@ std::set<CString> CListCtrl_Category_GroupsDlg::get_checked_items()
 	return m_ListCtrl.get_checked_items();
 }
 
+void CListCtrl_Category_GroupsDlg::set_items_checked(const std::set<CString>& fileNames)
+{
+	for (const auto& item : fileNames)
+	{
+		m_ListCtrl.set_item_checked(item);
+	}
+}
+
 void CListCtrl_Category_GroupsDlg::OnBnClickedCommit()
 {
 	CDialog::OnOK();
@@ -322,44 +332,65 @@ void CListCtrl_Category_GroupsDlg::OnClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
-void CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg()
-{
-	// TODO: Add your control notification handler code here
-	switch (add_menu_btn_.m_nMenuResult)
-	{
-	case ID_ITEM1_BYTYPE:
-	{
-		int a{ 0 };
-	}
-		break;
-	case ID_ITEM1_BYSTAGE:
-	{
-		int b{ 0 };
-	}
-		break;
-	case ID_ITEM1_BYSTATUS:
-	{
-		int b{ 0 };
-	}
-	break;
-	default:
-	{
-		int c{ 0 };
-	}
+// void CListCtrl_Category_GroupsDlg::OnBnClicked_Add_Files_Commit_Dlg()
+// {
+// 	// TODO: Add your control notification handler code here
+// 	switch (add_menu_btn_.m_nMenuResult)
+// 	{
+// 	case ID_ITEM1_BYTYPE:
+// 	{
+// 		stage_items_by_type();
+// 		int a{ 0 };
+// 	}
+// 		break;
+// 	case ID_ITEM1_BYSTAGE:
+// 	{
+// 		int b{ 0 };
+// 	}
+// 		break;
+// 	case ID_ITEM1_BYSTATUS:
+// 	{
+// 		int b{ 0 };
+// 	}
+// 	break;
+// 	default:
+// 	{
+// 		int c{ 0 };
+// 		stage_checked_items();
+// 	}
+// 
+// 	}
+// 	
+// }
 
-	}
-	
-}
+// void CListCtrl_Category_GroupsDlg::stage_items_by_type()
+// {
+// 	//Show dialog with type available
+// 	//From those ticked stage_checked_items
+// }
 
-
-void CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton()
-{
-	// TODO: Add your control notification handler code here
+void CListCtrl_Category_GroupsDlg::stage_checked_items()
+{//roll it in with unstage
 	//1.get checked items
 	auto checked_items = get_checked_items();
 	//2.add those items to stage
 	set_status_to_staged_(checked_items);
 	m_ListCtrl.GroupByColumn(0);
+}
+void CListCtrl_Category_GroupsDlg::unstage_checked_items()
+{
+	//1.get checked items
+	auto checked_items = get_checked_items();
+	//2.add those items to stage
+	set_status_to_unstaged_(checked_items);//but change it to previous status
+	m_ListCtrl.GroupByColumn(0);
+}
+void CListCtrl_Category_GroupsDlg::OnBnClickedAddToStageButton()
+{
+	// TODO: Add your control notification handler code here
+	//read first from edit box
+	check_items();
+	stage_checked_items();
 }
 
 void CListCtrl_Category_GroupsDlg::set_status_to_staged_(const std::set<CString>& checkedFiles)
@@ -367,8 +398,138 @@ void CListCtrl_Category_GroupsDlg::set_status_to_staged_(const std::set<CString>
 	m_DataModel.set_status_to_staged(checkedFiles);
 }
 
-void CListCtrl_Category_GroupsDlg::OnItem1Click()
+void CListCtrl_Category_GroupsDlg::set_status_to_unstaged_(const std::set<CString>& checkedFiles)
 {
-	// TODO: Add your command handler code here
-	int a{ 0 };
+	m_DataModel.set_status_to_unstaged(checkedFiles);
+}
+
+// void CListCtrl_Category_GroupsDlg::OnItem1Click()
+// {
+// 	// TODO: Add your command handler code here
+// 	int a{ 0 };
+// }
+
+static void ArtieExtractSubStrings(std::set<CString>& substrings,const CString& fullStr, const CString& separator)
+{
+	CT2CA pszConvertedAnsiString(fullStr);
+	// construct a std::string using the LPCSTR input
+	std::string std_fullString(pszConvertedAnsiString);
+	//remove surplus spaces
+	CT2CA pszConvertedAnsiString_Separator(separator);
+	std::string std_separator(pszConvertedAnsiString_Separator);
+	auto beg = std::unique(begin(std_fullString), end(std_fullString), [](char left, char right) {return left == right; });
+	std_fullString.erase(beg, end(std_fullString));
+	//BOOL result;
+	for (auto beg{ std::begin(std_fullString) }, end{(std::end(std_fullString))};
+		beg != end;
+		++beg)
+	{
+		
+		auto next_separator = std::find(beg, end, std_separator[0]);
+		//if (next_separator != end)
+		//{
+			std::string substring(beg, next_separator);
+			beg = next_separator;
+			CA2W w_str(substring.c_str());
+			substrings.insert(CString(w_str));
+		//}
+			if (beg == end)
+			{
+				return;
+			}
+	}
+	//return result;
+}
+
+std::set<CString> CListCtrl_Category_GroupsDlg::get_unchecked_items_()
+{
+	auto unchecked_items = m_ListCtrl.get_unchecked_items();
+	return unchecked_items;
+} 
+
+#include "boost/algorithm/string/replace.hpp"
+void CListCtrl_Category_GroupsDlg::translate_from_wildcard_to_regex(std::set<CString>& combinedRegex, const std::set<CString>& wildCards)
+{
+	//CString wild_star(L"*");
+	//CString regex_star(L".*");
+	for (const auto& c_str : wildCards)
+	{
+		
+		
+		CT2CA pszConvertedAnsiString(c_str);
+		// construct a std::string using the LPCSTR input
+		std::string std_combined_regex(pszConvertedAnsiString);
+		boost::replace_all(std_combined_regex, std::string("."), std::string("\\."));
+		boost::replace_all(std_combined_regex, std::string("*"), std::string(".*"));
+		boost::replace_all(std_combined_regex, std::string("?"), std::string("."));
+		std_combined_regex.insert(cbegin(std_combined_regex),'^');
+		std_combined_regex.push_back('$');
+		
+		CA2W w_str(std_combined_regex.c_str());
+		combinedRegex.insert(CString(w_str));
+	}
+}
+
+void CListCtrl_Category_GroupsDlg::parse_regex(std::set<CString>& files_names,const std::set<CString>& regexes)
+{
+	CString combined_regex;
+	for (const auto& _str : regexes)
+	{
+		combined_regex += _str + L"|";
+	}
+	combined_regex.Delete(combined_regex.GetLength() - 1);//delete final L"|"
+	CT2CA pszConvertedAnsiString(combined_regex);
+	// construct a std::string using the LPCSTR input
+	std::string std_combined_regex(pszConvertedAnsiString);
+	
+	boost::regex reg(std_combined_regex);
+	boost::smatch what;
+
+
+	std::set<CString> unchecked_items = get_unchecked_items_();
+	for (const auto& _file_name : unchecked_items)
+	{
+		CT2CA pszConvertedAnsiString(_file_name);
+		// construct a std::string using the LPCSTR input
+		std::string std_file_name(pszConvertedAnsiString);
+			//check if that file matches regex and if so:
+			if (boost::regex_match(std_file_name,what,reg))
+			{
+				files_names.insert(_file_name);
+			}
+		
+	}
+}
+
+void CListCtrl_Category_GroupsDlg::check_items()
+{
+	CString str;
+	regex_edit_box.GetWindowText(str);
+	//CString substring("beginning is irrelevant");
+
+	CString separator{L" "};
+	std::set<CString> wildcards;
+	std::set<CString> regexes;
+	
+	ArtieExtractSubStrings(wildcards, str, separator);
+	translate_from_wildcard_to_regex(regexes,wildcards);
+	std::set<CString> files_names;
+	/*create_regex(regexes, wildcards);*/
+		
+	parse_regex(files_names,regexes);
+
+	
+
+	
+	//parse regex
+	//set those items checked
+	set_items_checked(files_names);
+}
+
+
+void CListCtrl_Category_GroupsDlg::OnBnClickedRemoveFromStageButton()
+{
+	// TODO: Add your control notification handler code here
+	check_items();
+	unstage_checked_items();
 }
