@@ -2,47 +2,14 @@
 //
 
 #include "stdafx.h"
-//#include "ListCtrl_Category_GroupsApp.h"
+
+#include "boost/algorithm/string/replace.hpp"
 #include "ListCtrl_Category_GroupsDlg.h"
 #include "MainFrm.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
-// CAboutDlg dialog used for App About
-
-// class CAboutDlg : public CDialog
-// {
-// public:
-// 	CAboutDlg();
-// 
-// // Dialog Data
-// 	enum { IDD = IDD_ABOUTBOX };
-// 
-// 	protected:
-// 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-// 
-// // Implementation
-// protected:
-// 	DECLARE_MESSAGE_MAP()
-// };
-// 
-// CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-// {
-// }
-// 
-// void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-// {
-// 	CDialog::DoDataExchange(pDX);
-// }
-// 
-// BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-// END_MESSAGE_MAP()
-
-
-// CListCtrl_Category_GroupsDlg dialog
-
 
 
 CListCtrl_Category_GroupsDlg::CListCtrl_Category_GroupsDlg(CWnd* pParent /*=NULL*/)
@@ -412,33 +379,33 @@ void CListCtrl_Category_GroupsDlg::set_status_to_unstaged_(const std::set<CStrin
 static void ArtieExtractSubStrings(std::set<CString>& substrings,const CString& fullStr, const CString& separator)
 {
 	CT2CA pszConvertedAnsiString(fullStr);
-	// construct a std::string using the LPCSTR input
 	std::string std_fullString(pszConvertedAnsiString);
-	//remove surplus spaces
 	CT2CA pszConvertedAnsiString_Separator(separator);
 	std::string std_separator(pszConvertedAnsiString_Separator);
-	auto beg = std::unique(begin(std_fullString), end(std_fullString), [](char left, char right) {return left == right; });
-	std_fullString.erase(beg, end(std_fullString));
-	//BOOL result;
+	//remove surplus spaces
+	auto beg = std::unique(std::begin(std_fullString), std::end(std_fullString), [](char left, char right) 
+	{
+		return (left == ' ') && (left == right); 
+	});
+	std_fullString.erase(beg, std::end(std_fullString));
+	
 	for (auto beg{ std::begin(std_fullString) }, end{(std::end(std_fullString))};
 		beg != end;
 		++beg)
 	{
 		
 		auto next_separator = std::find(beg, end, std_separator[0]);
-		//if (next_separator != end)
-		//{
-			std::string substring(beg, next_separator);
-			beg = next_separator;
-			CA2W w_str(substring.c_str());
-			substrings.insert(CString(w_str));
-		//}
-			if (beg == end)
-			{
-				return;
-			}
+		
+		std::string substring(beg, next_separator);
+		beg = next_separator;
+		CA2W w_str(substring.c_str());
+		substrings.insert(CString(w_str));
+		
+		if (beg == end)
+		{
+			return;
+		}
 	}
-	//return result;
 }
 
 std::set<CString> CListCtrl_Category_GroupsDlg::get_unchecked_items_()
@@ -447,7 +414,6 @@ std::set<CString> CListCtrl_Category_GroupsDlg::get_unchecked_items_()
 	return unchecked_items;
 } 
 
-#include "boost/algorithm/string/replace.hpp"
 void CListCtrl_Category_GroupsDlg::translate_from_wildcard_to_regex(std::set<CString>& combinedRegex, const std::set<CString>& wildCards)
 {
 	//CString wild_star(L"*");
@@ -505,31 +471,23 @@ void CListCtrl_Category_GroupsDlg::check_items()
 {
 	CString str;
 	regex_edit_box.GetWindowText(str);
-	//CString substring("beginning is irrelevant");
 
 	CString separator{L" "};
 	std::set<CString> wildcards;
-	std::set<CString> regexes;
-	
 	ArtieExtractSubStrings(wildcards, str, separator);
+
+	std::set<CString> regexes;
 	translate_from_wildcard_to_regex(regexes,wildcards);
+
 	std::set<CString> files_names;
-	/*create_regex(regexes, wildcards);*/
-		
 	parse_regex(files_names,regexes);
 
-	
-
-	
-	//parse regex
-	//set those items checked
 	set_items_checked(files_names);
 }
 
 
 void CListCtrl_Category_GroupsDlg::OnBnClickedRemoveFromStageButton()
 {
-	// TODO: Add your control notification handler code here
 	check_items();
 	unstage_checked_items();
 }
