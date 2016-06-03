@@ -26,10 +26,16 @@ public:
 		,status_{status}
 		,original_status_{status}
 		,state_{state}
-	{}
+	{
+		if (L"Changes staged for commit" == status_)
+		{
+			header_position_ = 0;
+		}
+	}
 
 	CString	file_name_;
 	CString	status_;
+	int header_position_{ -1 };
 	const CString original_status_;
 	git_delta_t state_;
 	//std::string	added_;
@@ -53,11 +59,24 @@ public:
 	void set_file_status(const CString& fileStatus)
 	{
 		status_ = fileStatus;
+		if (L"Changes staged for commit" == status_)
+		{
+			header_position_ = 0;
+		}
+		else
+		{
+			header_position_ = -1;
+		}
 	}
 	git_delta_t get_file_state()const
 	{
 		return state_;
 	}
+	int get_file_header_position()const
+	{
+		return header_position_;
+	}
+
 	//const std::string& GetCellText(int col, bool title) const
 	//{
 	//	static std::string col_title("Staging area");
@@ -98,6 +117,8 @@ public:
 	{
 		InitDataModel();
 	}
+	int get_item_header_position(const CString& fileName);
+	
 	CString get_item_status(const CString& fileName);
 	git_delta_t get_item_state(const CString& fileName);
 	void set_status_to_staged(const std::set<CString>& checkedFiles);

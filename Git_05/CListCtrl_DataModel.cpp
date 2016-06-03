@@ -198,3 +198,15 @@ void CListCtrl_DataModel::set_item_status_unstaged_(const CString& fileName)
 		}
 	}
 }
+
+int CListCtrl_DataModel::get_item_header_position(const CString& fileName)
+{
+	for (auto& item : m_Records)
+	{
+		if (item.file_name_ == fileName)
+		{
+			return item.get_file_header_position();
+		}
+	}
+	return -1;
+}

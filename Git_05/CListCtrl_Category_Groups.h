@@ -1,6 +1,7 @@
 #pragma once
 #include <set>
-class CListCtrl_DataModel;
+#include "CListCtrl_DataModel.h"
+
 
 class CListCtrl_Category_Groups : public CListCtrl
 {
@@ -15,6 +16,10 @@ class CListCtrl_Category_Groups : public CListCtrl
 public:
 	git_delta_t get_item_state(const CString& fileName);
 	CString get_item_status(const CString& fileName);
+	int get_item_header_position(const CString& fileName)
+	{
+		return m_DataModel_->get_item_header_position(fileName);
+	}
 	void set_data_model(CListCtrl_DataModel* dataModel)
 	{
 		m_DataModel_ = dataModel;

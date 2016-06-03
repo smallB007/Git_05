@@ -414,7 +414,7 @@ namespace {
 		return XPStyle;
 	}
 }
-#include "CListCtrl_DataModel.h"
+
 git_delta_t CListCtrl_Category_Groups::get_item_state(const CString& fileName)
 {
 	return m_DataModel_->get_item_state(fileName);
@@ -471,12 +471,14 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 			if (IsGroupStateEnabled())
 				dwState = LVGS_COLLAPSIBLE;
 #endif
-			//auto gh = groups.GetKeyAt(nGroupId);
-			if (L"Changes staged for commit" == groups.GetKeyAt(nGroupId))
-			{
-				nGroupId = 0;
-			}
-			VERIFY( InsertGroupHeader(nGroupId, nGroupId, groups.GetKeyAt(nGroupId), dwState) != -1);
+			auto gh = groups.GetKeyAt(nGroupId);
+			//if (L"Changes staged for commit" == groups.GetKeyAt(nGroupId))
+			//{
+			//	nGroupId = 0;
+			//}
+			int header_pos = get_item_header_position(groups.GetKeyAt(nGroupId));
+			VERIFY( InsertGroupHeader(header_pos,header_pos == 0 ? header_pos : nGroupId,
+																		groups.GetKeyAt(nGroupId), dwState) != -1);
 			SetGroupTask(nGroupId, _T(""));
 			//LVGROUPMETRICS group_metrics{ 0 };
 			//group_metrics.cbSize = sizeof(group_metrics);
