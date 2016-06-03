@@ -24,11 +24,13 @@ public:
 		:
 		file_name_(fileName)
 		,status_{status}
+		,original_status_{status}
 		,state_{state}
 	{}
 
 	CString	file_name_;
 	CString	status_;
+	const CString original_status_;
 	git_delta_t state_;
 	//std::string	added_;
 	//std::string	modified_;
@@ -42,6 +44,12 @@ public:
 	{
 		return status_;
 	}
+	
+	const CString get_file_original_status_()const
+	{
+		return original_status_;
+	}
+
 	void set_file_status(const CString& fileStatus)
 	{
 		status_ = fileStatus;

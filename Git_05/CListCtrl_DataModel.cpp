@@ -193,7 +193,7 @@ void CListCtrl_DataModel::set_item_status_unstaged_(const CString& fileName)
 	{
 		if (item.file_name_ == fileName)
 		{
-			item.set_file_status(L"Changes not staged for commit");
+			item.set_file_status(item.get_file_original_status_());
 			break;
 		}
 	}
