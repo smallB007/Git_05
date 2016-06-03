@@ -472,6 +472,10 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 				dwState = LVGS_COLLAPSIBLE;
 #endif
 			//auto gh = groups.GetKeyAt(nGroupId);
+			if (L"Changes staged for commit" == groups.GetKeyAt(nGroupId))
+			{
+				nGroupId = 0;
+			}
 			VERIFY( InsertGroupHeader(nGroupId, nGroupId, groups.GetKeyAt(nGroupId), dwState) != -1);
 			SetGroupTask(nGroupId, _T(""));
 			//LVGROUPMETRICS group_metrics{ 0 };
