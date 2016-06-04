@@ -521,8 +521,9 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 			//}
 			int header_pos = L"Changes staged for commit" == gh ? 0 : -1;
 			//auto hp = groups.GetValueAt(nGroupId);
+			auto group_or_header = header_pos == 0 ? header_pos : nGroupId;
 			VERIFY( InsertGroupHeader(header_pos,
-									  header_pos == 0 ? header_pos : nGroupId,
+									  group_or_header,
 									  gh, dwState) != -1);
 			SetGroupTask(nGroupId, _T(""));
 			//LVGROUPMETRICS group_metrics{ 0 };
@@ -545,12 +546,12 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 // 			}
 			CString subtitle;
 			subtitle.Format(_T("Subtitle: %i rows"), groupRows.GetSize());
-			SetGroupSubtitle(header_pos == 0 ? header_pos : nGroupId, subtitle );
-			SetGroupFooter(header_pos == 0 ? header_pos : nGroupId, _T("Group Footer"));
+			SetGroupSubtitle(group_or_header, subtitle );
+			SetGroupFooter(group_or_header, _T("Group Footer"));
 			
 			for(int groupRow = 0; groupRow < groupRows.GetSize(); ++groupRow)
 			{
-				VERIFY( SetRowGroupId(groupRows[groupRow], header_pos == 0 ? header_pos : nGroupId) );
+				VERIFY( SetRowGroupId(groupRows[groupRow], group_or_header) );
 			}
 		}
 		SetRedraw(TRUE);
