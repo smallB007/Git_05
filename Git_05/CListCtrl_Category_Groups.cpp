@@ -444,6 +444,9 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 	if (IsGroupViewEnabled())
 	{
 		CSimpleMap<CString,CSimpleArray<int> > groups;
+		//typedef CString status_t;//Staged, Untracked etc
+		//typedef int number_in_group;
+		//std::map<status_t, number_in_group> groups_;
 		//CSimpleMap<CString, CSimpleArray<CString> > groups;
 		// Loop through all rows and find possible groups
 		for(int nRow=0, end = GetItemCount(); nRow < end; ++nRow)
@@ -452,6 +455,8 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 
 			CString cellText = get_item_status(GetItemText(nRow, 0));//Staged, Untracked etc
 			int nGroupId = groups.FindKey(cellText);
+			//groups_[cellText]++;
+
 			if (nGroupId==-1)
 			{
 				CSimpleArray<int> rows;
@@ -462,6 +467,44 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 		}
 
 		// Look through all groups and assign rows to group
+// 		for (const auto& item : groups_)
+// 		{
+// 			DWORD dwState = LVGS_NORMAL;
+// 
+// #ifdef LVGS_COLLAPSIBLE
+// 			if (IsGroupStateEnabled())
+// 				dwState = LVGS_COLLAPSIBLE;
+// #endif
+// 			auto gh = groups.GetKeyAt(0);
+// 			auto _gh = item.first;
+// 
+// 			//if (L"Changes staged for commit" == groups.GetKeyAt(nGroupId))
+// 			//{
+// 			//	nGroupId = 0;
+// 			//}
+// 			int header_pos = 0;
+// 			//auto hp = groups.GetValueAt(nGroupId);
+// 			VERIFY(InsertGroupHeader(header_pos,
+// 				header_pos,
+// 				groups.GetKeyAt(0), dwState) != -1);
+// 			SetGroupTask(0, _T(""));
+// 
+// 
+// 			CString subtitle;
+// 			subtitle.Format(_T("Subtitle: %i rows"), item.second);
+// 			SetGroupSubtitle(0, subtitle);
+// 			SetGroupFooter(0, _T("Group Footer"));
+// 			for (int i{0}; i < item.second; ++i)
+// 			{
+// 				saVERIFY(SetRowGroupId(groupRows[groupRow], nGroupId));
+// 			}
+// 
+// 			for (int groupRow = 0; groupRow < groupRows.GetSize(); ++groupRow)
+// 			{
+// 				VERIFY(SetRowGroupId(groupRows[groupRow], nGroupId));
+// 			}
+// 		}
+
 		for(int nGroupId = 0, end = groups.GetSize(); nGroupId < end; ++nGroupId)
 		{
 			const CSimpleArray<int>& groupRows = groups.GetValueAt(nGroupId);
@@ -476,9 +519,11 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 			//{
 			//	nGroupId = 0;
 			//}
-			int header_pos = get_item_header_position(groups.GetKeyAt(nGroupId));
-			VERIFY( InsertGroupHeader(header_pos,header_pos == 0 ? header_pos : nGroupId,
-																		groups.GetKeyAt(nGroupId), dwState) != -1);
+			int header_pos = L"Changes staged for commit" == gh ? 0 : -1;
+			//auto hp = groups.GetValueAt(nGroupId);
+			VERIFY( InsertGroupHeader(header_pos,
+									  header_pos == 0 ? header_pos : nGroupId,
+									  gh, dwState) != -1);
 			SetGroupTask(nGroupId, _T(""));
 			//LVGROUPMETRICS group_metrics{ 0 };
 			//group_metrics.cbSize = sizeof(group_metrics);
@@ -500,12 +545,12 @@ BOOL CListCtrl_Category_Groups::GroupByColumn(int nCol)
 // 			}
 			CString subtitle;
 			subtitle.Format(_T("Subtitle: %i rows"), groupRows.GetSize());
-			SetGroupSubtitle(nGroupId, subtitle );
-			SetGroupFooter(nGroupId, _T("Group Footer"));
+			SetGroupSubtitle(header_pos == 0 ? header_pos : nGroupId, subtitle );
+			SetGroupFooter(header_pos == 0 ? header_pos : nGroupId, _T("Group Footer"));
 			
 			for(int groupRow = 0; groupRow < groupRows.GetSize(); ++groupRow)
 			{
-				VERIFY( SetRowGroupId(groupRows[groupRow], nGroupId) );
+				VERIFY( SetRowGroupId(groupRows[groupRow], header_pos == 0 ? header_pos : nGroupId) );
 			}
 		}
 		SetRedraw(TRUE);
